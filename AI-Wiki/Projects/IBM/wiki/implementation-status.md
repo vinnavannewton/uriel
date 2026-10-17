@@ -1,12 +1,13 @@
 ---
 title: "Implementation status and evidence"
 project: IBM-Uriel
+updated: 2026-10-17
 tags: [ibm, uriel]
 ---
 
 # Implementation status and evidence
 
-Current status: **historical Arc Angel crossing prototype plus an implemented, locally integrated two-car Grid Plane head-on avoidance slice**. The new slice uses Rust-authoritative paths and a Python BeamNG bridge. Full Uriel functionality, trained ML, obstacle handling, remote live-controller acceptance and broad acceptance remain unverified. The basic LinuxONE Rust service is now running; see its bounded deployment evidence below. Event/source-history distinctions are recorded separately in [[context-reconciliation]] and [[event-preparation]].
+Current status: **historical Arc Angel crossing prototype plus an implemented, locally integrated two-car Grid Plane head-on avoidance slice**. The new slice uses Rust-authoritative paths and a Python BeamNG bridge. The offline arrival/clearance ML pilot is trained and evaluated; full Uriel functionality, live ML integration, obstacle handling, remote live-controller acceptance and broad acceptance remain unverified. The basic LinuxONE Rust service is now running; see its bounded deployment evidence below. Event/source-history distinctions are recorded separately in [[context-reconciliation]] and [[event-preparation]].
 
 The table inventories current code and the bounded head-on addition; it does not certify event eligibility. Historical checks and new simulator evidence are distinguished below.
 
@@ -27,8 +28,8 @@ The table inventories current code and the bounded head-on addition; it does not
 | Real West Coast USA scenario | Not configured |
 | Physical/fault/load acceptance | Bounded local head-on passes demonstrated; teammate recorded Small Grid, West Coast and seeded six-vehicle crossing baselines. General closed-loop, fault/load and obstacle acceptance remain unverified |
 | Ubuntu/LinuxONE deployment | SSH/Ubuntu/s390x verified; 21 remote Python tests passed; native release service running and `/health` returned `ok`; latest dashboard rebuilt and served. Live remote BeamNG pass unverified because the measured SSH latency exceeds the controller's response window |
-| Arrival-time ML, dataset labels and evaluation | Crossing collectors record sampled front-point and spawn-OOBB proxy entry/clearance labels, with limits documented in [[recording]]. No trained model or held-out evaluation established |
-| Python inference worker on LinuxONE | Recommended design; not implemented |
+| Arrival-time ML, dataset labels and evaluation | Offline `HistGradientBoostingRegressor` pilot in `scripts/train_arrival.py` rebuilds entry/clearance labels from spawn-OOBB telemetry, filters damaged/deviated targets, groups repeated seeds/configurations, and evaluates against distance/speed. The 2026-10-17 test set beat that baseline on moving rows; it contains only two clearance and three entry groups. See [[ml-arrival-prediction]] and local run evidence. No live inference, Rust integration or broad generalization is established |
+| Python inference worker on LinuxONE | Recommended design; not implemented. The local offline estimators have no serving contract or live consumer |
 | Mandatory labs / event readiness | Required according to S5; completion unverified |
 
 Both standalone crossing collectors and head-on controllers share a BeamNG instance when pointed at it; run one scenario owner at a time. The teammate crossing defaults use port 25252 and ETK subjects; head-on defaults use port 64256 and matched Vivaces. Baseline crossing collection is distinct from Rust-integrated head-on avoidance.
@@ -56,6 +57,10 @@ Latest user-requested repeat: `runs/avoidance-5eaceb9726/` ran against the same 
 New live evidence: the user authorized a Grid Plane two-car head-on baseline, replacing their earlier crossing request. A standalone BeamNGpy controller attached to BeamNG.tech, placed matching red/blue Vivaces on opposing straight AI paths and recorded 120 state/damage/electrics samples. Both damage sensors increased; AI inputs were stopped afterwards. See [[operations]] and `runs/headon-d0f1ef6424/`. This is one intentional-crash run, not physical acceptance of the coordinator, an integrated Python bridge, or a trained model.
 
 The earlier conversation reported successful `cargo check --offline`, Rust formatting, JavaScript syntax checking, localhost health response, and a browser preview populated with example data. These are historical reported checks and were not rerun during the later documentation review. They do not establish coordination correctness or physical outcomes.
+
+## Offline ML pilot evidence
+
+The user, acting as Manikantan, authorized implementing the offline arrival/clearance training plan. `mani` was fast-forwarded to `main` at `62f423b`. The run `runs/ml-arrival/pilot-20261017T141915Z-48132635/` accepted 48 of 58 trial folders from existing local Small Grid data; failed and interrupted trials were retained in the audit with reasons. Entry test metrics were 0.398 s MAE and 1.157 s run-balanced p95 across three independent test groups. Clearance metrics were 0.470 s and 1.670 s across two test groups. On common moving rows, entry scored 0.363/1.086 s versus 5.357/19.169 s for distance/speed; clearance scored 0.381/1.484 s versus 6.196/20.751 s. Damaged/deviated targets were excluded before their corresponding event. These are small offline results on repeated configurations, not a live controller, collision/safety result or broad generalization claim. Raw telemetry and generated models remain local and ignored by Git.
 
 ## Prioritized implementation gaps
 

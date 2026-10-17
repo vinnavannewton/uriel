@@ -1,6 +1,7 @@
 ---
 title: "Telemetry and experiment recording"
 project: IBM-Uriel
+updated: 2026-10-17
 tags: [ibm, uriel]
 ---
 
@@ -66,6 +67,10 @@ The live `scripts/fresh_experiment.py` has parameterized trial count, duration, 
 The speed argument controls BeamNG's native deterministic speed factor. Graphics FPS is held at 60 during setup, capture, and cleanup, and left at 60 on exit. BeamNG advances `speed × 50 ms` per captured frame, so effective sampling is capped at `20/speed` Hz. At speed 2, this is 10 Hz; at speed 8, 2.5 Hz. At a 60 FPS cap the theoretical wall-clock ceiling is `3 × speed`; actual multiplier, measured sample rate and requested rate are recorded. Higher speed trades away temporal detail; 60 Hz simulation sampling is not supported by this per-frame API collector while accelerated. The recorder now accepts `--ai-aggression` with BeamNG's conservative/aggressive endpoint names or a numeric 0.3–1.0 value, applies it to each route-following vehicle and stores it per sample and in run metadata. Route-following telemetry uses BeamNG's built-in `manual` mode name. Background configs are durable project assets. Failures/interruption are saved, and output directories use new experiment UUIDs. Usage and limitations are in `scripts/BEAMNG_RECORDING.md` and [[operations]].
 
 Raw `telemetry.csv`, `arrival_labels.csv` and `events.jsonl` outputs are retained locally under the project output directories and excluded from Git by `.gitignore`. Small experiment summaries, metadata and collector sources remain reviewable and versionable.
+
+## Offline model fitting
+
+`scripts/train_arrival.py` reads per-trial telemetry without opening BeamNG. It recomputes virtual-square entry/rear-clearance timestamps from logged spawn OOBB corners, audits them against saved labels, and records target-specific damage/deviation exclusions and censored outcomes. It uses only the two central-crossing subject vehicles for model rows; the four offset traffic routes are audit-only. Training output, saved regressors and held-out predictions live under `runs/ml-arrival/<UUID>/`, which is ignored by Git alongside raw recordings. The command, feature list, grouped split, metrics and evidence are in [[ml-arrival-prediction]].
 
 ### Ten-run 60 Hz collection
 

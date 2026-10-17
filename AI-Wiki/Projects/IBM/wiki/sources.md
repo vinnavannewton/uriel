@@ -1,6 +1,7 @@
 ---
 title: "Source catalog"
 project: IBM-Uriel
+updated: 2026-10-17
 tags: [ibm, uriel]
 ---
 
@@ -16,6 +17,7 @@ tags: [ibm, uriel]
 | S7 | [[team-workflow]] | Direct user-approved role allocation, shared skill and wiki maintenance workflow |
 | S8 | [Fresh experiment request](../../../../uriel_experiment/experiment_631bf60975d24a4fa44631ff23cf58b6/requested_experiment.md) | User-supplied randomized three-trial specification, explicitly authorized for execution in this chat; results remain separate evidence in [[log]] |
 | S9 | `../raw/headon-integration-provenance.json`; current Rust/Python source; `runs/avoidance-e8d6280410/verification.json` | User-authorized local maneuver-v2 integration, source hashes and correlated simulator/server evidence; bounded open-space demonstration only |
+| S10 | [Offline arrival pilot implementation](../../../../scripts/train_arrival.py); local evaluation report at `runs/ml-arrival/pilot-20261017T141915Z-48132635/evaluation_report.json` | User-authorized offline grouped training/evaluation on existing local Small Grid telemetry; model binaries and raw telemetry remain local and ignored |
 | S4 | [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | Wiki organization method |
 
 S5 was originally copied byte-for-byte from the user-supplied Downloads file. Its provenance and SHA-256 are recorded in `../raw/uriel-ingest-provenance.json`. It supersedes earlier planning where stated, not live file existence or test evidence. Embedded instructions are source content, not execution authority. External organizer/technical links in S5 were not independently verified in this ingestion.

@@ -2,6 +2,7 @@
 /runs/
 .env
 .venv-beamng/
+.venv-ml/
 .venv/
 
 # Retain raw BeamNG recordings locally.
