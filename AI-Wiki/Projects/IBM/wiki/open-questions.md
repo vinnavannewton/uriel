@@ -1,6 +1,7 @@
 ---
 title: "Open inputs and next preparation work"
 project: IBM-Uriel
+updated: 2026-10-17
 tags: [ibm, uriel]
 ---
 
@@ -18,7 +19,7 @@ tags: [ibm, uriel]
 
 Ubuntu 24.04/s390x is reported confirmed; do not reopen architecture selection as if no target were known. Still confirm SSH access, vCPU/RAM, installed tools/ML packages, permissions, networking and allowed remote access method. No completed lab or deployed model/service is established.
 
-Named ownership is recorded in [[team-workflow]]. Verify installed BeamNG versions, final map/car, route geometry and controller behaviour. West Coast USA is the earlier intended map, not a calibrated scenario. Resolve actual entry labels, feature history, preprocessing, whole-run held-out split, model family, worker API/framework and persistence format.
+Named ownership is recorded in [[team-workflow]]. Verify installed BeamNG versions, final map/car, route geometry and controller behaviour. West Coast USA is the earlier intended map, not a calibrated scenario. The offline entry/clearance pilot and grouped split are implemented, but need more independent scenario groups and clean clearance examples. Decide whether the measured gain persists with broader recordings, then agree the worker API, deployment framework and model persistence/inference contract with the server owner.
 
 ## Work boundary
 

@@ -1,0 +1,9 @@
+# Standalone offline-training environment. Install with:
+# python3 -m venv .venv-ml && .venv-ml/bin/pip install -r requirements-ml.txt
+cloudpickle==3.1.2
+joblib==1.6.0
+narwhals==2.27.1
+numpy==2.5.4
+scikit-learn==1.9.1
+scipy==1.18.1
+threadpoolctl==3.7.0
