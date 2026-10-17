@@ -1,0 +1,4 @@
+{
+  "status": "FAIL",
+  "reason": "ZeroDivisionError('division by zero')"
+}

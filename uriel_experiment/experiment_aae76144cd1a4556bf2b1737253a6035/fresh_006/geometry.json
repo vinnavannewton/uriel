@@ -1,0 +1,88 @@
+{
+  "map": "smallgrid",
+  "virtual_intersection": true,
+  "zone": {
+    "x": [
+      -3,
+      3
+    ],
+    "y": [
+      -3,
+      3
+    ]
+  },
+  "virtual_lane_half_width": 1.8,
+  "route_deviation_reference_threshold_m": 2,
+  "stop_line_progress": -6,
+  "subject_route_angle_degrees": 90,
+  "body_detector": "world spawn OOBB corners projected on fixed route axis; first sampled events, no interpolation",
+  "limitations": [
+    "Spawn OOBB is not a calibrated deforming body contact surface.",
+    "Damage or route deviation can make entry/clearance labels ambiguous.",
+    "Background routes at offsets +/-12m do not enter the central zone; their non-arrival there is not a failure."
+  ],
+  "routes": [
+    {
+      "route_id": "x_lane_0",
+      "axis": "x",
+      "lane": 0
+    },
+    {
+      "route_id": "y_lane_0",
+      "axis": "y",
+      "lane": 0
+    },
+    {
+      "route_id": "x_lane_-12",
+      "axis": "x",
+      "lane": -12
+    },
+    {
+      "route_id": "x_lane_12",
+      "axis": "x",
+      "lane": 12
+    },
+    {
+      "route_id": "y_lane_-12",
+      "axis": "y",
+      "lane": -12
+    },
+    {
+      "route_id": "y_lane_12",
+      "axis": "y",
+      "lane": 12
+    }
+  ],
+  "measured_initial_vehicle_dimensions": {
+    "uriel_red": {
+      "length": 4.463645935058594,
+      "width": 2.1202770471572876,
+      "height": 1.3762772679328918
+    },
+    "uriel_blue": {
+      "length": 4.463645935058594,
+      "width": 2.1202776432037354,
+      "height": 1.376275897026062
+    },
+    "traffic_1": {
+      "length": 7.383152008056641,
+      "width": 2.7885379791259766,
+      "height": 3.1278369426727295
+    },
+    "traffic_2": {
+      "length": 5.021476745605469,
+      "width": 2.112386703491211,
+      "height": 1.4483692049980164
+    },
+    "traffic_3": {
+      "length": 5.558177947998047,
+      "width": 2.210477828979492,
+      "height": 1.8297598958015442
+    },
+    "traffic_4": {
+      "length": 4.70623779296875,
+      "width": 2.0200138092041016,
+      "height": 1.4618210196495056
+    }
+  }
+}

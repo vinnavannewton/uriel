@@ -1,0 +1,88 @@
+{
+  "map": "smallgrid",
+  "virtual_intersection": true,
+  "zone": {
+    "x": [
+      -3,
+      3
+    ],
+    "y": [
+      -3,
+      3
+    ]
+  },
+  "virtual_lane_half_width": 1.8,
+  "route_deviation_reference_threshold_m": 2,
+  "stop_line_progress": -6,
+  "subject_route_angle_degrees": 90,
+  "body_detector": "world spawn OOBB corners projected on fixed route axis; first sampled events, no interpolation",
+  "limitations": [
+    "Spawn OOBB is not a calibrated deforming body contact surface.",
+    "Damage or route deviation can make entry/clearance labels ambiguous.",
+    "Background routes at offsets +/-12m do not enter the central zone; their non-arrival there is not a failure."
+  ],
+  "routes": [
+    {
+      "route_id": "x_lane_0",
+      "axis": "x",
+      "lane": 0
+    },
+    {
+      "route_id": "y_lane_0",
+      "axis": "y",
+      "lane": 0
+    },
+    {
+      "route_id": "x_lane_-12",
+      "axis": "x",
+      "lane": -12
+    },
+    {
+      "route_id": "x_lane_12",
+      "axis": "x",
+      "lane": 12
+    },
+    {
+      "route_id": "y_lane_-12",
+      "axis": "y",
+      "lane": -12
+    },
+    {
+      "route_id": "y_lane_12",
+      "axis": "y",
+      "lane": 12
+    }
+  ],
+  "measured_initial_vehicle_dimensions": {
+    "uriel_red": {
+      "length": 4.463645935058594,
+      "width": 2.1202778220176697,
+      "height": 1.3762786984443665
+    },
+    "uriel_blue": {
+      "length": 4.463645935058594,
+      "width": 2.120278060436249,
+      "height": 1.3762776255607605
+    },
+    "traffic_1": {
+      "length": 7.383148193359375,
+      "width": 2.7885284423828125,
+      "height": 3.12783145904541
+    },
+    "traffic_2": {
+      "length": 5.021476745605469,
+      "width": 2.1123905181884766,
+      "height": 1.4483655095100403
+    },
+    "traffic_3": {
+      "length": 5.5581817626953125,
+      "width": 2.2104721069335938,
+      "height": 1.8297584652900696
+    },
+    "traffic_4": {
+      "length": 4.7062835693359375,
+      "width": 2.0200672149658203,
+      "height": 1.4619985818862915
+    }
+  }
+}

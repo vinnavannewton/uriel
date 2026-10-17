@@ -21,14 +21,17 @@ The table inventories current code and the bounded head-on addition; it does not
 | Advice simulation expiry | Present in output |
 | Server wall-age checks at plan emission | Legacy v1 gap remains; v2 checks telemetry lease/progress and Python enforces response/previous-lease age |
 | Dashboard | HTTP polling, read-only; head-on uses a proportional 10 m grid map and smoothly interpolates minimal red/blue car icons between advancing telemetry frames; route-free collision views are regression-tested; animated preview is synthetic and labelled |
-| Detailed recording | Implemented with reliability/metadata gaps |
+| Detailed recording | Rust JSONL and head-on telemetry implemented with reliability/metadata gaps; seeded six-vehicle crossing recorder also present. Its native accelerated sampling is capped by BeamNG physics/frame quantum; graphics FPS remains 60 |
 | Python BeamNG bridge and calibrated control | `scripts/beamng_headon.py` uses Rust maneuver-v2 by default; explicit standalone avoidance baseline retained; `scripts/beamng_headon_collision.py` now defaults to a Python-planned cooperative dodge with display-only telemetry to port 3001; its historical collision mode was replaced at user request. It does not request Rust control plans. The converted runner has not yet had a live trial. User runs exposed paused sensor readback, missing physics resume and a DCT selector error (`gear=1` selects Park). The collision runner now selects Drive from the actual gearbox type; all 24 Python tests pass. User run `headon-collision-a5953f0c73` subsequently recorded damage-threshold impact; no general collision acceptance is established. No general calibrated/emergency controller |
+| Standalone crossing collection | `connect_beamng.py`, `collect_crossing_trials.py`, `collect_traffic_trials.py`, and `scripts/fresh_experiment.py` are preserved from teammate commit `d5038e6`; these do not connect to the Rust coordinator |
 | Real West Coast USA scenario | Not configured |
-| Physical/fault/load acceptance | Not performed |
+| Physical/fault/load acceptance | Bounded local head-on passes demonstrated; teammate recorded Small Grid, West Coast and seeded six-vehicle crossing baselines. General closed-loop, fault/load and obstacle acceptance remain unverified |
 | Ubuntu/LinuxONE deployment | SSH/Ubuntu/s390x verified; 21 remote Python tests passed; native release service running and `/health` returned `ok`; latest dashboard rebuilt and served. Live remote BeamNG pass unverified because the measured SSH latency exceeds the controller's response window |
-| Arrival-time ML, dataset labels and evaluation | Planned; no model or results established |
+| Arrival-time ML, dataset labels and evaluation | Crossing collectors record sampled front-point and spawn-OOBB proxy entry/clearance labels, with limits documented in [[recording]]. No trained model or held-out evaluation established |
 | Python inference worker on LinuxONE | Recommended design; not implemented |
 | Mandatory labs / event readiness | Required according to S5; completion unverified |
+
+Both standalone crossing collectors and head-on controllers share a BeamNG instance when pointed at it; run one scenario owner at a time. The teammate crossing defaults use port 25252 and ETK subjects; head-on defaults use port 64256 and matched Vivaces. Baseline crossing collection is distinct from Rust-integrated head-on avoidance.
 
 ## Current planning update
 

@@ -34,7 +34,11 @@ The browser dashboard uses `/api/status`, `/api/worlds`, `/api/worlds/{id}` and 
 
 ## Current validation boundary
 
-The source compiles; 9 Rust tests and 21 Python tests pass. A scoped, algorithm-only two-car Grid Plane head-on pass has been exercised through the Rust server. Broad physical acceptance, control calibration, fault/load suites, obstacle handling, ML and LinuxONE deployment remain unverified. In particular, brake acknowledgements did not prove a stop in the installed BeamNG arcade controller; the bounded demo pauses simulator physics on completion or failure.
+The source compiles; 12 Rust tests and 26 Python tests pass. A scoped, algorithm-only two-car Grid Plane head-on pass has been exercised through the Rust server. Broad physical acceptance, control calibration, fault/load suites, obstacle handling, ML and LinuxONE deployment remain unverified. In particular, brake acknowledgements did not prove a stop in the installed BeamNG arcade controller; the bounded demo pauses simulator physics on completion or failure.
+
+## Teammate’s 90-degree crossing recorder
+
+The standalone crossing collectors and seeded six-car experiment tooling are preserved alongside the head-on controller. See [crossing collection instructions](scripts/BEAMNG_RECORDING.md). Those tools default to BeamNG port 25252 and ETK subjects; the head-on commands below default to port 64256 and matched Vivaces. Run only one controller against a simulator at a time. Crossing recording is an AI baseline and does not use Rust coordination or train a model. The requested telemetry cap and measured sampling rate are recorded separately.
 
 ## Integrated two-car Grid Plane demo
 

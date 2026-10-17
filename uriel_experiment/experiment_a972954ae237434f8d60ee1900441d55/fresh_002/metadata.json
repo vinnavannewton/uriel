@@ -1,0 +1,163 @@
+{
+  "run_id": "fresh_002",
+  "seed": 903102,
+  "status": "failed",
+  "maximum_duration_seconds": 25,
+  "sampling": {
+    "physics_hz": 60,
+    "steps_per_sample": 2,
+    "target_hz": 30
+  },
+  "configuration": [
+    {
+      "vehicle_id": "uriel_red",
+      "role": "subject",
+      "axis": "x",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0,
+      "target_speed": 6.133,
+      "initial_speed_requested": 1.475,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "x_lane_0",
+      "color": [
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "role": "subject",
+      "axis": "y",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.324,
+      "target_speed": 8.547,
+      "initial_speed_requested": 1.976,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "y_lane_0",
+      "color": [
+        0,
+        0.15,
+        1,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_1",
+      "role": "background",
+      "axis": "x",
+      "lane": -12,
+      "progress": -62.485,
+      "start_delay": 1.997,
+      "target_speed": 7.678,
+      "initial_speed_requested": 0.734,
+      "model": "simple_traffic",
+      "source_background_id": "clone1",
+      "route_id": "x_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_2",
+      "role": "background",
+      "axis": "x",
+      "lane": 12,
+      "progress": -58.779,
+      "start_delay": 0.907,
+      "target_speed": 4.292,
+      "initial_speed_requested": 0.285,
+      "model": "simple_traffic",
+      "source_background_id": "clone0",
+      "route_id": "x_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_3",
+      "role": "background",
+      "axis": "y",
+      "lane": -12,
+      "progress": -61.366,
+      "start_delay": 0.007,
+      "target_speed": 7.892,
+      "initial_speed_requested": 1.245,
+      "model": "simple_traffic",
+      "source_background_id": "clone2",
+      "route_id": "y_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_4",
+      "role": "background",
+      "axis": "y",
+      "lane": 12,
+      "progress": -60.369,
+      "start_delay": 0.441,
+      "target_speed": 4.643,
+      "initial_speed_requested": 1.111,
+      "model": "simple_traffic",
+      "source_background_id": "clone3",
+      "route_id": "y_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    }
+  ],
+  "beamngpy": "1.36",
+  "geometry_verified": "virtual coordinates only; body proxy uncalibrated",
+  "control": "BeamNG speed-polyline AI; no Uriel controller",
+  "initial_speed_semantics": "Requested using supported set_velocity over one physics frame; measured initial speed saved. Delayed cars brake until AI launch.",
+  "randomization_bounds": {
+    "subject_target_mps": [
+      5,
+      10
+    ],
+    "background_target_mps": [
+      4,
+      8
+    ],
+    "initial_speed_mps": [
+      0,
+      2
+    ],
+    "blue_delay_seconds": [
+      0,
+      2
+    ],
+    "background_delay_seconds": [
+      0,
+      2
+    ],
+    "background_progress_m": [
+      -65,
+      -45
+    ]
+  },
+  "unavailable": [
+    "verified vehicle contact detector",
+    "real road lanes/signals on Small Grid"
+  ],
+  "error": "RuntimeError('Starting position mismatch uriel_red')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/Baba_yaga/uriel/scripts/fresh_experiment.py\", line 169, in collect\n    if math.dist(st['pos'][:2],position(c)[:2])>1:raise RuntimeError('Starting position mismatch '+v.vid)\n                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Starting position mismatch uriel_red\n"
+}

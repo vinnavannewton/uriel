@@ -153,5 +153,25 @@ For the user's follow-up request to see a trial, launched a separate optimized l
 
 The user then reported that the map was not following live motion. Root cause: the frontend retained the previous world selection while that disconnected world remained listed. Updated selection to prefer the newest connected head-on world if the current head-on selection is stale, added an app.js cache-version query, rebuilt and restarted only the isolated local dashboard server, then repeated the requested pass. `runs/avoidance-82ebb49eb5/` completed with 127 samples, 129 plans, both paths accepted, zero damage increase, 1.523 m minimum sampled enclosing-circle clearance and paused final physics. During this run `/api/worlds` showed the selected head-on world connected and advancing from frame 77 to 87 within one second, with both positions changing. The browser was not available for screenshot QA.
 
+## Local BeamNG connection helper
+
+The repository root now contains [connect_beamng.py](../../../../connect_beamng.py). With the local Python environment activated, install `beamngpy` and run `python connect_beamng.py --home /absolute/path/to/BeamNG.tech`. Alternatively, `--existing` connects to an API-enabled local instance on port 25252; `--port` overrides the port. `BNG_HOME` can supply the installation directory. The helper disconnects after connecting and does not configure a scenario or control vehicles. It is not the Uriel telemetry/control bridge. Python AST syntax validation passed; simulator connectivity was not tested.
+
 - [[sources]]: S1 PRD section 11, S2 decisions, S3 current code; [README](../../../../README.md).
 - Related: [[protocol]], [[recording]], [[open-questions]].
+
+### Live U-S01 placement
+
+User-authorized local scene setup loaded `smallgrid` with red and blue `etkc` vehicles (`uriel_red`, `uriel_blue`). Live positions are approximately (-40,0,0.15) and (0,-40,0.15); measured horizontal headings are +X and +Y toward virtual centre (0,0). Simulation was paused with brakes applied and AI disabled. The generated `uriel_crossing_setup` scene needed a live red-heading correction; do not treat its saved initial rotation as a validated reset. This placement verifies API setup only, not coordination, data recording or training. See [[log]].
+
+### Configurable crossing recorder
+
+The reusable [fresh experiment script](../../../../scripts/fresh_experiment.py) accepts `--trials N`, BeamNG deterministic speed factor 1–8 and a requested telemetry cap. From an activated environment with BeamNG.tech already API-enabled on localhost:25252:
+
+```sh
+.venv/bin/python scripts/fresh_experiment.py --trials 10 --speed 2 --telemetry-hz 60
+```
+
+It reloads the same seeded six-vehicle Small Grid scene each trial. Background configurations are now project-local in `scenarios/smallgrid_background_configs.json`; no temporary snapshot is needed. Dependencies are in `requirements-beamng.txt`. See [recording instructions](../../../../scripts/BEAMNG_RECORDING.md) for options, outputs and limits.
+
+Use the project's `.venv/bin/python` (or activate `.venv`) so BeamNGpy is available. Graphics FPS stays set to 60 throughout and after collection. `--speed 2` uses BeamNG's native factor 2 and captures at 10 Hz simulation time; `--speed 8` captures at 2.5 Hz. Requested and actual sample rates are stored separately. The earlier 60 Hz paced batch `uriel_experiment/experiment_c03ce1dbb91143a4b66cdb7f56c7fbef` ran at 0.333x because the value only paced the Python loop. Higher native factors accelerate simulation but reduce temporal detail; see [[recording]] and [[log]].

@@ -1,0 +1,173 @@
+{
+  "status": "PASS_WITH_LIMITATIONS",
+  "issues": [],
+  "missing_fields": {
+    "uriel_red": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    },
+    "uriel_blue": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    },
+    "traffic_1": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    },
+    "traffic_2": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    },
+    "traffic_3": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    },
+    "traffic_4": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 751
+    }
+  },
+  "sample_count": 4506,
+  "target_hz": 30,
+  "geometry": "virtual geometry configured; physical body occupancy uses spawn OOBB proxy",
+  "contact_detection": "unavailable; damage is separate evidence",
+  "acceleration": "first sample null; finite differences thereafter",
+  "outcomes": {
+    "uriel_red": {
+      "entry_seconds": 7.80000037048012,
+      "clearance_seconds": 9.533000452793203,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 6.137012464739977,
+      "samples": 751
+    },
+    "uriel_blue": {
+      "entry_seconds": 7.06650033564074,
+      "clearance_seconds": 8.300000394228846,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 8.551590524426608,
+      "samples": 751
+    },
+    "traffic_1": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 7.681185816249668,
+      "samples": 751
+    },
+    "traffic_2": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 190.38294982910156,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 4.369033585219728,
+      "samples": 751
+    },
+    "traffic_3": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 7.907075523702217,
+      "samples": 751
+    },
+    "traffic_4": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 48.342567443847656,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 4.632789726643887,
+      "samples": 751
+    }
+  },
+  "measured_sampling": {
+    "uriel_red": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    },
+    "uriel_blue": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    },
+    "traffic_1": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    },
+    "traffic_2": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    },
+    "traffic_3": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    },
+    "traffic_4": {
+      "min_dt": 0.03300000156741589,
+      "max_dt": 0.03350000159116462,
+      "duration": 25.000001187436283,
+      "effective_hz": 29.99999857507653
+    }
+  },
+  "validation_revision": 2,
+  "revision_reason": "Allow up to 0.51ms sample-interval/phase variation for observed 0.5ms physics quantization. Verify 25s total horizon and actual timestamps; raw recordings unchanged."
+}

@@ -1,0 +1,3181 @@
+[
+  {
+    "name": "clone1",
+    "model": "simple_traffic",
+    "config": {
+      "partsTree": {
+        "partPath": "/simple_traffic",
+        "children": {
+          "simple_traffic_model": {
+            "decisionMethod": "user",
+            "partPath": "/simple_traffic_model/simple_traffic_pickup_cargobox",
+            "suitablePartNames": [
+              "simple_traffic_vivace",
+              "simple_traffic_pickup_short",
+              "simple_traffic_roamer_ext",
+              "simple_traffic_pickup_crew",
+              "simple_traffic_etk800_sedan",
+              "simple_traffic_van_ambulance",
+              "simple_traffic_van",
+              "simple_traffic_etkc_body",
+              "simple_traffic_etki_body",
+              "simple_traffic_etk800_wagon",
+              "simple_traffic_legran_body_wagon",
+              "simple_traffic_legran_body_sedan",
+              "simple_traffic_pickup_single",
+              "simple_traffic_pickup_ext",
+              "simple_traffic_bastion",
+              "simple_traffic_midsize_body",
+              "simple_traffic_covet_body",
+              "simple_traffic_roamer",
+              "simple_traffic_sunburst2_wagon",
+              "simple_traffic_bx_body",
+              "simple_traffic_ardente",
+              "simple_traffic_pickup_cargobox",
+              "simple_traffic_robotvan",
+              "simple_traffic_van_boxtruck",
+              "simple_traffic_sunburst2",
+              "simple_traffic_pickup_boxbed",
+              "simple_traffic_wendover",
+              "simple_traffic_pessima",
+              "simple_traffic_lansdale",
+              "simple_traffic_fullsize_body"
+            ],
+            "chosenPartName": "simple_traffic_pickup_cargobox",
+            "path": "/simple_traffic_model/",
+            "unsuitablePartNames": [],
+            "id": "simple_traffic_model",
+            "children": {
+              "simple_traffic_pickup_trim_cargobox": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_trim_cargobox/simple_traffic_pickup_trim_cargobox",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_trim_cargobox"
+                ],
+                "chosenPartName": "simple_traffic_pickup_trim_cargobox",
+                "path": "/simple_traffic_model/simple_traffic_pickup_trim_cargobox/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_trim_cargobox"
+              },
+              "simple_traffic_pickup_cargobox_taillight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_cargobox_taillight_L_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_pickup_cargobox_taillight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_cargobox_taillight_L_bulb"
+              },
+              "simple_traffic_pickup_cargobox_taillight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_cargobox_taillight_R_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_pickup_cargobox_taillight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_cargobox_taillight_R_bulb"
+              },
+              "simple_traffic_pickup_mirrors_dually": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_mirrors_dually/simple_traffic_pickup_mirrors_heavy",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_mirrors_heavy",
+                  "simple_traffic_pickup_mirrors_dually"
+                ],
+                "chosenPartName": "simple_traffic_pickup_mirrors_heavy",
+                "path": "/simple_traffic_model/simple_traffic_pickup_mirrors_dually/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_mirrors_dually"
+              },
+              "soundscape_horn": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/soundscape_horn/soundscape_horn_115",
+                "suitablePartNames": [
+                  "soundscape_horn_103",
+                  "soundscape_horn_102",
+                  "soundscape_horn_127",
+                  "soundscape_horn_111",
+                  "soundscape_horn_126",
+                  "soundscape_horn_110",
+                  "soundscape_horn_10",
+                  "soundscape_horn_108",
+                  "soundscape_horn_2",
+                  "soundscape_horn_11",
+                  "soundscape_horn_115",
+                  "soundscape_horn_128",
+                  "soundscape_horn_121",
+                  "soundscape_horn_8",
+                  "soundscape_horn_105",
+                  "soundscape_horn_5",
+                  "soundscape_horn_106",
+                  "soundscape_horn_114",
+                  "soundscape_horn_120",
+                  "soundscape_horn_12",
+                  "soundscape_horn_124",
+                  "soundscape_horn_130",
+                  "soundscape_horn_9",
+                  "soundscape_horn_113",
+                  "soundscape_horn_132",
+                  "soundscape_horn_109",
+                  "soundscape_horn_122",
+                  "soundscape_horn_7",
+                  "soundscape_horn_112",
+                  "soundscape_horn_129",
+                  "soundscape_horn_101",
+                  "soundscape_horn_4",
+                  "soundscape_horn_117",
+                  "soundscape_horn_6",
+                  "soundscape_horn_125",
+                  "soundscape_horn_3",
+                  "soundscape_horn_1",
+                  "soundscape_horn_123",
+                  "soundscape_horn_116",
+                  "soundscape_horn_131",
+                  "soundscape_horn_118",
+                  "soundscape_horn_133",
+                  "soundscape_horn_104",
+                  "soundscape_horn_119",
+                  "soundscape_horn_107"
+                ],
+                "chosenPartName": "soundscape_horn_115",
+                "path": "/simple_traffic_model/soundscape_horn/",
+                "unsuitablePartNames": [],
+                "id": "soundscape_horn"
+              },
+              "simple_traffic_pickup_licenseplate_R_cargobox": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_licenseplate_R_cargobox/simple_traffic_pickup_licenseplate_R_cargobox",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_licenseplate_R_cargobox"
+                ],
+                "chosenPartName": "simple_traffic_pickup_licenseplate_R_cargobox",
+                "path": "/simple_traffic_model/simple_traffic_pickup_licenseplate_R_cargobox/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_licenseplate_R_cargobox"
+              },
+              "simple_traffic_pickup_box": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_box/simple_traffic_pickup_box",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_box"
+                ],
+                "chosenPartName": "simple_traffic_pickup_box",
+                "path": "/simple_traffic_model/simple_traffic_pickup_box/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_box",
+                "children": {
+                  "simple_traffic_pickup_boxdoors": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_pickup_box/simple_traffic_pickup_boxdoors/simple_traffic_pickup_boxdoors",
+                    "suitablePartNames": [
+                      "simple_traffic_pickup_boxdoors"
+                    ],
+                    "chosenPartName": "simple_traffic_pickup_boxdoors",
+                    "path": "/simple_traffic_model/simple_traffic_pickup_box/simple_traffic_pickup_boxdoors/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_pickup_boxdoors"
+                  }
+                }
+              },
+              "simple_traffic_pickup_licenseplate_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_licenseplate_F/simple_traffic_pickup_licenseplate_F",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_licenseplate_F"
+                ],
+                "chosenPartName": "simple_traffic_pickup_licenseplate_F",
+                "path": "/simple_traffic_model/simple_traffic_pickup_licenseplate_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_licenseplate_F"
+              },
+              "simple_traffic_pickup_hood": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_hood/simple_traffic_pickup_hood",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_hood"
+                ],
+                "chosenPartName": "simple_traffic_pickup_hood",
+                "path": "/simple_traffic_model/simple_traffic_pickup_hood/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_hood"
+              },
+              "simple_traffic_suspension_F_4link": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_suspension_F_4link",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_F_4link"
+                ],
+                "chosenPartName": "simple_traffic_suspension_F_4link",
+                "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_F_4link",
+                "children": {
+                  "simple_traffic_brake_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_brake_F/simple_traffic_brake_F_heavy",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_F",
+                      "simple_traffic_brake_F_heavy"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_F_heavy",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_brake_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_F"
+                  },
+                  "simple_traffic_wheels_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_wheels_F/simple_traffic_pickup_wheels_F_05a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_F_01a_alt_parked",
+                      "simple_traffic_lansdale_wheels_F_01a_parked",
+                      "simple_traffic_lansdale_wheels_F_02a_parked",
+                      "simple_traffic_lansdale_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_02a_parked",
+                      "simple_traffic_fullsize_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a",
+                      "simple_traffic_fullsize_wheels_F_03a",
+                      "simple_traffic_fullsize_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_01a",
+                      "simple_traffic_bastion_wheels_F_sport_parked",
+                      "simple_traffic_bastion_wheels_F_base_parked",
+                      "simple_traffic_bastion_wheels_F_luxe_parked",
+                      "simple_traffic_bastion_wheels_F_police_parked",
+                      "simple_traffic_lansdale_wheels_F_01a",
+                      "simple_traffic_lansdale_wheels_F_03a",
+                      "simple_traffic_lansdale_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_02a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_parked",
+                      "simple_traffic_vivace_wheels_F_03a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_05a_parked",
+                      "simple_traffic_vivace_wheels_F_04a_parked",
+                      "simple_traffic_ardente_wheels_F_01a_parked",
+                      "simple_traffic_ardente_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_03a_parked",
+                      "simple_traffic_bx_wheels_F_02a",
+                      "simple_traffic_bx_wheels_F_03a",
+                      "simple_traffic_van_wheels_F_02a_parked",
+                      "simple_traffic_van_wheels_F_03a_parked",
+                      "simple_traffic_van_wheels_F_04a_parked",
+                      "simple_traffic_van_wheels_F_01a_parked",
+                      "simple_traffic_van_wheels_F_02a",
+                      "simple_traffic_van_wheels_F_04a",
+                      "simple_traffic_van_wheels_F_01a",
+                      "simple_traffic_van_wheels_F_03a",
+                      "simple_traffic_etkc_wheels_F_01a_parked",
+                      "simple_traffic_etkc_wheels_F_02a_parked",
+                      "simple_traffic_etkc_wheels_F_01a",
+                      "simple_traffic_etkc_wheels_F_02a",
+                      "simple_traffic_etki_wheels_F_01a_parked",
+                      "simple_traffic_etki_wheels_F_02a_parked",
+                      "simple_traffic_etki_wheels_F_01a",
+                      "simple_traffic_etki_wheels_F_02a",
+                      "simple_traffic_covet_wheels_F_01a_parked",
+                      "simple_traffic_covet_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a_parked",
+                      "simple_traffic_etk800_wheels_F_01a_parked",
+                      "simple_traffic_etk800_wheels_F_03a_parked",
+                      "simple_traffic_etk800_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a",
+                      "simple_traffic_etk800_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a_parked",
+                      "simple_traffic_legran_wheels_F_01a_alt_parked",
+                      "simple_traffic_legran_wheels_F_03a_parked",
+                      "simple_traffic_legran_wheels_F_02a_parked",
+                      "simple_traffic_legran_wheels_F_02a",
+                      "simple_traffic_legran_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a",
+                      "simple_traffic_legran_wheels_F_01a_alt",
+                      "simple_traffic_pickup_wheels_F_02a_parked",
+                      "simple_traffic_pickup_wheels_F_01a_parked",
+                      "simple_traffic_pickup_wheels_F_04a_parked",
+                      "simple_traffic_pickup_wheels_F_06a_parked",
+                      "simple_traffic_pickup_wheels_F_03a_parked",
+                      "simple_traffic_pickup_wheels_F_05a_parked",
+                      "simple_traffic_pickup_wheels_F_02a",
+                      "simple_traffic_pickup_wheels_F_01a",
+                      "simple_traffic_pickup_wheels_F_03a",
+                      "simple_traffic_pickup_wheels_F_05a",
+                      "simple_traffic_pickup_wheels_F_04a",
+                      "simple_traffic_pickup_wheels_F_06a",
+                      "simple_traffic_roamer_wheels_F_02a_parked",
+                      "simple_traffic_roamer_wheels_F_03a_parked",
+                      "simple_traffic_roamer_wheels_F_04a_parked",
+                      "simple_traffic_roamer_wheels_F_01a_parked",
+                      "simple_traffic_roamer_wheels_F_04a",
+                      "simple_traffic_roamer_wheels_F_02a",
+                      "simple_traffic_roamer_wheels_F_01a",
+                      "simple_traffic_roamer_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_05a",
+                      "simple_traffic_vivace_wheels_F_04a",
+                      "simple_traffic_vivace_wheels_F_01a_alt",
+                      "simple_traffic_vivace_wheels_F_04a_alt",
+                      "simple_traffic_vivace_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_01a",
+                      "simple_traffic_robotvan_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_03a_parked",
+                      "simple_traffic_pessima_wheels_F_02a_parked",
+                      "simple_traffic_pessima_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_03a_parked",
+                      "simple_traffic_midsize_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_04a_parked",
+                      "simple_traffic_sunburst2_wheels_F_03a_parked",
+                      "simple_traffic_sunburst2_wheels_F_01a_parked",
+                      "simple_traffic_pessima_wheels_F_03a",
+                      "simple_traffic_pessima_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_03a",
+                      "simple_traffic_wendover_wheels_F_01a",
+                      "simple_traffic_wendover_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_01a_parked",
+                      "simple_traffic_wendover_wheels_F_03a_parked",
+                      "simple_traffic_wendover_wheels_F_02a_parked",
+                      "simple_traffic_bastion_wheels_F_luxe",
+                      "simple_traffic_bastion_wheels_F_sport",
+                      "simple_traffic_bastion_wheels_F_base",
+                      "simple_traffic_bastion_wheels_F_police",
+                      "simple_traffic_sunburst2_wheels_F_01a",
+                      "simple_traffic_sunburst2_wheels_F_02a",
+                      "simple_traffic_sunburst2_wheels_F_03a",
+                      "simple_traffic_sunburst2_wheels_F_04a",
+                      "simple_traffic_midsize_wheels_F_02a",
+                      "simple_traffic_midsize_wheels_F_01a",
+                      "simple_traffic_midsize_wheels_F_03a"
+                    ],
+                    "chosenPartName": "simple_traffic_pickup_wheels_F_05a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_wheels_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_F"
+                  },
+                  "simple_traffic_coilover_F_4link": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_coilover_F_4link/simple_traffic_coilover_F_4link",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_F_4link"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_F_4link",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_coilover_F_4link/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_F_4link"
+                  },
+                  "simple_traffic_swaybar_F_4link": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_swaybar_F_4link/simple_traffic_swaybar_F_4link",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_F_4link"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_F_4link",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_swaybar_F_4link/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_F_4link"
+                  },
+                  "simple_traffic_wheeldata_F_4link": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_wheeldata_F_4link/simple_traffic_wheeldata_F_4link",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_F_4link"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_F_4link",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_wheeldata_F_4link/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_F_4link"
+                  },
+                  "simple_traffic_steering_4link": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_steering_4link/simple_traffic_steering_4link",
+                    "suitablePartNames": [
+                      "simple_traffic_steering_4link"
+                    ],
+                    "chosenPartName": "simple_traffic_steering_4link",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_steering_4link/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_steering_4link",
+                    "children": {
+                      "simple_traffic_steeringbox": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_steering_4link/simple_traffic_steeringbox/simple_traffic_steeringbox",
+                        "suitablePartNames": [
+                          "simple_traffic_steeringbox",
+                          "simple_traffic_steeringbox_parked"
+                        ],
+                        "chosenPartName": "simple_traffic_steeringbox",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_F_4link/simple_traffic_steering_4link/simple_traffic_steeringbox/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_steeringbox"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_pickup_version_heavy": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_version_heavy/simple_traffic_pickup_version_pre_base_heavy",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_version_pre_base_heavy"
+                ],
+                "chosenPartName": "simple_traffic_pickup_version_pre_base_heavy",
+                "path": "/simple_traffic_model/simple_traffic_pickup_version_heavy/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_version_heavy",
+                "children": {
+                  "simple_traffic_pickup_pre_heavy_headlight_L_bulb": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_pickup_version_heavy/simple_traffic_pickup_pre_heavy_headlight_L_bulb/headlightBulb_halogen_55W",
+                    "suitablePartNames": [
+                      "headlightBulb_halogen_55W"
+                    ],
+                    "chosenPartName": "headlightBulb_halogen_55W",
+                    "path": "/simple_traffic_model/simple_traffic_pickup_version_heavy/simple_traffic_pickup_pre_heavy_headlight_L_bulb/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_pickup_pre_heavy_headlight_L_bulb"
+                  },
+                  "simple_traffic_pickup_pre_heavy_headlight_R_bulb": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_pickup_version_heavy/simple_traffic_pickup_pre_heavy_headlight_R_bulb/headlightBulb_halogen_55W",
+                    "suitablePartNames": [
+                      "headlightBulb_halogen_55W"
+                    ],
+                    "chosenPartName": "headlightBulb_halogen_55W",
+                    "path": "/simple_traffic_model/simple_traffic_pickup_version_heavy/simple_traffic_pickup_pre_heavy_headlight_R_bulb/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_pickup_pre_heavy_headlight_R_bulb"
+                  }
+                }
+              },
+              "simple_traffic_pickup_engine": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_engine/simple_traffic_pickup_engine",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_engine",
+                  "simple_traffic_pickup_engine_heavy"
+                ],
+                "chosenPartName": "simple_traffic_pickup_engine",
+                "path": "/simple_traffic_model/simple_traffic_pickup_engine/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_engine",
+                "children": {
+                  "simple_traffic_pickup_transmission": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_pickup_engine/simple_traffic_pickup_transmission/simple_traffic_pickup_transmission_A",
+                    "suitablePartNames": [
+                      "simple_traffic_pickup_transmission_A"
+                    ],
+                    "chosenPartName": "simple_traffic_pickup_transmission_A",
+                    "path": "/simple_traffic_model/simple_traffic_pickup_engine/simple_traffic_pickup_transmission/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_pickup_transmission",
+                    "children": {
+                      "simple_traffic_drivetrain": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_pickup_engine/simple_traffic_pickup_transmission/simple_traffic_drivetrain/simple_traffic_drivetrain_RWD",
+                        "suitablePartNames": [
+                          "simple_traffic_drivetrain_RWD",
+                          "simple_traffic_drivetrain_FWD",
+                          "simple_traffic_drivetrain_AWD"
+                        ],
+                        "chosenPartName": "simple_traffic_drivetrain_RWD",
+                        "path": "/simple_traffic_model/simple_traffic_pickup_engine/simple_traffic_pickup_transmission/simple_traffic_drivetrain/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_drivetrain"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_pickup_bumper_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_pickup_bumper_F/simple_traffic_pickup_bumper_F",
+                "suitablePartNames": [
+                  "simple_traffic_pickup_bumper_F"
+                ],
+                "chosenPartName": "simple_traffic_pickup_bumper_F",
+                "path": "/simple_traffic_model/simple_traffic_pickup_bumper_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_pickup_bumper_F"
+              },
+              "simple_traffic_suspension_R_4link": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_suspension_R_4link",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_R_4link"
+                ],
+                "chosenPartName": "simple_traffic_suspension_R_4link",
+                "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_R_4link",
+                "children": {
+                  "simple_traffic_wheels_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheels_R/simple_traffic_pickup_wheels_R_05a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_R_01a_parked",
+                      "simple_traffic_lansdale_wheels_R_02a_parked",
+                      "simple_traffic_lansdale_wheels_R_03a_parked",
+                      "simple_traffic_lansdale_wheels_R_01a_alt_parked",
+                      "simple_traffic_fullsize_wheels_R_01a_parked",
+                      "simple_traffic_fullsize_wheels_R_03a_parked",
+                      "simple_traffic_fullsize_wheels_R_02a_parked",
+                      "simple_traffic_fullsize_wheels_R_01a",
+                      "simple_traffic_fullsize_wheels_R_02a",
+                      "simple_traffic_fullsize_wheels_R_03a",
+                      "simple_traffic_ardente_wheels_R_01a",
+                      "simple_traffic_ardente_wheels_R_02a",
+                      "simple_traffic_bastion_wheels_R_base_parked",
+                      "simple_traffic_bastion_wheels_R_police_parked",
+                      "simple_traffic_bastion_wheels_R_sport_parked",
+                      "simple_traffic_bastion_wheels_R_luxe_parked",
+                      "simple_traffic_lansdale_wheels_R_03a",
+                      "simple_traffic_lansdale_wheels_R_02a",
+                      "simple_traffic_lansdale_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_01a_parked",
+                      "simple_traffic_vivace_wheels_R_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_02a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_03a_parked",
+                      "simple_traffic_vivace_wheels_R_05a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_parked",
+                      "simple_traffic_ardente_wheels_R_01a_parked",
+                      "simple_traffic_ardente_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_03a_parked",
+                      "simple_traffic_bx_wheels_R_02a",
+                      "simple_traffic_bx_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_01a_parked",
+                      "simple_traffic_van_wheels_R_03a_parked",
+                      "simple_traffic_van_wheels_R_02a_parked",
+                      "simple_traffic_van_wheels_R_04a_parked",
+                      "simple_traffic_van_wheels_R_01a",
+                      "simple_traffic_van_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_04a",
+                      "simple_traffic_van_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a_parked",
+                      "simple_traffic_etkc_wheels_R_02a_parked",
+                      "simple_traffic_etkc_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a",
+                      "simple_traffic_etki_wheels_R_01a_parked",
+                      "simple_traffic_etki_wheels_R_02a_parked",
+                      "simple_traffic_etki_wheels_R_02a",
+                      "simple_traffic_etki_wheels_R_01a",
+                      "simple_traffic_covet_wheels_R_01a_parked",
+                      "simple_traffic_covet_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_01a_parked",
+                      "simple_traffic_etk800_wheels_R_02a_parked",
+                      "simple_traffic_etk800_wheels_R_03a_parked",
+                      "simple_traffic_etk800_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_02a",
+                      "simple_traffic_etk800_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a_parked",
+                      "simple_traffic_legran_wheels_R_01a_alt_parked",
+                      "simple_traffic_legran_wheels_R_01a_parked",
+                      "simple_traffic_legran_wheels_R_03a_parked",
+                      "simple_traffic_legran_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a",
+                      "simple_traffic_legran_wheels_R_01a",
+                      "simple_traffic_legran_wheels_R_01a_alt",
+                      "simple_traffic_pickup_wheels_R_01a_parked",
+                      "simple_traffic_pickup_wheels_R_02a_parked",
+                      "simple_traffic_pickup_wheels_R_04a_parked",
+                      "simple_traffic_pickup_wheels_R_06a_parked",
+                      "simple_traffic_pickup_wheels_R_05a_parked",
+                      "simple_traffic_pickup_wheels_R_03a_parked",
+                      "simple_traffic_pickup_wheels_R_01a",
+                      "simple_traffic_pickup_wheels_R_04a",
+                      "simple_traffic_pickup_wheels_R_06a",
+                      "simple_traffic_pickup_wheels_R_02a",
+                      "simple_traffic_pickup_wheels_R_03a",
+                      "simple_traffic_pickup_wheels_R_05a",
+                      "simple_traffic_roamer_wheels_R_01a_parked",
+                      "simple_traffic_roamer_wheels_R_03a_parked",
+                      "simple_traffic_roamer_wheels_R_02a_parked",
+                      "simple_traffic_roamer_wheels_R_04a_parked",
+                      "simple_traffic_roamer_wheels_R_01a",
+                      "simple_traffic_roamer_wheels_R_03a",
+                      "simple_traffic_roamer_wheels_R_02a",
+                      "simple_traffic_roamer_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_01a_alt",
+                      "simple_traffic_vivace_wheels_R_02a",
+                      "simple_traffic_vivace_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_05a",
+                      "simple_traffic_vivace_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_03a",
+                      "simple_traffic_vivace_wheels_R_04a_alt",
+                      "simple_traffic_robotvan_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a_parked",
+                      "simple_traffic_pessima_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_01a_parked",
+                      "simple_traffic_midsize_wheels_R_02a_parked",
+                      "simple_traffic_midsize_wheels_R_03a_parked",
+                      "simple_traffic_midsize_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_04a_parked",
+                      "simple_traffic_sunburst2_wheels_R_03a_parked",
+                      "simple_traffic_sunburst2_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_02a",
+                      "simple_traffic_pessima_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_02a",
+                      "simple_traffic_wendover_wheels_R_01a",
+                      "simple_traffic_wendover_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_01a_parked",
+                      "simple_traffic_wendover_wheels_R_03a_parked",
+                      "simple_traffic_wendover_wheels_R_02a_parked",
+                      "simple_traffic_bastion_wheels_R_police",
+                      "simple_traffic_bastion_wheels_R_base",
+                      "simple_traffic_bastion_wheels_R_sport",
+                      "simple_traffic_bastion_wheels_R_luxe",
+                      "simple_traffic_sunburst2_wheels_R_01a",
+                      "simple_traffic_sunburst2_wheels_R_02a",
+                      "simple_traffic_sunburst2_wheels_R_04a",
+                      "simple_traffic_sunburst2_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_01a",
+                      "simple_traffic_midsize_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_02a"
+                    ],
+                    "chosenPartName": "simple_traffic_pickup_wheels_R_05a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheels_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_R"
+                  },
+                  "simple_traffic_swaybar_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_swaybar_R_beam/simple_traffic_swaybar_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_swaybar_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_R_beam"
+                  },
+                  "simple_traffic_brake_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_brake_R/simple_traffic_brake_R_heavy",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_R_heavy",
+                      "simple_traffic_brake_R"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_R_heavy",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_brake_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_R"
+                  },
+                  "simple_traffic_coilover_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_coilover_R_beam/simple_traffic_coilover_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_coilover_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_R_beam"
+                  },
+                  "simple_traffic_wheeldata_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheeldata_R_beam/simple_traffic_wheeldata_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheeldata_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_R_beam"
+                  }
+                }
+              }
+            }
+          },
+          "licenseplate_design_2_1": {
+            "decisionMethod": "user-empty",
+            "suitablePartNames": [
+              "license_plate_gridmap_2_1",
+              "license_plate_Utah_2_1",
+              "license_plate_italy_old_2_1",
+              "license_plate_eca_2_1",
+              "license_plate_Texas_2_1",
+              "license_plate_nz_1",
+              "license_plate_wca_2_1",
+              "license_plate_germany_2_1",
+              "license_plate_jungle_rock_island_2_1",
+              "license_plate_italy_2_1"
+            ],
+            "chosenPartName": "",
+            "path": "/licenseplate_design_2_1/",
+            "unsuitablePartNames": [],
+            "id": "licenseplate_design_2_1"
+          }
+        },
+        "chosenPartName": "simple_traffic",
+        "path": "/",
+        "unsuitablePartNames": [],
+        "id": "main",
+        "suitablePartNames": [
+          "simple_traffic"
+        ]
+      },
+      "paints": [
+        {
+          "baseColor": [
+            0.07,
+            0.07,
+            0.07,
+            2.0
+          ],
+          "roughness": 0.65,
+          "clearcoat": 0.7,
+          "metallic": 0.6,
+          "clearcoatRoughness": 0.3
+        },
+        {
+          "baseColor": [
+            0.07,
+            0.07,
+            0.07,
+            2.0
+          ],
+          "roughness": 0.65,
+          "clearcoat": 0.7,
+          "metallic": 0.6,
+          "clearcoatRoughness": 0.3
+        },
+        {
+          "baseColor": [
+            0.07,
+            0.07,
+            0.07,
+            2.0
+          ],
+          "roughness": 0.65,
+          "clearcoat": 0.7,
+          "metallic": 0.6,
+          "clearcoatRoughness": 0.3
+        }
+      ],
+      "model": "simple_traffic",
+      "partConfigFilename": "vehicles/simple_traffic/pickup_d45.pc",
+      "mainPartPath": "/simple_traffic",
+      "mainPartName": "simple_traffic"
+    }
+  },
+  {
+    "name": "clone0",
+    "model": "simple_traffic",
+    "config": {
+      "partsTree": {
+        "partPath": "/simple_traffic",
+        "children": {
+          "simple_traffic_model": {
+            "decisionMethod": "user",
+            "partPath": "/simple_traffic_model/simple_traffic_bastion",
+            "suitablePartNames": [
+              "simple_traffic_vivace",
+              "simple_traffic_pickup_short",
+              "simple_traffic_roamer_ext",
+              "simple_traffic_pickup_crew",
+              "simple_traffic_etk800_sedan",
+              "simple_traffic_van_ambulance",
+              "simple_traffic_van",
+              "simple_traffic_etkc_body",
+              "simple_traffic_etki_body",
+              "simple_traffic_etk800_wagon",
+              "simple_traffic_legran_body_wagon",
+              "simple_traffic_legran_body_sedan",
+              "simple_traffic_pickup_single",
+              "simple_traffic_pickup_ext",
+              "simple_traffic_bastion",
+              "simple_traffic_midsize_body",
+              "simple_traffic_covet_body",
+              "simple_traffic_roamer",
+              "simple_traffic_sunburst2_wagon",
+              "simple_traffic_bx_body",
+              "simple_traffic_ardente",
+              "simple_traffic_pickup_cargobox",
+              "simple_traffic_robotvan",
+              "simple_traffic_van_boxtruck",
+              "simple_traffic_sunburst2",
+              "simple_traffic_pickup_boxbed",
+              "simple_traffic_wendover",
+              "simple_traffic_pessima",
+              "simple_traffic_lansdale",
+              "simple_traffic_fullsize_body"
+            ],
+            "chosenPartName": "simple_traffic_bastion",
+            "path": "/simple_traffic_model/",
+            "unsuitablePartNames": [],
+            "id": "simple_traffic_model",
+            "children": {
+              "simple_traffic_bastion_headlight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_headlight_R_bulb/led_headlight_white_25W",
+                "suitablePartNames": [
+                  "led_headlight_white_25W"
+                ],
+                "chosenPartName": "led_headlight_white_25W",
+                "path": "/simple_traffic_model/simple_traffic_bastion_headlight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_headlight_R_bulb"
+              },
+              "simple_traffic_bastion_mirrors": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_mirrors/simple_traffic_bastion_mirrors",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_mirrors"
+                ],
+                "chosenPartName": "simple_traffic_bastion_mirrors",
+                "path": "/simple_traffic_model/simple_traffic_bastion_mirrors/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_mirrors"
+              },
+              "skin_traffic_bastion": {
+                "decisionMethod": "default-empty",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_skin_taxi"
+                ],
+                "chosenPartName": "",
+                "path": "/simple_traffic_model/skin_traffic_bastion/",
+                "unsuitablePartNames": [],
+                "id": "skin_traffic_bastion"
+              },
+              "simple_traffic_bastion_trim": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_trim/simple_traffic_bastion_trim_sport",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_trim_sport",
+                  "simple_traffic_bastion_trim_base",
+                  "simple_traffic_bastion_trim_luxe"
+                ],
+                "chosenPartName": "simple_traffic_bastion_trim_sport",
+                "path": "/simple_traffic_model/simple_traffic_bastion_trim/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_trim",
+                "children": {
+                  "simple_traffic_bastion_licenseplate_R_sport": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_bastion_trim/simple_traffic_bastion_licenseplate_R_sport/simple_traffic_bastion_licenseplate_R_sport",
+                    "suitablePartNames": [
+                      "simple_traffic_bastion_licenseplate_R_sport"
+                    ],
+                    "chosenPartName": "simple_traffic_bastion_licenseplate_R_sport",
+                    "path": "/simple_traffic_model/simple_traffic_bastion_trim/simple_traffic_bastion_licenseplate_R_sport/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_bastion_licenseplate_R_sport"
+                  },
+                  "simple_traffic_bastion_licenseplate_F_sport": {
+                    "decisionMethod": "default",
+                    "partPath": "/simple_traffic_model/simple_traffic_bastion_trim/simple_traffic_bastion_licenseplate_F_sport/simple_traffic_bastion_licenseplate_F_sport",
+                    "suitablePartNames": [
+                      "simple_traffic_bastion_licenseplate_F_sport"
+                    ],
+                    "chosenPartName": "simple_traffic_bastion_licenseplate_F_sport",
+                    "path": "/simple_traffic_model/simple_traffic_bastion_trim/simple_traffic_bastion_licenseplate_F_sport/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_bastion_licenseplate_F_sport"
+                  }
+                }
+              },
+              "simple_traffic_bastion_bumper_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_bumper_F/simple_traffic_bastion_bumper_F",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_bumper_F"
+                ],
+                "chosenPartName": "simple_traffic_bastion_bumper_F",
+                "path": "/simple_traffic_model/simple_traffic_bastion_bumper_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_bumper_F"
+              },
+              "simple_traffic_bastion_hood": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_hood/simple_traffic_bastion_hood",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_hood"
+                ],
+                "chosenPartName": "simple_traffic_bastion_hood",
+                "path": "/simple_traffic_model/simple_traffic_bastion_hood/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_hood"
+              },
+              "traffic_bastion_roof": {
+                "decisionMethod": "default-empty",
+                "suitablePartNames": [
+                  "traffic_bastion_adcarrier"
+                ],
+                "chosenPartName": "",
+                "path": "/simple_traffic_model/traffic_bastion_roof/",
+                "unsuitablePartNames": [],
+                "id": "traffic_bastion_roof"
+              },
+              "simple_traffic_bastion_trunk": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_trunk/simple_traffic_bastion_trunk",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_trunk"
+                ],
+                "chosenPartName": "simple_traffic_bastion_trunk",
+                "path": "/simple_traffic_model/simple_traffic_bastion_trunk/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_trunk"
+              },
+              "simple_traffic_bastion_taillight_C_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_taillight_C_bulb/led_modern_red_5W",
+                "suitablePartNames": [
+                  "led_modern_red_5W"
+                ],
+                "chosenPartName": "led_modern_red_5W",
+                "path": "/simple_traffic_model/simple_traffic_bastion_taillight_C_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_taillight_C_bulb"
+              },
+              "simple_traffic_bastion_engine": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_engine/simple_traffic_bastion_engine",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_engine"
+                ],
+                "chosenPartName": "simple_traffic_bastion_engine",
+                "path": "/simple_traffic_model/simple_traffic_bastion_engine/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_engine",
+                "children": {
+                  "simple_traffic_bastion_transmission": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_bastion_engine/simple_traffic_bastion_transmission/simple_traffic_bastion_transmission_A",
+                    "suitablePartNames": [
+                      "simple_traffic_bastion_transmission_A"
+                    ],
+                    "chosenPartName": "simple_traffic_bastion_transmission_A",
+                    "path": "/simple_traffic_model/simple_traffic_bastion_engine/simple_traffic_bastion_transmission/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_bastion_transmission",
+                    "children": {
+                      "simple_traffic_drivetrain": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_bastion_engine/simple_traffic_bastion_transmission/simple_traffic_drivetrain/simple_traffic_drivetrain_RWD",
+                        "suitablePartNames": [
+                          "simple_traffic_drivetrain_RWD",
+                          "simple_traffic_drivetrain_FWD",
+                          "simple_traffic_drivetrain_AWD"
+                        ],
+                        "chosenPartName": "simple_traffic_drivetrain_RWD",
+                        "path": "/simple_traffic_model/simple_traffic_bastion_engine/simple_traffic_bastion_transmission/simple_traffic_drivetrain/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_drivetrain"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_suspension_F_doublewishbone": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_suspension_F_doublewishbone",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_F_doublewishbone"
+                ],
+                "chosenPartName": "simple_traffic_suspension_F_doublewishbone",
+                "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_F_doublewishbone",
+                "children": {
+                  "simple_traffic_brake_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_brake_F/simple_traffic_brake_F",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_F",
+                      "simple_traffic_brake_F_heavy"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_F",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_brake_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_F"
+                  },
+                  "simple_traffic_wheels_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheels_F/simple_traffic_bastion_wheels_F_sport",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_F_01a_alt_parked",
+                      "simple_traffic_lansdale_wheels_F_01a_parked",
+                      "simple_traffic_lansdale_wheels_F_02a_parked",
+                      "simple_traffic_lansdale_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_02a_parked",
+                      "simple_traffic_fullsize_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a",
+                      "simple_traffic_fullsize_wheels_F_03a",
+                      "simple_traffic_fullsize_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_01a",
+                      "simple_traffic_bastion_wheels_F_sport_parked",
+                      "simple_traffic_bastion_wheels_F_base_parked",
+                      "simple_traffic_bastion_wheels_F_luxe_parked",
+                      "simple_traffic_bastion_wheels_F_police_parked",
+                      "simple_traffic_lansdale_wheels_F_01a",
+                      "simple_traffic_lansdale_wheels_F_03a",
+                      "simple_traffic_lansdale_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_02a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_parked",
+                      "simple_traffic_vivace_wheels_F_03a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_05a_parked",
+                      "simple_traffic_vivace_wheels_F_04a_parked",
+                      "simple_traffic_ardente_wheels_F_01a_parked",
+                      "simple_traffic_ardente_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_03a_parked",
+                      "simple_traffic_bx_wheels_F_02a",
+                      "simple_traffic_bx_wheels_F_03a",
+                      "simple_traffic_van_wheels_F_02a_parked",
+                      "simple_traffic_van_wheels_F_03a_parked",
+                      "simple_traffic_van_wheels_F_04a_parked",
+                      "simple_traffic_van_wheels_F_01a_parked",
+                      "simple_traffic_van_wheels_F_02a",
+                      "simple_traffic_van_wheels_F_04a",
+                      "simple_traffic_van_wheels_F_01a",
+                      "simple_traffic_van_wheels_F_03a",
+                      "simple_traffic_etkc_wheels_F_01a_parked",
+                      "simple_traffic_etkc_wheels_F_02a_parked",
+                      "simple_traffic_etkc_wheels_F_01a",
+                      "simple_traffic_etkc_wheels_F_02a",
+                      "simple_traffic_etki_wheels_F_01a_parked",
+                      "simple_traffic_etki_wheels_F_02a_parked",
+                      "simple_traffic_etki_wheels_F_01a",
+                      "simple_traffic_etki_wheels_F_02a",
+                      "simple_traffic_covet_wheels_F_01a_parked",
+                      "simple_traffic_covet_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a_parked",
+                      "simple_traffic_etk800_wheels_F_01a_parked",
+                      "simple_traffic_etk800_wheels_F_03a_parked",
+                      "simple_traffic_etk800_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a",
+                      "simple_traffic_etk800_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a_parked",
+                      "simple_traffic_legran_wheels_F_01a_alt_parked",
+                      "simple_traffic_legran_wheels_F_03a_parked",
+                      "simple_traffic_legran_wheels_F_02a_parked",
+                      "simple_traffic_legran_wheels_F_02a",
+                      "simple_traffic_legran_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a",
+                      "simple_traffic_legran_wheels_F_01a_alt",
+                      "simple_traffic_pickup_wheels_F_02a_parked",
+                      "simple_traffic_pickup_wheels_F_01a_parked",
+                      "simple_traffic_pickup_wheels_F_04a_parked",
+                      "simple_traffic_pickup_wheels_F_06a_parked",
+                      "simple_traffic_pickup_wheels_F_03a_parked",
+                      "simple_traffic_pickup_wheels_F_05a_parked",
+                      "simple_traffic_pickup_wheels_F_02a",
+                      "simple_traffic_pickup_wheels_F_01a",
+                      "simple_traffic_pickup_wheels_F_03a",
+                      "simple_traffic_pickup_wheels_F_05a",
+                      "simple_traffic_pickup_wheels_F_04a",
+                      "simple_traffic_pickup_wheels_F_06a",
+                      "simple_traffic_roamer_wheels_F_02a_parked",
+                      "simple_traffic_roamer_wheels_F_03a_parked",
+                      "simple_traffic_roamer_wheels_F_04a_parked",
+                      "simple_traffic_roamer_wheels_F_01a_parked",
+                      "simple_traffic_roamer_wheels_F_04a",
+                      "simple_traffic_roamer_wheels_F_02a",
+                      "simple_traffic_roamer_wheels_F_01a",
+                      "simple_traffic_roamer_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_05a",
+                      "simple_traffic_vivace_wheels_F_04a",
+                      "simple_traffic_vivace_wheels_F_01a_alt",
+                      "simple_traffic_vivace_wheels_F_04a_alt",
+                      "simple_traffic_vivace_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_01a",
+                      "simple_traffic_robotvan_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_03a_parked",
+                      "simple_traffic_pessima_wheels_F_02a_parked",
+                      "simple_traffic_pessima_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_03a_parked",
+                      "simple_traffic_midsize_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_04a_parked",
+                      "simple_traffic_sunburst2_wheels_F_03a_parked",
+                      "simple_traffic_sunburst2_wheels_F_01a_parked",
+                      "simple_traffic_pessima_wheels_F_03a",
+                      "simple_traffic_pessima_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_03a",
+                      "simple_traffic_wendover_wheels_F_01a",
+                      "simple_traffic_wendover_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_01a_parked",
+                      "simple_traffic_wendover_wheels_F_03a_parked",
+                      "simple_traffic_wendover_wheels_F_02a_parked",
+                      "simple_traffic_bastion_wheels_F_luxe",
+                      "simple_traffic_bastion_wheels_F_sport",
+                      "simple_traffic_bastion_wheels_F_base",
+                      "simple_traffic_bastion_wheels_F_police",
+                      "simple_traffic_sunburst2_wheels_F_01a",
+                      "simple_traffic_sunburst2_wheels_F_02a",
+                      "simple_traffic_sunburst2_wheels_F_03a",
+                      "simple_traffic_sunburst2_wheels_F_04a",
+                      "simple_traffic_midsize_wheels_F_02a",
+                      "simple_traffic_midsize_wheels_F_01a",
+                      "simple_traffic_midsize_wheels_F_03a"
+                    ],
+                    "chosenPartName": "simple_traffic_bastion_wheels_F_sport",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheels_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_F"
+                  },
+                  "simple_traffic_swaybar_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_F_doublewishbone"
+                  },
+                  "simple_traffic_coilover_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_coilover_F_doublewishbone/simple_traffic_coilover_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_coilover_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_F_doublewishbone"
+                  },
+                  "simple_traffic_wheeldata_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_F_doublewishbone"
+                  },
+                  "simple_traffic_steering": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steering",
+                    "suitablePartNames": [
+                      "simple_traffic_steering"
+                    ],
+                    "chosenPartName": "simple_traffic_steering",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_steering",
+                    "children": {
+                      "simple_traffic_steeringbox": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steeringbox/simple_traffic_steeringbox",
+                        "suitablePartNames": [
+                          "simple_traffic_steeringbox",
+                          "simple_traffic_steeringbox_parked"
+                        ],
+                        "chosenPartName": "simple_traffic_steeringbox",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steeringbox/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_steeringbox"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_suspension_R_doublewishbone": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_suspension_R_doublewishbone",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_R_doublewishbone"
+                ],
+                "chosenPartName": "simple_traffic_suspension_R_doublewishbone",
+                "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_R_doublewishbone",
+                "children": {
+                  "simple_traffic_wheels_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/simple_traffic_bastion_wheels_R_sport",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_R_01a_parked",
+                      "simple_traffic_lansdale_wheels_R_02a_parked",
+                      "simple_traffic_lansdale_wheels_R_03a_parked",
+                      "simple_traffic_lansdale_wheels_R_01a_alt_parked",
+                      "simple_traffic_fullsize_wheels_R_01a_parked",
+                      "simple_traffic_fullsize_wheels_R_03a_parked",
+                      "simple_traffic_fullsize_wheels_R_02a_parked",
+                      "simple_traffic_fullsize_wheels_R_01a",
+                      "simple_traffic_fullsize_wheels_R_02a",
+                      "simple_traffic_fullsize_wheels_R_03a",
+                      "simple_traffic_ardente_wheels_R_01a",
+                      "simple_traffic_ardente_wheels_R_02a",
+                      "simple_traffic_bastion_wheels_R_base_parked",
+                      "simple_traffic_bastion_wheels_R_police_parked",
+                      "simple_traffic_bastion_wheels_R_sport_parked",
+                      "simple_traffic_bastion_wheels_R_luxe_parked",
+                      "simple_traffic_lansdale_wheels_R_03a",
+                      "simple_traffic_lansdale_wheels_R_02a",
+                      "simple_traffic_lansdale_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_01a_parked",
+                      "simple_traffic_vivace_wheels_R_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_02a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_03a_parked",
+                      "simple_traffic_vivace_wheels_R_05a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_parked",
+                      "simple_traffic_ardente_wheels_R_01a_parked",
+                      "simple_traffic_ardente_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_03a_parked",
+                      "simple_traffic_bx_wheels_R_02a",
+                      "simple_traffic_bx_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_01a_parked",
+                      "simple_traffic_van_wheels_R_03a_parked",
+                      "simple_traffic_van_wheels_R_02a_parked",
+                      "simple_traffic_van_wheels_R_04a_parked",
+                      "simple_traffic_van_wheels_R_01a",
+                      "simple_traffic_van_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_04a",
+                      "simple_traffic_van_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a_parked",
+                      "simple_traffic_etkc_wheels_R_02a_parked",
+                      "simple_traffic_etkc_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a",
+                      "simple_traffic_etki_wheels_R_01a_parked",
+                      "simple_traffic_etki_wheels_R_02a_parked",
+                      "simple_traffic_etki_wheels_R_02a",
+                      "simple_traffic_etki_wheels_R_01a",
+                      "simple_traffic_covet_wheels_R_01a_parked",
+                      "simple_traffic_covet_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_01a_parked",
+                      "simple_traffic_etk800_wheels_R_02a_parked",
+                      "simple_traffic_etk800_wheels_R_03a_parked",
+                      "simple_traffic_etk800_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_02a",
+                      "simple_traffic_etk800_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a_parked",
+                      "simple_traffic_legran_wheels_R_01a_alt_parked",
+                      "simple_traffic_legran_wheels_R_01a_parked",
+                      "simple_traffic_legran_wheels_R_03a_parked",
+                      "simple_traffic_legran_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a",
+                      "simple_traffic_legran_wheels_R_01a",
+                      "simple_traffic_legran_wheels_R_01a_alt",
+                      "simple_traffic_pickup_wheels_R_01a_parked",
+                      "simple_traffic_pickup_wheels_R_02a_parked",
+                      "simple_traffic_pickup_wheels_R_04a_parked",
+                      "simple_traffic_pickup_wheels_R_06a_parked",
+                      "simple_traffic_pickup_wheels_R_05a_parked",
+                      "simple_traffic_pickup_wheels_R_03a_parked",
+                      "simple_traffic_pickup_wheels_R_01a",
+                      "simple_traffic_pickup_wheels_R_04a",
+                      "simple_traffic_pickup_wheels_R_06a",
+                      "simple_traffic_pickup_wheels_R_02a",
+                      "simple_traffic_pickup_wheels_R_03a",
+                      "simple_traffic_pickup_wheels_R_05a",
+                      "simple_traffic_roamer_wheels_R_01a_parked",
+                      "simple_traffic_roamer_wheels_R_03a_parked",
+                      "simple_traffic_roamer_wheels_R_02a_parked",
+                      "simple_traffic_roamer_wheels_R_04a_parked",
+                      "simple_traffic_roamer_wheels_R_01a",
+                      "simple_traffic_roamer_wheels_R_03a",
+                      "simple_traffic_roamer_wheels_R_02a",
+                      "simple_traffic_roamer_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_01a_alt",
+                      "simple_traffic_vivace_wheels_R_02a",
+                      "simple_traffic_vivace_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_05a",
+                      "simple_traffic_vivace_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_03a",
+                      "simple_traffic_vivace_wheels_R_04a_alt",
+                      "simple_traffic_robotvan_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a_parked",
+                      "simple_traffic_pessima_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_01a_parked",
+                      "simple_traffic_midsize_wheels_R_02a_parked",
+                      "simple_traffic_midsize_wheels_R_03a_parked",
+                      "simple_traffic_midsize_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_04a_parked",
+                      "simple_traffic_sunburst2_wheels_R_03a_parked",
+                      "simple_traffic_sunburst2_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_02a",
+                      "simple_traffic_pessima_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_02a",
+                      "simple_traffic_wendover_wheels_R_01a",
+                      "simple_traffic_wendover_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_01a_parked",
+                      "simple_traffic_wendover_wheels_R_03a_parked",
+                      "simple_traffic_wendover_wheels_R_02a_parked",
+                      "simple_traffic_bastion_wheels_R_police",
+                      "simple_traffic_bastion_wheels_R_base",
+                      "simple_traffic_bastion_wheels_R_sport",
+                      "simple_traffic_bastion_wheels_R_luxe",
+                      "simple_traffic_sunburst2_wheels_R_01a",
+                      "simple_traffic_sunburst2_wheels_R_02a",
+                      "simple_traffic_sunburst2_wheels_R_04a",
+                      "simple_traffic_sunburst2_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_01a",
+                      "simple_traffic_midsize_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_02a"
+                    ],
+                    "chosenPartName": "simple_traffic_bastion_wheels_R_sport",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_R"
+                  },
+                  "simple_traffic_swaybar_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_R_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_R_doublewishbone"
+                  },
+                  "simple_traffic_coilover_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_coilover_R_doublewishbone/simple_traffic_coilover_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_R_doublewishbone",
+                      "simple_traffic_coilover_R_doublewishbone_lifted"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_coilover_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_R_doublewishbone"
+                  },
+                  "simple_traffic_wheeldata_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_R_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_R_doublewishbone"
+                  },
+                  "simple_traffic_brake_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_brake_R/simple_traffic_brake_R",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_R_heavy",
+                      "simple_traffic_brake_R"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_R",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_brake_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_R"
+                  }
+                }
+              },
+              "soundscape_horn": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/soundscape_horn/soundscape_horn_104",
+                "suitablePartNames": [
+                  "soundscape_horn_103",
+                  "soundscape_horn_102",
+                  "soundscape_horn_127",
+                  "soundscape_horn_111",
+                  "soundscape_horn_126",
+                  "soundscape_horn_110",
+                  "soundscape_horn_10",
+                  "soundscape_horn_108",
+                  "soundscape_horn_2",
+                  "soundscape_horn_11",
+                  "soundscape_horn_115",
+                  "soundscape_horn_128",
+                  "soundscape_horn_121",
+                  "soundscape_horn_8",
+                  "soundscape_horn_105",
+                  "soundscape_horn_5",
+                  "soundscape_horn_106",
+                  "soundscape_horn_114",
+                  "soundscape_horn_120",
+                  "soundscape_horn_12",
+                  "soundscape_horn_124",
+                  "soundscape_horn_130",
+                  "soundscape_horn_9",
+                  "soundscape_horn_113",
+                  "soundscape_horn_132",
+                  "soundscape_horn_109",
+                  "soundscape_horn_122",
+                  "soundscape_horn_7",
+                  "soundscape_horn_112",
+                  "soundscape_horn_129",
+                  "soundscape_horn_101",
+                  "soundscape_horn_4",
+                  "soundscape_horn_117",
+                  "soundscape_horn_6",
+                  "soundscape_horn_125",
+                  "soundscape_horn_3",
+                  "soundscape_horn_1",
+                  "soundscape_horn_123",
+                  "soundscape_horn_116",
+                  "soundscape_horn_131",
+                  "soundscape_horn_118",
+                  "soundscape_horn_133",
+                  "soundscape_horn_104",
+                  "soundscape_horn_119",
+                  "soundscape_horn_107"
+                ],
+                "chosenPartName": "soundscape_horn_104",
+                "path": "/simple_traffic_model/soundscape_horn/",
+                "unsuitablePartNames": [],
+                "id": "soundscape_horn"
+              },
+              "simple_traffic_bastion_bumper_R": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_bumper_R/simple_traffic_bastion_bumper_R",
+                "suitablePartNames": [
+                  "simple_traffic_bastion_bumper_R"
+                ],
+                "chosenPartName": "simple_traffic_bastion_bumper_R",
+                "path": "/simple_traffic_model/simple_traffic_bastion_bumper_R/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_bumper_R"
+              },
+              "simple_traffic_bastion_headlight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_headlight_L_bulb/led_headlight_white_25W",
+                "suitablePartNames": [
+                  "led_headlight_white_25W"
+                ],
+                "chosenPartName": "led_headlight_white_25W",
+                "path": "/simple_traffic_model/simple_traffic_bastion_headlight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_headlight_L_bulb"
+              },
+              "simple_traffic_bastion_taillight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_taillight_R_bulb/led_modern_red_5W",
+                "suitablePartNames": [
+                  "led_modern_red_5W"
+                ],
+                "chosenPartName": "led_modern_red_5W",
+                "path": "/simple_traffic_model/simple_traffic_bastion_taillight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_taillight_R_bulb"
+              },
+              "simple_traffic_bastion_taillight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_bastion_taillight_L_bulb/led_modern_red_5W",
+                "suitablePartNames": [
+                  "led_modern_red_5W"
+                ],
+                "chosenPartName": "led_modern_red_5W",
+                "path": "/simple_traffic_model/simple_traffic_bastion_taillight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_bastion_taillight_L_bulb"
+              }
+            }
+          },
+          "licenseplate_design_2_1": {
+            "decisionMethod": "user-empty",
+            "suitablePartNames": [
+              "license_plate_gridmap_2_1",
+              "license_plate_Utah_2_1",
+              "license_plate_italy_old_2_1",
+              "license_plate_eca_2_1",
+              "license_plate_Texas_2_1",
+              "license_plate_nz_1",
+              "license_plate_wca_2_1",
+              "license_plate_germany_2_1",
+              "license_plate_jungle_rock_island_2_1",
+              "license_plate_italy_2_1"
+            ],
+            "chosenPartName": "",
+            "path": "/licenseplate_design_2_1/",
+            "unsuitablePartNames": [],
+            "id": "licenseplate_design_2_1"
+          }
+        },
+        "chosenPartName": "simple_traffic",
+        "path": "/",
+        "unsuitablePartNames": [],
+        "id": "main",
+        "suitablePartNames": [
+          "simple_traffic"
+        ]
+      },
+      "paints": [
+        {
+          "baseColor": [
+            0.83,
+            0.83,
+            0.83,
+            1.2
+          ],
+          "roughness": 0.65,
+          "clearcoat": 1.0,
+          "metallic": 0.8,
+          "clearcoatRoughness": 0.05
+        },
+        {
+          "baseColor": [
+            0.83,
+            0.83,
+            0.83,
+            1.2
+          ],
+          "roughness": 0.65,
+          "clearcoat": 1.0,
+          "metallic": 0.8,
+          "clearcoatRoughness": 0.05
+        },
+        {
+          "baseColor": [
+            0.83,
+            0.83,
+            0.83,
+            1.2
+          ],
+          "roughness": 0.65,
+          "clearcoat": 1.0,
+          "metallic": 0.8,
+          "clearcoatRoughness": 0.05
+        }
+      ],
+      "model": "simple_traffic",
+      "partConfigFilename": "vehicles/simple_traffic/bastion_sport.pc",
+      "mainPartPath": "/simple_traffic",
+      "mainPartName": "simple_traffic"
+    }
+  },
+  {
+    "name": "clone2",
+    "model": "simple_traffic",
+    "config": {
+      "partsTree": {
+        "partPath": "/simple_traffic",
+        "children": {
+          "simple_traffic_model": {
+            "decisionMethod": "user",
+            "partPath": "/simple_traffic_model/simple_traffic_roamer_ext",
+            "suitablePartNames": [
+              "simple_traffic_vivace",
+              "simple_traffic_pickup_short",
+              "simple_traffic_roamer_ext",
+              "simple_traffic_pickup_crew",
+              "simple_traffic_etk800_sedan",
+              "simple_traffic_van_ambulance",
+              "simple_traffic_van",
+              "simple_traffic_etkc_body",
+              "simple_traffic_etki_body",
+              "simple_traffic_etk800_wagon",
+              "simple_traffic_legran_body_wagon",
+              "simple_traffic_legran_body_sedan",
+              "simple_traffic_pickup_single",
+              "simple_traffic_pickup_ext",
+              "simple_traffic_bastion",
+              "simple_traffic_midsize_body",
+              "simple_traffic_covet_body",
+              "simple_traffic_roamer",
+              "simple_traffic_sunburst2_wagon",
+              "simple_traffic_bx_body",
+              "simple_traffic_ardente",
+              "simple_traffic_pickup_cargobox",
+              "simple_traffic_robotvan",
+              "simple_traffic_van_boxtruck",
+              "simple_traffic_sunburst2",
+              "simple_traffic_pickup_boxbed",
+              "simple_traffic_wendover",
+              "simple_traffic_pessima",
+              "simple_traffic_lansdale",
+              "simple_traffic_fullsize_body"
+            ],
+            "chosenPartName": "simple_traffic_roamer_ext",
+            "path": "/simple_traffic_model/",
+            "unsuitablePartNames": [],
+            "id": "simple_traffic_model",
+            "children": {
+              "simple_traffic_roamer_engine": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_engine/simple_traffic_roamer_engine",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_engine"
+                ],
+                "chosenPartName": "simple_traffic_roamer_engine",
+                "path": "/simple_traffic_model/simple_traffic_roamer_engine/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_engine",
+                "children": {
+                  "simple_traffic_roamer_transmission": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_engine/simple_traffic_roamer_transmission/simple_traffic_roamer_transmission_A",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_transmission_A"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_transmission_A",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_engine/simple_traffic_roamer_transmission/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_transmission",
+                    "children": {
+                      "simple_traffic_drivetrain": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_roamer_engine/simple_traffic_roamer_transmission/simple_traffic_drivetrain/simple_traffic_drivetrain_RWD",
+                        "suitablePartNames": [
+                          "simple_traffic_drivetrain_RWD",
+                          "simple_traffic_drivetrain_FWD",
+                          "simple_traffic_drivetrain_AWD"
+                        ],
+                        "chosenPartName": "simple_traffic_drivetrain_RWD",
+                        "path": "/simple_traffic_model/simple_traffic_roamer_engine/simple_traffic_roamer_transmission/simple_traffic_drivetrain/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_drivetrain"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_roamer_bumper_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_bumper_F/simple_traffic_roamer_bumper_F",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_bumper_F"
+                ],
+                "chosenPartName": "simple_traffic_roamer_bumper_F",
+                "path": "/simple_traffic_model/simple_traffic_roamer_bumper_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_bumper_F"
+              },
+              "simple_traffic_roamer_ext_taillight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_ext_taillight_L_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_roamer_ext_taillight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_ext_taillight_L_bulb"
+              },
+              "simple_traffic_roamer_ext_taillight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_ext_taillight_R_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_roamer_ext_taillight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_ext_taillight_R_bulb"
+              },
+              "simple_traffic_roamer_ext_headlight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_ext_headlight_L_bulb/headlightBulb_halogen_55W",
+                "suitablePartNames": [
+                  "headlightBulb_halogen_55W"
+                ],
+                "chosenPartName": "headlightBulb_halogen_55W",
+                "path": "/simple_traffic_model/simple_traffic_roamer_ext_headlight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_ext_headlight_L_bulb"
+              },
+              "simple_traffic_roamer_ext_headlight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_ext_headlight_R_bulb/headlightBulb_halogen_55W",
+                "suitablePartNames": [
+                  "headlightBulb_halogen_55W"
+                ],
+                "chosenPartName": "headlightBulb_halogen_55W",
+                "path": "/simple_traffic_model/simple_traffic_roamer_ext_headlight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_ext_headlight_R_bulb"
+              },
+              "simple_traffic_roamer_version": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_version_pre",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_version_facelift",
+                  "simple_traffic_roamer_version_pre"
+                ],
+                "chosenPartName": "simple_traffic_roamer_version_pre",
+                "path": "/simple_traffic_model/simple_traffic_roamer_version/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_version",
+                "children": {
+                  "simple_traffic_roamer_trim": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_trim/simple_traffic_roamer_trim_paint",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_trim_paint",
+                      "simple_traffic_roamer_trim_plastic"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_trim_paint",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_trim/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_trim"
+                  },
+                  "simple_traffic_roamer_tailgate": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_tailgate/simple_traffic_roamer_reardoors",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_reardoors",
+                      "simple_traffic_roamer_tailgate"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_reardoors",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_tailgate/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_tailgate"
+                  },
+                  "simple_traffic_roamer_taillights_pre": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_taillights_pre/simple_traffic_roamer_taillights_pre",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_taillights_pre"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_taillights_pre",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_taillights_pre/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_taillights_pre"
+                  },
+                  "simple_traffic_roamer_licenseplate_R_pre": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_licenseplate_R_pre/simple_traffic_roamer_licenseplate_R_pre",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_licenseplate_R_pre"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_licenseplate_R_pre",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_licenseplate_R_pre/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_licenseplate_R_pre"
+                  },
+                  "simple_traffic_roamer_licenseplate_F_pre": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_licenseplate_F_pre/simple_traffic_roamer_licenseplate_F_pre",
+                    "suitablePartNames": [
+                      "simple_traffic_roamer_licenseplate_F_pre"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_licenseplate_F_pre",
+                    "path": "/simple_traffic_model/simple_traffic_roamer_version/simple_traffic_roamer_licenseplate_F_pre/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_roamer_licenseplate_F_pre"
+                  }
+                }
+              },
+              "soundscape_horn": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/soundscape_horn/soundscape_horn_125",
+                "suitablePartNames": [
+                  "soundscape_horn_103",
+                  "soundscape_horn_102",
+                  "soundscape_horn_127",
+                  "soundscape_horn_111",
+                  "soundscape_horn_126",
+                  "soundscape_horn_110",
+                  "soundscape_horn_10",
+                  "soundscape_horn_108",
+                  "soundscape_horn_2",
+                  "soundscape_horn_11",
+                  "soundscape_horn_115",
+                  "soundscape_horn_128",
+                  "soundscape_horn_121",
+                  "soundscape_horn_8",
+                  "soundscape_horn_105",
+                  "soundscape_horn_5",
+                  "soundscape_horn_106",
+                  "soundscape_horn_114",
+                  "soundscape_horn_120",
+                  "soundscape_horn_12",
+                  "soundscape_horn_124",
+                  "soundscape_horn_130",
+                  "soundscape_horn_9",
+                  "soundscape_horn_113",
+                  "soundscape_horn_132",
+                  "soundscape_horn_109",
+                  "soundscape_horn_122",
+                  "soundscape_horn_7",
+                  "soundscape_horn_112",
+                  "soundscape_horn_129",
+                  "soundscape_horn_101",
+                  "soundscape_horn_4",
+                  "soundscape_horn_117",
+                  "soundscape_horn_6",
+                  "soundscape_horn_125",
+                  "soundscape_horn_3",
+                  "soundscape_horn_1",
+                  "soundscape_horn_123",
+                  "soundscape_horn_116",
+                  "soundscape_horn_131",
+                  "soundscape_horn_118",
+                  "soundscape_horn_133",
+                  "soundscape_horn_104",
+                  "soundscape_horn_119",
+                  "soundscape_horn_107"
+                ],
+                "chosenPartName": "soundscape_horn_125",
+                "path": "/simple_traffic_model/soundscape_horn/",
+                "unsuitablePartNames": [],
+                "id": "soundscape_horn"
+              },
+              "skin_traffic_roamer": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/skin_traffic_roamer/simple_traffic_roamer_skin_twotone",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_skin_twotone"
+                ],
+                "chosenPartName": "simple_traffic_roamer_skin_twotone",
+                "path": "/simple_traffic_model/skin_traffic_roamer/",
+                "unsuitablePartNames": [],
+                "id": "skin_traffic_roamer"
+              },
+              "simple_traffic_suspension_F_doublewishbone": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_suspension_F_doublewishbone",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_F_doublewishbone"
+                ],
+                "chosenPartName": "simple_traffic_suspension_F_doublewishbone",
+                "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_F_doublewishbone",
+                "children": {
+                  "simple_traffic_brake_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_brake_F/simple_traffic_brake_F",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_F",
+                      "simple_traffic_brake_F_heavy"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_F",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_brake_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_F"
+                  },
+                  "simple_traffic_wheels_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheels_F/simple_traffic_roamer_wheels_F_02a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_F_01a_alt_parked",
+                      "simple_traffic_lansdale_wheels_F_01a_parked",
+                      "simple_traffic_lansdale_wheels_F_02a_parked",
+                      "simple_traffic_lansdale_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_02a_parked",
+                      "simple_traffic_fullsize_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a",
+                      "simple_traffic_fullsize_wheels_F_03a",
+                      "simple_traffic_fullsize_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_01a",
+                      "simple_traffic_bastion_wheels_F_sport_parked",
+                      "simple_traffic_bastion_wheels_F_base_parked",
+                      "simple_traffic_bastion_wheels_F_luxe_parked",
+                      "simple_traffic_bastion_wheels_F_police_parked",
+                      "simple_traffic_lansdale_wheels_F_01a",
+                      "simple_traffic_lansdale_wheels_F_03a",
+                      "simple_traffic_lansdale_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_02a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_parked",
+                      "simple_traffic_vivace_wheels_F_03a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_05a_parked",
+                      "simple_traffic_vivace_wheels_F_04a_parked",
+                      "simple_traffic_ardente_wheels_F_01a_parked",
+                      "simple_traffic_ardente_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_03a_parked",
+                      "simple_traffic_bx_wheels_F_02a",
+                      "simple_traffic_bx_wheels_F_03a",
+                      "simple_traffic_van_wheels_F_02a_parked",
+                      "simple_traffic_van_wheels_F_03a_parked",
+                      "simple_traffic_van_wheels_F_04a_parked",
+                      "simple_traffic_van_wheels_F_01a_parked",
+                      "simple_traffic_van_wheels_F_02a",
+                      "simple_traffic_van_wheels_F_04a",
+                      "simple_traffic_van_wheels_F_01a",
+                      "simple_traffic_van_wheels_F_03a",
+                      "simple_traffic_etkc_wheels_F_01a_parked",
+                      "simple_traffic_etkc_wheels_F_02a_parked",
+                      "simple_traffic_etkc_wheels_F_01a",
+                      "simple_traffic_etkc_wheels_F_02a",
+                      "simple_traffic_etki_wheels_F_01a_parked",
+                      "simple_traffic_etki_wheels_F_02a_parked",
+                      "simple_traffic_etki_wheels_F_01a",
+                      "simple_traffic_etki_wheels_F_02a",
+                      "simple_traffic_covet_wheels_F_01a_parked",
+                      "simple_traffic_covet_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a_parked",
+                      "simple_traffic_etk800_wheels_F_01a_parked",
+                      "simple_traffic_etk800_wheels_F_03a_parked",
+                      "simple_traffic_etk800_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a",
+                      "simple_traffic_etk800_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a_parked",
+                      "simple_traffic_legran_wheels_F_01a_alt_parked",
+                      "simple_traffic_legran_wheels_F_03a_parked",
+                      "simple_traffic_legran_wheels_F_02a_parked",
+                      "simple_traffic_legran_wheels_F_02a",
+                      "simple_traffic_legran_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a",
+                      "simple_traffic_legran_wheels_F_01a_alt",
+                      "simple_traffic_pickup_wheels_F_02a_parked",
+                      "simple_traffic_pickup_wheels_F_01a_parked",
+                      "simple_traffic_pickup_wheels_F_04a_parked",
+                      "simple_traffic_pickup_wheels_F_06a_parked",
+                      "simple_traffic_pickup_wheels_F_03a_parked",
+                      "simple_traffic_pickup_wheels_F_05a_parked",
+                      "simple_traffic_pickup_wheels_F_02a",
+                      "simple_traffic_pickup_wheels_F_01a",
+                      "simple_traffic_pickup_wheels_F_03a",
+                      "simple_traffic_pickup_wheels_F_05a",
+                      "simple_traffic_pickup_wheels_F_04a",
+                      "simple_traffic_pickup_wheels_F_06a",
+                      "simple_traffic_roamer_wheels_F_02a_parked",
+                      "simple_traffic_roamer_wheels_F_03a_parked",
+                      "simple_traffic_roamer_wheels_F_04a_parked",
+                      "simple_traffic_roamer_wheels_F_01a_parked",
+                      "simple_traffic_roamer_wheels_F_04a",
+                      "simple_traffic_roamer_wheels_F_02a",
+                      "simple_traffic_roamer_wheels_F_01a",
+                      "simple_traffic_roamer_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_05a",
+                      "simple_traffic_vivace_wheels_F_04a",
+                      "simple_traffic_vivace_wheels_F_01a_alt",
+                      "simple_traffic_vivace_wheels_F_04a_alt",
+                      "simple_traffic_vivace_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_01a",
+                      "simple_traffic_robotvan_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_03a_parked",
+                      "simple_traffic_pessima_wheels_F_02a_parked",
+                      "simple_traffic_pessima_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_03a_parked",
+                      "simple_traffic_midsize_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_04a_parked",
+                      "simple_traffic_sunburst2_wheels_F_03a_parked",
+                      "simple_traffic_sunburst2_wheels_F_01a_parked",
+                      "simple_traffic_pessima_wheels_F_03a",
+                      "simple_traffic_pessima_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_03a",
+                      "simple_traffic_wendover_wheels_F_01a",
+                      "simple_traffic_wendover_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_01a_parked",
+                      "simple_traffic_wendover_wheels_F_03a_parked",
+                      "simple_traffic_wendover_wheels_F_02a_parked",
+                      "simple_traffic_bastion_wheels_F_luxe",
+                      "simple_traffic_bastion_wheels_F_sport",
+                      "simple_traffic_bastion_wheels_F_base",
+                      "simple_traffic_bastion_wheels_F_police",
+                      "simple_traffic_sunburst2_wheels_F_01a",
+                      "simple_traffic_sunburst2_wheels_F_02a",
+                      "simple_traffic_sunburst2_wheels_F_03a",
+                      "simple_traffic_sunburst2_wheels_F_04a",
+                      "simple_traffic_midsize_wheels_F_02a",
+                      "simple_traffic_midsize_wheels_F_01a",
+                      "simple_traffic_midsize_wheels_F_03a"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_wheels_F_02a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheels_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_F"
+                  },
+                  "simple_traffic_swaybar_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_swaybar_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_F_doublewishbone"
+                  },
+                  "simple_traffic_coilover_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_coilover_F_doublewishbone/simple_traffic_coilover_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_coilover_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_F_doublewishbone"
+                  },
+                  "simple_traffic_wheeldata_F_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_F_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_F_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_wheeldata_F_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_F_doublewishbone"
+                  },
+                  "simple_traffic_steering": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steering",
+                    "suitablePartNames": [
+                      "simple_traffic_steering"
+                    ],
+                    "chosenPartName": "simple_traffic_steering",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_steering",
+                    "children": {
+                      "simple_traffic_steeringbox": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steeringbox/simple_traffic_steeringbox",
+                        "suitablePartNames": [
+                          "simple_traffic_steeringbox",
+                          "simple_traffic_steeringbox_parked"
+                        ],
+                        "chosenPartName": "simple_traffic_steeringbox",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_F_doublewishbone/simple_traffic_steering/simple_traffic_steeringbox/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_steeringbox"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_roamer_bumper_R": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_bumper_R/simple_traffic_roamer_bumper_R",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_bumper_R"
+                ],
+                "chosenPartName": "simple_traffic_roamer_bumper_R",
+                "path": "/simple_traffic_model/simple_traffic_roamer_bumper_R/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_bumper_R"
+              },
+              "simple_traffic_suspension_R_4link": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_suspension_R_4link",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_R_4link"
+                ],
+                "chosenPartName": "simple_traffic_suspension_R_4link",
+                "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_R_4link",
+                "children": {
+                  "simple_traffic_wheels_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheels_R/simple_traffic_roamer_wheels_R_02a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_R_01a_parked",
+                      "simple_traffic_lansdale_wheels_R_02a_parked",
+                      "simple_traffic_lansdale_wheels_R_03a_parked",
+                      "simple_traffic_lansdale_wheels_R_01a_alt_parked",
+                      "simple_traffic_fullsize_wheels_R_01a_parked",
+                      "simple_traffic_fullsize_wheels_R_03a_parked",
+                      "simple_traffic_fullsize_wheels_R_02a_parked",
+                      "simple_traffic_fullsize_wheels_R_01a",
+                      "simple_traffic_fullsize_wheels_R_02a",
+                      "simple_traffic_fullsize_wheels_R_03a",
+                      "simple_traffic_ardente_wheels_R_01a",
+                      "simple_traffic_ardente_wheels_R_02a",
+                      "simple_traffic_bastion_wheels_R_base_parked",
+                      "simple_traffic_bastion_wheels_R_police_parked",
+                      "simple_traffic_bastion_wheels_R_sport_parked",
+                      "simple_traffic_bastion_wheels_R_luxe_parked",
+                      "simple_traffic_lansdale_wheels_R_03a",
+                      "simple_traffic_lansdale_wheels_R_02a",
+                      "simple_traffic_lansdale_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_01a_parked",
+                      "simple_traffic_vivace_wheels_R_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_02a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_03a_parked",
+                      "simple_traffic_vivace_wheels_R_05a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_parked",
+                      "simple_traffic_ardente_wheels_R_01a_parked",
+                      "simple_traffic_ardente_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_03a_parked",
+                      "simple_traffic_bx_wheels_R_02a",
+                      "simple_traffic_bx_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_01a_parked",
+                      "simple_traffic_van_wheels_R_03a_parked",
+                      "simple_traffic_van_wheels_R_02a_parked",
+                      "simple_traffic_van_wheels_R_04a_parked",
+                      "simple_traffic_van_wheels_R_01a",
+                      "simple_traffic_van_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_04a",
+                      "simple_traffic_van_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a_parked",
+                      "simple_traffic_etkc_wheels_R_02a_parked",
+                      "simple_traffic_etkc_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a",
+                      "simple_traffic_etki_wheels_R_01a_parked",
+                      "simple_traffic_etki_wheels_R_02a_parked",
+                      "simple_traffic_etki_wheels_R_02a",
+                      "simple_traffic_etki_wheels_R_01a",
+                      "simple_traffic_covet_wheels_R_01a_parked",
+                      "simple_traffic_covet_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_01a_parked",
+                      "simple_traffic_etk800_wheels_R_02a_parked",
+                      "simple_traffic_etk800_wheels_R_03a_parked",
+                      "simple_traffic_etk800_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_02a",
+                      "simple_traffic_etk800_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a_parked",
+                      "simple_traffic_legran_wheels_R_01a_alt_parked",
+                      "simple_traffic_legran_wheels_R_01a_parked",
+                      "simple_traffic_legran_wheels_R_03a_parked",
+                      "simple_traffic_legran_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a",
+                      "simple_traffic_legran_wheels_R_01a",
+                      "simple_traffic_legran_wheels_R_01a_alt",
+                      "simple_traffic_pickup_wheels_R_01a_parked",
+                      "simple_traffic_pickup_wheels_R_02a_parked",
+                      "simple_traffic_pickup_wheels_R_04a_parked",
+                      "simple_traffic_pickup_wheels_R_06a_parked",
+                      "simple_traffic_pickup_wheels_R_05a_parked",
+                      "simple_traffic_pickup_wheels_R_03a_parked",
+                      "simple_traffic_pickup_wheels_R_01a",
+                      "simple_traffic_pickup_wheels_R_04a",
+                      "simple_traffic_pickup_wheels_R_06a",
+                      "simple_traffic_pickup_wheels_R_02a",
+                      "simple_traffic_pickup_wheels_R_03a",
+                      "simple_traffic_pickup_wheels_R_05a",
+                      "simple_traffic_roamer_wheels_R_01a_parked",
+                      "simple_traffic_roamer_wheels_R_03a_parked",
+                      "simple_traffic_roamer_wheels_R_02a_parked",
+                      "simple_traffic_roamer_wheels_R_04a_parked",
+                      "simple_traffic_roamer_wheels_R_01a",
+                      "simple_traffic_roamer_wheels_R_03a",
+                      "simple_traffic_roamer_wheels_R_02a",
+                      "simple_traffic_roamer_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_01a_alt",
+                      "simple_traffic_vivace_wheels_R_02a",
+                      "simple_traffic_vivace_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_05a",
+                      "simple_traffic_vivace_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_03a",
+                      "simple_traffic_vivace_wheels_R_04a_alt",
+                      "simple_traffic_robotvan_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a_parked",
+                      "simple_traffic_pessima_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_01a_parked",
+                      "simple_traffic_midsize_wheels_R_02a_parked",
+                      "simple_traffic_midsize_wheels_R_03a_parked",
+                      "simple_traffic_midsize_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_04a_parked",
+                      "simple_traffic_sunburst2_wheels_R_03a_parked",
+                      "simple_traffic_sunburst2_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_02a",
+                      "simple_traffic_pessima_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_02a",
+                      "simple_traffic_wendover_wheels_R_01a",
+                      "simple_traffic_wendover_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_01a_parked",
+                      "simple_traffic_wendover_wheels_R_03a_parked",
+                      "simple_traffic_wendover_wheels_R_02a_parked",
+                      "simple_traffic_bastion_wheels_R_police",
+                      "simple_traffic_bastion_wheels_R_base",
+                      "simple_traffic_bastion_wheels_R_sport",
+                      "simple_traffic_bastion_wheels_R_luxe",
+                      "simple_traffic_sunburst2_wheels_R_01a",
+                      "simple_traffic_sunburst2_wheels_R_02a",
+                      "simple_traffic_sunburst2_wheels_R_04a",
+                      "simple_traffic_sunburst2_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_01a",
+                      "simple_traffic_midsize_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_02a"
+                    ],
+                    "chosenPartName": "simple_traffic_roamer_wheels_R_02a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheels_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_R"
+                  },
+                  "simple_traffic_swaybar_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_swaybar_R_beam/simple_traffic_swaybar_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_swaybar_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_R_beam"
+                  },
+                  "simple_traffic_brake_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_brake_R/simple_traffic_brake_R",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_R_heavy",
+                      "simple_traffic_brake_R"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_R",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_brake_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_R"
+                  },
+                  "simple_traffic_coilover_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_coilover_R_beam/simple_traffic_coilover_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_coilover_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_R_beam"
+                  },
+                  "simple_traffic_wheeldata_R_beam": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheeldata_R_beam/simple_traffic_wheeldata_R_beam",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_R_beam"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_R_beam",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_4link/simple_traffic_wheeldata_R_beam/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_R_beam"
+                  }
+                }
+              },
+              "simple_traffic_roamer_hood": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_hood/simple_traffic_roamer_hood",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_hood"
+                ],
+                "chosenPartName": "simple_traffic_roamer_hood",
+                "path": "/simple_traffic_model/simple_traffic_roamer_hood/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_hood"
+              },
+              "simple_traffic_roamer_roofrack_ext": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_roofrack_ext/simple_traffic_roamer_roofrack_ext",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_roofrack_ext"
+                ],
+                "chosenPartName": "simple_traffic_roamer_roofrack_ext",
+                "path": "/simple_traffic_model/simple_traffic_roamer_roofrack_ext/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_roofrack_ext"
+              },
+              "simple_traffic_roamer_mirrors": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_mirrors/simple_traffic_roamer_mirrors",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_mirrors"
+                ],
+                "chosenPartName": "simple_traffic_roamer_mirrors",
+                "path": "/simple_traffic_model/simple_traffic_roamer_mirrors/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_mirrors"
+              },
+              "simple_traffic_roamer_runningboards_ext": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_roamer_runningboards_ext/simple_traffic_roamer_runningboards_ext",
+                "suitablePartNames": [
+                  "simple_traffic_roamer_runningboards_ext"
+                ],
+                "chosenPartName": "simple_traffic_roamer_runningboards_ext",
+                "path": "/simple_traffic_model/simple_traffic_roamer_runningboards_ext/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_roamer_runningboards_ext"
+              }
+            }
+          },
+          "licenseplate_design_2_1": {
+            "decisionMethod": "user-empty",
+            "suitablePartNames": [
+              "license_plate_gridmap_2_1",
+              "license_plate_Utah_2_1",
+              "license_plate_italy_old_2_1",
+              "license_plate_eca_2_1",
+              "license_plate_Texas_2_1",
+              "license_plate_nz_1",
+              "license_plate_wca_2_1",
+              "license_plate_germany_2_1",
+              "license_plate_jungle_rock_island_2_1",
+              "license_plate_italy_2_1"
+            ],
+            "chosenPartName": "",
+            "path": "/licenseplate_design_2_1/",
+            "unsuitablePartNames": [],
+            "id": "licenseplate_design_2_1"
+          }
+        },
+        "chosenPartName": "simple_traffic",
+        "path": "/",
+        "unsuitablePartNames": [],
+        "id": "main",
+        "suitablePartNames": [
+          "simple_traffic"
+        ]
+      },
+      "paints": [
+        {
+          "baseColor": [
+            0.79,
+            0.75,
+            0.69,
+            1.6
+          ],
+          "roughness": 0.65,
+          "clearcoat": 1.0,
+          "metallic": 0.8,
+          "clearcoatRoughness": 0.06
+        },
+        {
+          "baseColor": [
+            0.525,
+            0.41,
+            0.3,
+            1.2
+          ],
+          "roughness": 0.07,
+          "clearcoat": 0.0,
+          "metallic": 0.0,
+          "clearcoatRoughness": 0.0
+        },
+        {
+          "baseColor": [
+            0.79,
+            0.75,
+            0.69,
+            1.6
+          ],
+          "roughness": 0.65,
+          "clearcoat": 1.0,
+          "metallic": 0.8,
+          "clearcoatRoughness": 0.06
+        }
+      ],
+      "model": "simple_traffic",
+      "partConfigFilename": "vehicles/simple_traffic/roamer_ext_high.pc",
+      "mainPartPath": "/simple_traffic",
+      "mainPartName": "simple_traffic"
+    }
+  },
+  {
+    "name": "clone3",
+    "model": "simple_traffic",
+    "config": {
+      "partsTree": {
+        "partPath": "/simple_traffic",
+        "children": {
+          "simple_traffic_model": {
+            "decisionMethod": "user",
+            "partPath": "/simple_traffic_model/simple_traffic_midsize_body",
+            "suitablePartNames": [
+              "simple_traffic_vivace",
+              "simple_traffic_pickup_short",
+              "simple_traffic_roamer_ext",
+              "simple_traffic_pickup_crew",
+              "simple_traffic_etk800_sedan",
+              "simple_traffic_van_ambulance",
+              "simple_traffic_van",
+              "simple_traffic_etkc_body",
+              "simple_traffic_etki_body",
+              "simple_traffic_etk800_wagon",
+              "simple_traffic_legran_body_wagon",
+              "simple_traffic_legran_body_sedan",
+              "simple_traffic_pickup_single",
+              "simple_traffic_pickup_ext",
+              "simple_traffic_bastion",
+              "simple_traffic_midsize_body",
+              "simple_traffic_covet_body",
+              "simple_traffic_roamer",
+              "simple_traffic_sunburst2_wagon",
+              "simple_traffic_bx_body",
+              "simple_traffic_ardente",
+              "simple_traffic_pickup_cargobox",
+              "simple_traffic_robotvan",
+              "simple_traffic_van_boxtruck",
+              "simple_traffic_sunburst2",
+              "simple_traffic_pickup_boxbed",
+              "simple_traffic_wendover",
+              "simple_traffic_pessima",
+              "simple_traffic_lansdale",
+              "simple_traffic_fullsize_body"
+            ],
+            "chosenPartName": "simple_traffic_midsize_body",
+            "path": "/simple_traffic_model/",
+            "unsuitablePartNames": [],
+            "id": "simple_traffic_model",
+            "children": {
+              "skin_traffic_midsize": {
+                "decisionMethod": "user-empty",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_skin_turboburger"
+                ],
+                "chosenPartName": "",
+                "path": "/simple_traffic_model/skin_traffic_midsize/",
+                "unsuitablePartNames": [],
+                "id": "skin_traffic_midsize"
+              },
+              "simple_traffic_midsize_trunk": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_trunk/simple_traffic_midsize_trunk",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_trunk"
+                ],
+                "chosenPartName": "simple_traffic_midsize_trunk",
+                "path": "/simple_traffic_model/simple_traffic_midsize_trunk/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_trunk"
+              },
+              "simple_traffic_midsize_licenseplate_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_licenseplate_F/simple_traffic_midsize_licenseplate_F",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_licenseplate_F"
+                ],
+                "chosenPartName": "simple_traffic_midsize_licenseplate_F",
+                "path": "/simple_traffic_model/simple_traffic_midsize_licenseplate_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_licenseplate_F"
+              },
+              "skin_traffic_windowtrim": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/skin_traffic_windowtrim/skin_traffic_windowtrim_chrome",
+                "suitablePartNames": [
+                  "skin_traffic_windowtrim_chrome",
+                  "skin_traffic_windowtrim_plastic"
+                ],
+                "chosenPartName": "skin_traffic_windowtrim_chrome",
+                "path": "/simple_traffic_model/skin_traffic_windowtrim/",
+                "unsuitablePartNames": [],
+                "id": "skin_traffic_windowtrim"
+              },
+              "simple_traffic_suspension_F_strut": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_suspension_F_strut",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_F_strut"
+                ],
+                "chosenPartName": "simple_traffic_suspension_F_strut",
+                "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_F_strut",
+                "children": {
+                  "simple_traffic_brake_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_brake_F/simple_traffic_brake_F",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_F",
+                      "simple_traffic_brake_F_heavy"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_F",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_brake_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_F"
+                  },
+                  "simple_traffic_wheels_F": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheels_F/simple_traffic_midsize_wheels_F_01a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_F_01a_alt_parked",
+                      "simple_traffic_lansdale_wheels_F_01a_parked",
+                      "simple_traffic_lansdale_wheels_F_02a_parked",
+                      "simple_traffic_lansdale_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_02a_parked",
+                      "simple_traffic_fullsize_wheels_F_03a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a_parked",
+                      "simple_traffic_fullsize_wheels_F_01a",
+                      "simple_traffic_fullsize_wheels_F_03a",
+                      "simple_traffic_fullsize_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_02a",
+                      "simple_traffic_ardente_wheels_F_01a",
+                      "simple_traffic_bastion_wheels_F_sport_parked",
+                      "simple_traffic_bastion_wheels_F_base_parked",
+                      "simple_traffic_bastion_wheels_F_luxe_parked",
+                      "simple_traffic_bastion_wheels_F_police_parked",
+                      "simple_traffic_lansdale_wheels_F_01a",
+                      "simple_traffic_lansdale_wheels_F_03a",
+                      "simple_traffic_lansdale_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_02a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_parked",
+                      "simple_traffic_vivace_wheels_F_03a_parked",
+                      "simple_traffic_vivace_wheels_F_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_F_05a_parked",
+                      "simple_traffic_vivace_wheels_F_04a_parked",
+                      "simple_traffic_ardente_wheels_F_01a_parked",
+                      "simple_traffic_ardente_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_02a_parked",
+                      "simple_traffic_bx_wheels_F_03a_parked",
+                      "simple_traffic_bx_wheels_F_02a",
+                      "simple_traffic_bx_wheels_F_03a",
+                      "simple_traffic_van_wheels_F_02a_parked",
+                      "simple_traffic_van_wheels_F_03a_parked",
+                      "simple_traffic_van_wheels_F_04a_parked",
+                      "simple_traffic_van_wheels_F_01a_parked",
+                      "simple_traffic_van_wheels_F_02a",
+                      "simple_traffic_van_wheels_F_04a",
+                      "simple_traffic_van_wheels_F_01a",
+                      "simple_traffic_van_wheels_F_03a",
+                      "simple_traffic_etkc_wheels_F_01a_parked",
+                      "simple_traffic_etkc_wheels_F_02a_parked",
+                      "simple_traffic_etkc_wheels_F_01a",
+                      "simple_traffic_etkc_wheels_F_02a",
+                      "simple_traffic_etki_wheels_F_01a_parked",
+                      "simple_traffic_etki_wheels_F_02a_parked",
+                      "simple_traffic_etki_wheels_F_01a",
+                      "simple_traffic_etki_wheels_F_02a",
+                      "simple_traffic_covet_wheels_F_01a_parked",
+                      "simple_traffic_covet_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a_parked",
+                      "simple_traffic_etk800_wheels_F_01a_parked",
+                      "simple_traffic_etk800_wheels_F_03a_parked",
+                      "simple_traffic_etk800_wheels_F_01a",
+                      "simple_traffic_etk800_wheels_F_02a",
+                      "simple_traffic_etk800_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a_parked",
+                      "simple_traffic_legran_wheels_F_01a_alt_parked",
+                      "simple_traffic_legran_wheels_F_03a_parked",
+                      "simple_traffic_legran_wheels_F_02a_parked",
+                      "simple_traffic_legran_wheels_F_02a",
+                      "simple_traffic_legran_wheels_F_03a",
+                      "simple_traffic_legran_wheels_F_01a",
+                      "simple_traffic_legran_wheels_F_01a_alt",
+                      "simple_traffic_pickup_wheels_F_02a_parked",
+                      "simple_traffic_pickup_wheels_F_01a_parked",
+                      "simple_traffic_pickup_wheels_F_04a_parked",
+                      "simple_traffic_pickup_wheels_F_06a_parked",
+                      "simple_traffic_pickup_wheels_F_03a_parked",
+                      "simple_traffic_pickup_wheels_F_05a_parked",
+                      "simple_traffic_pickup_wheels_F_02a",
+                      "simple_traffic_pickup_wheels_F_01a",
+                      "simple_traffic_pickup_wheels_F_03a",
+                      "simple_traffic_pickup_wheels_F_05a",
+                      "simple_traffic_pickup_wheels_F_04a",
+                      "simple_traffic_pickup_wheels_F_06a",
+                      "simple_traffic_roamer_wheels_F_02a_parked",
+                      "simple_traffic_roamer_wheels_F_03a_parked",
+                      "simple_traffic_roamer_wheels_F_04a_parked",
+                      "simple_traffic_roamer_wheels_F_01a_parked",
+                      "simple_traffic_roamer_wheels_F_04a",
+                      "simple_traffic_roamer_wheels_F_02a",
+                      "simple_traffic_roamer_wheels_F_01a",
+                      "simple_traffic_roamer_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_05a",
+                      "simple_traffic_vivace_wheels_F_04a",
+                      "simple_traffic_vivace_wheels_F_01a_alt",
+                      "simple_traffic_vivace_wheels_F_04a_alt",
+                      "simple_traffic_vivace_wheels_F_03a",
+                      "simple_traffic_vivace_wheels_F_02a",
+                      "simple_traffic_vivace_wheels_F_01a",
+                      "simple_traffic_robotvan_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_03a_parked",
+                      "simple_traffic_pessima_wheels_F_02a_parked",
+                      "simple_traffic_pessima_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_03a_parked",
+                      "simple_traffic_midsize_wheels_F_01a_parked",
+                      "simple_traffic_midsize_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_02a_parked",
+                      "simple_traffic_sunburst2_wheels_F_04a_parked",
+                      "simple_traffic_sunburst2_wheels_F_03a_parked",
+                      "simple_traffic_sunburst2_wheels_F_01a_parked",
+                      "simple_traffic_pessima_wheels_F_03a",
+                      "simple_traffic_pessima_wheels_F_01a",
+                      "simple_traffic_pessima_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_03a",
+                      "simple_traffic_wendover_wheels_F_01a",
+                      "simple_traffic_wendover_wheels_F_02a",
+                      "simple_traffic_wendover_wheels_F_01a_parked",
+                      "simple_traffic_wendover_wheels_F_03a_parked",
+                      "simple_traffic_wendover_wheels_F_02a_parked",
+                      "simple_traffic_bastion_wheels_F_luxe",
+                      "simple_traffic_bastion_wheels_F_sport",
+                      "simple_traffic_bastion_wheels_F_base",
+                      "simple_traffic_bastion_wheels_F_police",
+                      "simple_traffic_sunburst2_wheels_F_01a",
+                      "simple_traffic_sunburst2_wheels_F_02a",
+                      "simple_traffic_sunburst2_wheels_F_03a",
+                      "simple_traffic_sunburst2_wheels_F_04a",
+                      "simple_traffic_midsize_wheels_F_02a",
+                      "simple_traffic_midsize_wheels_F_01a",
+                      "simple_traffic_midsize_wheels_F_03a"
+                    ],
+                    "chosenPartName": "simple_traffic_midsize_wheels_F_01a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheels_F/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_F",
+                    "children": {
+                      "simple_traffic_midsize_hubcaps_F": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheels_F/simple_traffic_midsize_hubcaps_F/simple_traffic_midsize_hubcaps_F_01a",
+                        "suitablePartNames": [
+                          "simple_traffic_midsize_hubcaps_F_03a",
+                          "simple_traffic_midsize_hubcaps_F_01a",
+                          "simple_traffic_midsize_hubcaps_F_04a",
+                          "simple_traffic_midsize_hubcaps_F_02a"
+                        ],
+                        "chosenPartName": "simple_traffic_midsize_hubcaps_F_01a",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheels_F/simple_traffic_midsize_hubcaps_F/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_midsize_hubcaps_F"
+                      }
+                    }
+                  },
+                  "simple_traffic_steering": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_steering/simple_traffic_steering",
+                    "suitablePartNames": [
+                      "simple_traffic_steering"
+                    ],
+                    "chosenPartName": "simple_traffic_steering",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_steering/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_steering",
+                    "children": {
+                      "simple_traffic_steeringbox": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_steering/simple_traffic_steeringbox/simple_traffic_steeringbox",
+                        "suitablePartNames": [
+                          "simple_traffic_steeringbox",
+                          "simple_traffic_steeringbox_parked"
+                        ],
+                        "chosenPartName": "simple_traffic_steeringbox",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_steering/simple_traffic_steeringbox/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_steeringbox"
+                      }
+                    }
+                  },
+                  "simple_traffic_coilover_F_strut": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_coilover_F_strut/simple_traffic_coilover_F_strut",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_F_strut_lifted",
+                      "simple_traffic_coilover_F_strut"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_F_strut",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_coilover_F_strut/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_F_strut"
+                  },
+                  "simple_traffic_wheeldata_F_strut": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheeldata_F_strut/simple_traffic_wheeldata_F_strut",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_F_strut"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_F_strut",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_wheeldata_F_strut/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_F_strut"
+                  },
+                  "simple_traffic_swaybar_F_strut": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_swaybar_F_strut/simple_traffic_swaybar_F_strut",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_F_strut"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_F_strut",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_F_strut/simple_traffic_swaybar_F_strut/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_F_strut"
+                  }
+                }
+              },
+              "simple_traffic_midsize_taillight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_taillight_L_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_midsize_taillight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_taillight_L_bulb"
+              },
+              "simple_traffic_midsize_hood": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_hood/simple_traffic_midsize_hood",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_hood"
+                ],
+                "chosenPartName": "simple_traffic_midsize_hood",
+                "path": "/simple_traffic_model/simple_traffic_midsize_hood/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_hood"
+              },
+              "simple_traffic_midsize_bumper_R": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_bumper_R/simple_traffic_midsize_bumper_R",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_bumper_R"
+                ],
+                "chosenPartName": "simple_traffic_midsize_bumper_R",
+                "path": "/simple_traffic_model/simple_traffic_midsize_bumper_R/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_bumper_R"
+              },
+              "simple_traffic_midsize_taillight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_taillight_R_bulb/incandescent_red_21W",
+                "suitablePartNames": [
+                  "incandescent_red_21W"
+                ],
+                "chosenPartName": "incandescent_red_21W",
+                "path": "/simple_traffic_model/simple_traffic_midsize_taillight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_taillight_R_bulb"
+              },
+              "simple_traffic_midsize_engine": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_engine/simple_traffic_midsize_engine",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_engine"
+                ],
+                "chosenPartName": "simple_traffic_midsize_engine",
+                "path": "/simple_traffic_model/simple_traffic_midsize_engine/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_engine",
+                "children": {
+                  "simple_traffic_midsize_transmission": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_midsize_engine/simple_traffic_midsize_transmission/simple_traffic_midsize_transmission_A",
+                    "suitablePartNames": [
+                      "simple_traffic_midsize_transmission_A"
+                    ],
+                    "chosenPartName": "simple_traffic_midsize_transmission_A",
+                    "path": "/simple_traffic_model/simple_traffic_midsize_engine/simple_traffic_midsize_transmission/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_midsize_transmission",
+                    "children": {
+                      "simple_traffic_drivetrain": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_midsize_engine/simple_traffic_midsize_transmission/simple_traffic_drivetrain/simple_traffic_drivetrain_FWD",
+                        "suitablePartNames": [
+                          "simple_traffic_drivetrain_RWD",
+                          "simple_traffic_drivetrain_FWD",
+                          "simple_traffic_drivetrain_AWD"
+                        ],
+                        "chosenPartName": "simple_traffic_drivetrain_FWD",
+                        "path": "/simple_traffic_model/simple_traffic_midsize_engine/simple_traffic_midsize_transmission/simple_traffic_drivetrain/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_drivetrain"
+                      }
+                    }
+                  }
+                }
+              },
+              "simple_traffic_midsize_mirrors": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_mirrors/simple_traffic_midsize_mirrors",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_mirrors"
+                ],
+                "chosenPartName": "simple_traffic_midsize_mirrors",
+                "path": "/simple_traffic_model/simple_traffic_midsize_mirrors/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_mirrors"
+              },
+              "simple_traffic_suspension_R_doublewishbone": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_suspension_R_doublewishbone",
+                "suitablePartNames": [
+                  "simple_traffic_suspension_R_doublewishbone"
+                ],
+                "chosenPartName": "simple_traffic_suspension_R_doublewishbone",
+                "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_suspension_R_doublewishbone",
+                "children": {
+                  "simple_traffic_wheels_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/simple_traffic_midsize_wheels_R_01a",
+                    "suitablePartNames": [
+                      "simple_traffic_lansdale_wheels_R_01a_parked",
+                      "simple_traffic_lansdale_wheels_R_02a_parked",
+                      "simple_traffic_lansdale_wheels_R_03a_parked",
+                      "simple_traffic_lansdale_wheels_R_01a_alt_parked",
+                      "simple_traffic_fullsize_wheels_R_01a_parked",
+                      "simple_traffic_fullsize_wheels_R_03a_parked",
+                      "simple_traffic_fullsize_wheels_R_02a_parked",
+                      "simple_traffic_fullsize_wheels_R_01a",
+                      "simple_traffic_fullsize_wheels_R_02a",
+                      "simple_traffic_fullsize_wheels_R_03a",
+                      "simple_traffic_ardente_wheels_R_01a",
+                      "simple_traffic_ardente_wheels_R_02a",
+                      "simple_traffic_bastion_wheels_R_base_parked",
+                      "simple_traffic_bastion_wheels_R_police_parked",
+                      "simple_traffic_bastion_wheels_R_sport_parked",
+                      "simple_traffic_bastion_wheels_R_luxe_parked",
+                      "simple_traffic_lansdale_wheels_R_03a",
+                      "simple_traffic_lansdale_wheels_R_02a",
+                      "simple_traffic_lansdale_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_01a_parked",
+                      "simple_traffic_vivace_wheels_R_01a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_02a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_alt_parked",
+                      "simple_traffic_vivace_wheels_R_03a_parked",
+                      "simple_traffic_vivace_wheels_R_05a_parked",
+                      "simple_traffic_vivace_wheels_R_04a_parked",
+                      "simple_traffic_ardente_wheels_R_01a_parked",
+                      "simple_traffic_ardente_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_02a_parked",
+                      "simple_traffic_bx_wheels_R_03a_parked",
+                      "simple_traffic_bx_wheels_R_02a",
+                      "simple_traffic_bx_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_01a_parked",
+                      "simple_traffic_van_wheels_R_03a_parked",
+                      "simple_traffic_van_wheels_R_02a_parked",
+                      "simple_traffic_van_wheels_R_04a_parked",
+                      "simple_traffic_van_wheels_R_01a",
+                      "simple_traffic_van_wheels_R_03a",
+                      "simple_traffic_van_wheels_R_04a",
+                      "simple_traffic_van_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a_parked",
+                      "simple_traffic_etkc_wheels_R_02a_parked",
+                      "simple_traffic_etkc_wheels_R_02a",
+                      "simple_traffic_etkc_wheels_R_01a",
+                      "simple_traffic_etki_wheels_R_01a_parked",
+                      "simple_traffic_etki_wheels_R_02a_parked",
+                      "simple_traffic_etki_wheels_R_02a",
+                      "simple_traffic_etki_wheels_R_01a",
+                      "simple_traffic_covet_wheels_R_01a_parked",
+                      "simple_traffic_covet_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_01a_parked",
+                      "simple_traffic_etk800_wheels_R_02a_parked",
+                      "simple_traffic_etk800_wheels_R_03a_parked",
+                      "simple_traffic_etk800_wheels_R_01a",
+                      "simple_traffic_etk800_wheels_R_02a",
+                      "simple_traffic_etk800_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a_parked",
+                      "simple_traffic_legran_wheels_R_01a_alt_parked",
+                      "simple_traffic_legran_wheels_R_01a_parked",
+                      "simple_traffic_legran_wheels_R_03a_parked",
+                      "simple_traffic_legran_wheels_R_03a",
+                      "simple_traffic_legran_wheels_R_02a",
+                      "simple_traffic_legran_wheels_R_01a",
+                      "simple_traffic_legran_wheels_R_01a_alt",
+                      "simple_traffic_pickup_wheels_R_01a_parked",
+                      "simple_traffic_pickup_wheels_R_02a_parked",
+                      "simple_traffic_pickup_wheels_R_04a_parked",
+                      "simple_traffic_pickup_wheels_R_06a_parked",
+                      "simple_traffic_pickup_wheels_R_05a_parked",
+                      "simple_traffic_pickup_wheels_R_03a_parked",
+                      "simple_traffic_pickup_wheels_R_01a",
+                      "simple_traffic_pickup_wheels_R_04a",
+                      "simple_traffic_pickup_wheels_R_06a",
+                      "simple_traffic_pickup_wheels_R_02a",
+                      "simple_traffic_pickup_wheels_R_03a",
+                      "simple_traffic_pickup_wheels_R_05a",
+                      "simple_traffic_roamer_wheels_R_01a_parked",
+                      "simple_traffic_roamer_wheels_R_03a_parked",
+                      "simple_traffic_roamer_wheels_R_02a_parked",
+                      "simple_traffic_roamer_wheels_R_04a_parked",
+                      "simple_traffic_roamer_wheels_R_01a",
+                      "simple_traffic_roamer_wheels_R_03a",
+                      "simple_traffic_roamer_wheels_R_02a",
+                      "simple_traffic_roamer_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_01a_alt",
+                      "simple_traffic_vivace_wheels_R_02a",
+                      "simple_traffic_vivace_wheels_R_01a",
+                      "simple_traffic_vivace_wheels_R_05a",
+                      "simple_traffic_vivace_wheels_R_04a",
+                      "simple_traffic_vivace_wheels_R_03a",
+                      "simple_traffic_vivace_wheels_R_04a_alt",
+                      "simple_traffic_robotvan_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a_parked",
+                      "simple_traffic_pessima_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_01a_parked",
+                      "simple_traffic_midsize_wheels_R_02a_parked",
+                      "simple_traffic_midsize_wheels_R_03a_parked",
+                      "simple_traffic_midsize_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_01a_parked",
+                      "simple_traffic_sunburst2_wheels_R_04a_parked",
+                      "simple_traffic_sunburst2_wheels_R_03a_parked",
+                      "simple_traffic_sunburst2_wheels_R_02a_parked",
+                      "simple_traffic_pessima_wheels_R_02a",
+                      "simple_traffic_pessima_wheels_R_01a",
+                      "simple_traffic_pessima_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_02a",
+                      "simple_traffic_wendover_wheels_R_01a",
+                      "simple_traffic_wendover_wheels_R_03a",
+                      "simple_traffic_wendover_wheels_R_01a_parked",
+                      "simple_traffic_wendover_wheels_R_03a_parked",
+                      "simple_traffic_wendover_wheels_R_02a_parked",
+                      "simple_traffic_bastion_wheels_R_police",
+                      "simple_traffic_bastion_wheels_R_base",
+                      "simple_traffic_bastion_wheels_R_sport",
+                      "simple_traffic_bastion_wheels_R_luxe",
+                      "simple_traffic_sunburst2_wheels_R_01a",
+                      "simple_traffic_sunburst2_wheels_R_02a",
+                      "simple_traffic_sunburst2_wheels_R_04a",
+                      "simple_traffic_sunburst2_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_01a",
+                      "simple_traffic_midsize_wheels_R_03a",
+                      "simple_traffic_midsize_wheels_R_02a"
+                    ],
+                    "chosenPartName": "simple_traffic_midsize_wheels_R_01a",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheels_R",
+                    "children": {
+                      "simple_traffic_midsize_hubcaps_R": {
+                        "decisionMethod": "user",
+                        "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/simple_traffic_midsize_hubcaps_R/simple_traffic_midsize_hubcaps_R_01a",
+                        "suitablePartNames": [
+                          "simple_traffic_midsize_hubcaps_R_02a",
+                          "simple_traffic_midsize_hubcaps_R_04a",
+                          "simple_traffic_midsize_hubcaps_R_01a",
+                          "simple_traffic_midsize_hubcaps_R_03a"
+                        ],
+                        "chosenPartName": "simple_traffic_midsize_hubcaps_R_01a",
+                        "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheels_R/simple_traffic_midsize_hubcaps_R/",
+                        "unsuitablePartNames": [],
+                        "id": "simple_traffic_midsize_hubcaps_R"
+                      }
+                    }
+                  },
+                  "simple_traffic_swaybar_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_swaybar_R_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_swaybar_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_swaybar_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_swaybar_R_doublewishbone"
+                  },
+                  "simple_traffic_coilover_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_coilover_R_doublewishbone/simple_traffic_coilover_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_coilover_R_doublewishbone",
+                      "simple_traffic_coilover_R_doublewishbone_lifted"
+                    ],
+                    "chosenPartName": "simple_traffic_coilover_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_coilover_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_coilover_R_doublewishbone"
+                  },
+                  "simple_traffic_wheeldata_R_doublewishbone": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone",
+                    "suitablePartNames": [
+                      "simple_traffic_wheeldata_R_doublewishbone"
+                    ],
+                    "chosenPartName": "simple_traffic_wheeldata_R_doublewishbone",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_wheeldata_R_doublewishbone/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_wheeldata_R_doublewishbone"
+                  },
+                  "simple_traffic_brake_R": {
+                    "decisionMethod": "user",
+                    "partPath": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_brake_R/simple_traffic_brake_R",
+                    "suitablePartNames": [
+                      "simple_traffic_brake_R_heavy",
+                      "simple_traffic_brake_R"
+                    ],
+                    "chosenPartName": "simple_traffic_brake_R",
+                    "path": "/simple_traffic_model/simple_traffic_suspension_R_doublewishbone/simple_traffic_brake_R/",
+                    "unsuitablePartNames": [],
+                    "id": "simple_traffic_brake_R"
+                  }
+                }
+              },
+              "simple_traffic_midsize_headlight_L_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_headlight_L_bulb/headlightBulb_halogen_55W",
+                "suitablePartNames": [
+                  "headlightBulb_halogen_55W"
+                ],
+                "chosenPartName": "headlightBulb_halogen_55W",
+                "path": "/simple_traffic_model/simple_traffic_midsize_headlight_L_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_headlight_L_bulb"
+              },
+              "soundscape_horn": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/soundscape_horn/soundscape_horn_114",
+                "suitablePartNames": [
+                  "soundscape_horn_103",
+                  "soundscape_horn_102",
+                  "soundscape_horn_127",
+                  "soundscape_horn_111",
+                  "soundscape_horn_126",
+                  "soundscape_horn_110",
+                  "soundscape_horn_10",
+                  "soundscape_horn_108",
+                  "soundscape_horn_2",
+                  "soundscape_horn_11",
+                  "soundscape_horn_115",
+                  "soundscape_horn_128",
+                  "soundscape_horn_121",
+                  "soundscape_horn_8",
+                  "soundscape_horn_105",
+                  "soundscape_horn_5",
+                  "soundscape_horn_106",
+                  "soundscape_horn_114",
+                  "soundscape_horn_120",
+                  "soundscape_horn_12",
+                  "soundscape_horn_124",
+                  "soundscape_horn_130",
+                  "soundscape_horn_9",
+                  "soundscape_horn_113",
+                  "soundscape_horn_132",
+                  "soundscape_horn_109",
+                  "soundscape_horn_122",
+                  "soundscape_horn_7",
+                  "soundscape_horn_112",
+                  "soundscape_horn_129",
+                  "soundscape_horn_101",
+                  "soundscape_horn_4",
+                  "soundscape_horn_117",
+                  "soundscape_horn_6",
+                  "soundscape_horn_125",
+                  "soundscape_horn_3",
+                  "soundscape_horn_1",
+                  "soundscape_horn_123",
+                  "soundscape_horn_116",
+                  "soundscape_horn_131",
+                  "soundscape_horn_118",
+                  "soundscape_horn_133",
+                  "soundscape_horn_104",
+                  "soundscape_horn_119",
+                  "soundscape_horn_107"
+                ],
+                "chosenPartName": "soundscape_horn_114",
+                "path": "/simple_traffic_model/soundscape_horn/",
+                "unsuitablePartNames": [],
+                "id": "soundscape_horn"
+              },
+              "simple_traffic_midsize_licenseplate_R": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_licenseplate_R/simple_traffic_midsize_licenseplate_R",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_licenseplate_R"
+                ],
+                "chosenPartName": "simple_traffic_midsize_licenseplate_R",
+                "path": "/simple_traffic_model/simple_traffic_midsize_licenseplate_R/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_licenseplate_R"
+              },
+              "simple_traffic_midsize_bumper_F": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_bumper_F/simple_traffic_midsize_bumper_F",
+                "suitablePartNames": [
+                  "simple_traffic_midsize_bumper_F"
+                ],
+                "chosenPartName": "simple_traffic_midsize_bumper_F",
+                "path": "/simple_traffic_model/simple_traffic_midsize_bumper_F/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_bumper_F"
+              },
+              "traffic_midsize_bodytrim": {
+                "decisionMethod": "user",
+                "partPath": "/simple_traffic_model/traffic_midsize_bodytrim/traffic_midsize_bodytrim_paint",
+                "suitablePartNames": [
+                  "traffic_midsize_bodytrim_paint",
+                  "traffic_midsize_bodytrim_sport",
+                  "traffic_midsize_bodytrim_plastic"
+                ],
+                "chosenPartName": "traffic_midsize_bodytrim_paint",
+                "path": "/simple_traffic_model/traffic_midsize_bodytrim/",
+                "unsuitablePartNames": [],
+                "id": "traffic_midsize_bodytrim"
+              },
+              "simple_traffic_midsize_headlight_R_bulb": {
+                "decisionMethod": "default",
+                "partPath": "/simple_traffic_model/simple_traffic_midsize_headlight_R_bulb/headlightBulb_halogen_55W",
+                "suitablePartNames": [
+                  "headlightBulb_halogen_55W"
+                ],
+                "chosenPartName": "headlightBulb_halogen_55W",
+                "path": "/simple_traffic_model/simple_traffic_midsize_headlight_R_bulb/",
+                "unsuitablePartNames": [],
+                "id": "simple_traffic_midsize_headlight_R_bulb"
+              }
+            }
+          },
+          "licenseplate_design_2_1": {
+            "decisionMethod": "user-empty",
+            "suitablePartNames": [
+              "license_plate_gridmap_2_1",
+              "license_plate_Utah_2_1",
+              "license_plate_italy_old_2_1",
+              "license_plate_eca_2_1",
+              "license_plate_Texas_2_1",
+              "license_plate_nz_1",
+              "license_plate_wca_2_1",
+              "license_plate_germany_2_1",
+              "license_plate_jungle_rock_island_2_1",
+              "license_plate_italy_2_1"
+            ],
+            "chosenPartName": "",
+            "path": "/licenseplate_design_2_1/",
+            "unsuitablePartNames": [],
+            "id": "licenseplate_design_2_1"
+          }
+        },
+        "chosenPartName": "simple_traffic",
+        "path": "/",
+        "unsuitablePartNames": [],
+        "id": "main",
+        "suitablePartNames": [
+          "simple_traffic"
+        ]
+      },
+      "paints": [
+        {
+          "baseColor": [
+            0.689,
+            0.118,
+            0.118,
+            0.85
+          ],
+          "roughness": 0.07,
+          "clearcoat": 0.0,
+          "metallic": 0.0,
+          "clearcoatRoughness": 0.0
+        },
+        {
+          "baseColor": [
+            0.689,
+            0.118,
+            0.118,
+            0.85
+          ],
+          "roughness": 0.07,
+          "clearcoat": 0.0,
+          "metallic": 0.0,
+          "clearcoatRoughness": 0.0
+        },
+        {
+          "baseColor": [
+            0.689,
+            0.118,
+            0.118,
+            0.85
+          ],
+          "roughness": 0.07,
+          "clearcoat": 0.0,
+          "metallic": 0.0,
+          "clearcoatRoughness": 0.0
+        }
+      ],
+      "model": "simple_traffic",
+      "partConfigFilename": "vehicles/simple_traffic/midsize_lx.pc",
+      "mainPartPath": "/simple_traffic",
+      "mainPartName": "simple_traffic"
+    }
+  }
+]

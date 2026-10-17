@@ -6,7 +6,7 @@ tags: [ibm, uriel]
 
 # Arrival-time ML plan
 
-Status: **planned**, no model family locked, data collection/training/held-out result or deployed inference demonstrated.
+Status: **baseline pilot data recorded**, including three fresh seeded six-vehicle runs at average 30 Hz and ten more at requested 60 Hz using a standalone Small Grid recorder; no model family locked, training, held-out result or deployed inference demonstrated. See [[recording]] and [[log]] for collection definitions and actual run evidence. Pilot labels use virtual crossing geometry and spawn-body proxies; they do not establish calibrated physical occupancy or verified contact.
 
 Predict remaining seconds until a vehicle reaches a defined conflict-zone entry boundary. Features proposed in S5: route-relative distance, actual speed, recent speed/acceleration history, current/recent advice and relevant route/vehicle characteristics. A compact scikit-learn regressor such as random forest is an example candidate, not a decision.
 

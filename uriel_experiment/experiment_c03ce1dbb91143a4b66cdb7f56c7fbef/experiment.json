@@ -1,0 +1,23 @@
+{
+  "experiment_id": "experiment_c03ce1dbb91143a4b66cdb7f56c7fbef",
+  "first_seed": 903101,
+  "trials_requested": 10,
+  "requested_speed_multiplier": 2.0,
+  "telemetry_hz": 60,
+  "duration_seconds": 25,
+  "collector_sha256": "24951f679a693d1eb2bfc18d25ac87f66e6015e1496b11f6a3fab47ee8aeeb64",
+  "dimensions_fixed_by": "same model/config on every reload; measured dimensions per run",
+  "status": "complete",
+  "runs": [
+    "fresh_001",
+    "fresh_002",
+    "fresh_003",
+    "fresh_004",
+    "fresh_005",
+    "fresh_006",
+    "fresh_007",
+    "fresh_008",
+    "fresh_009",
+    "fresh_010"
+  ]
+}

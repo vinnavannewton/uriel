@@ -58,4 +58,4 @@ Examples: [headon-hello.json](../../../../examples/headon-hello.json), [headon-s
 - [[sources]]: S1 PRD section 8; S3 code inspection.
 - [protocol.rs](../../../../src/protocol.rs), [hello sample](../../../../examples/hello.json), [state sample](../../../../examples/state_batch.json).
 - Related: [[architecture]], [[implementation-status]].
-- [[sources]] S8: current v2 source and correlated local run evidence.
+- [[sources]] S9: current v2 source and correlated local run evidence.
