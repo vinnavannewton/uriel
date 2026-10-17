@@ -1,0 +1,714 @@
+{
+  "run_id": "fresh_004",
+  "seed": 903104,
+  "status": "complete",
+  "maximum_duration_seconds": 25,
+  "sampling": {
+    "graphics_fps_limit": 60,
+    "beamng_speed_factor": 4,
+    "requested_hz": 60,
+    "effective_target_hz": 5.0,
+    "steps_per_sample": 1,
+    "expected_simulation_interval_seconds": 0.2
+  },
+  "configuration": [
+    {
+      "vehicle_id": "uriel_red",
+      "role": "subject",
+      "axis": "x",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0,
+      "target_speed": 8.692,
+      "initial_speed_requested": 1.707,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "x_lane_0",
+      "color": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "initial_speed_measured": 1.4633634039947228
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "role": "subject",
+      "axis": "y",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.244,
+      "target_speed": 6.868,
+      "initial_speed_requested": 1.392,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "y_lane_0",
+      "color": [
+        0,
+        0.15,
+        1,
+        1
+      ],
+      "initial_speed_measured": 1.1931880330369555
+    },
+    {
+      "vehicle_id": "traffic_1",
+      "role": "background",
+      "axis": "x",
+      "lane": -12,
+      "progress": -62.069,
+      "start_delay": 1.163,
+      "target_speed": 5.438,
+      "initial_speed_requested": 1.585,
+      "model": "simple_traffic",
+      "source_background_id": "clone1",
+      "route_id": "x_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ],
+      "initial_speed_measured": 1.451933230249762
+    },
+    {
+      "vehicle_id": "traffic_2",
+      "role": "background",
+      "axis": "x",
+      "lane": 12,
+      "progress": -64.656,
+      "start_delay": 1.131,
+      "target_speed": 7.042,
+      "initial_speed_requested": 1.575,
+      "model": "simple_traffic",
+      "source_background_id": "clone0",
+      "route_id": "x_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ],
+      "initial_speed_measured": 1.4080682556326651
+    },
+    {
+      "vehicle_id": "traffic_3",
+      "role": "background",
+      "axis": "y",
+      "lane": -12,
+      "progress": -62.225,
+      "start_delay": 0.011,
+      "target_speed": 7.138,
+      "initial_speed_requested": 0.151,
+      "model": "simple_traffic",
+      "source_background_id": "clone2",
+      "route_id": "y_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ],
+      "initial_speed_measured": 0.13776466636410362
+    },
+    {
+      "vehicle_id": "traffic_4",
+      "role": "background",
+      "axis": "y",
+      "lane": 12,
+      "progress": -46.526,
+      "start_delay": 0.094,
+      "target_speed": 7.212,
+      "initial_speed_requested": 1.955,
+      "model": "simple_traffic",
+      "source_background_id": "clone3",
+      "route_id": "y_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ],
+      "initial_speed_measured": 1.7231095746540834
+    }
+  ],
+  "beamng_speed_factor": 4,
+  "theoretical_max_wall_multiplier": 12,
+  "speed_control": "BeamNG deterministic speed factor; graphics FPS limit remains at 60. Effective sampling rate is capped at 20/speed_factor Hz. Achieved wall-clock multiplier is measured.",
+  "beamngpy": "1.36",
+  "geometry_verified": "virtual coordinates only; body proxy uncalibrated",
+  "control": "BeamNG speed-polyline AI; no Uriel controller",
+  "shift_mode": "realistic_automatic",
+  "initial_speed_semantics": "Requested using supported set_velocity over one physics frame; measured initial speed saved. Delayed cars brake until AI launch.",
+  "randomization_bounds": {
+    "subject_target_mps": [
+      5,
+      10
+    ],
+    "background_target_mps": [
+      4,
+      8
+    ],
+    "initial_speed_mps": [
+      0,
+      2
+    ],
+    "blue_delay_seconds": [
+      0,
+      2
+    ],
+    "background_delay_seconds": [
+      0,
+      2
+    ],
+    "background_progress_m": [
+      -65,
+      -45
+    ]
+  },
+  "unavailable": [
+    "verified vehicle contact detector",
+    "real road lanes/signals on Small Grid"
+  ],
+  "observed_setup_state": {
+    "uriel_red": {
+      "up": [
+        0.010153966955840588,
+        0.00019559629436116666,
+        0.9999484419822693
+      ],
+      "vel": [
+        0.0014015741180628538,
+        0.00011124432785436511,
+        0.00022606589482165873
+      ],
+      "rotation": [
+        -0.0036967843770980835,
+        -0.0036421436816453934,
+        -0.7070832848548889,
+        0.7071112990379333
+      ],
+      "front": [
+        -37.875503063201904,
+        0.32996662637015106,
+        0.6884758621454239
+      ],
+      "pos": [
+        -40.0008778313786,
+        -2.933362793555716e-05,
+        0.14980741296562883
+      ],
+      "dir": [
+        0.999946117401123,
+        -3.9139144064392895e-05,
+        -0.010378671810030937
+      ],
+      "time": 84.13200399605557
+    },
+    "uriel_blue": {
+      "up": [
+        -0.00019633950432762504,
+        0.010154214687645435,
+        0.9999484419822693
+      ],
+      "vel": [
+        -0.00010567870049271733,
+        0.001600904855877161,
+        0.0003174959565512836
+      ],
+      "rotation": [
+        3.835545794572681e-05,
+        0.005189413670450449,
+        0.9999865293502808,
+        -1.9920451450161636e-05
+      ],
+      "front": [
+        -0.3299655364571663,
+        -37.87550210952759,
+        0.6884752362966537
+      ],
+      "pos": [
+        2.9708284046137123e-05,
+        -40.000877634804056,
+        0.14980737924111054
+      ],
+      "dir": [
+        3.944227864849381e-05,
+        0.999946117401123,
+        -0.01037868857383728
+      ],
+      "time": 84.13200399605557
+    },
+    "traffic_1": {
+      "up": [
+        0.014486953616142273,
+        8.584880561102182e-05,
+        0.9998950362205505
+      ],
+      "vel": [
+        0.010722714476287365,
+        0.0012930913362652063,
+        0.0028414817061275244
+      ],
+      "rotation": [
+        -0.005782857537269592,
+        -0.005668033380061388,
+        -0.7069846987724304,
+        0.7071825265884399
+      ],
+      "front": [
+        -59.32555150985718,
+        -12.00083693722263,
+        1.0897977948188782
+      ],
+      "pos": [
+        -62.06591643426509,
+        -12.000161877078426,
+        0.43175186174084956
+      ],
+      "dir": [
+        0.9998688697814941,
+        -0.00027844010037370026,
+        -0.01619349792599678
+      ],
+      "time": 84.13200399605557
+    },
+    "traffic_2": {
+      "up": [
+        -0.0005471944459713995,
+        -0.0001097295171348378,
+        0.9999998211860657
+      ],
+      "vel": [
+        0.0010777889983728528,
+        3.393891893210821e-05,
+        -0.00026771696866489947
+      ],
+      "rotation": [
+        9.819505066843703e-05,
+        0.0001947740383911878,
+        -0.7071201205253601,
+        0.7070934176445007
+      ],
+      "front": [
+        -61.954463958740234,
+        11.999981638266036,
+        0.7131818532943726
+      ],
+      "pos": [
+        -64.65624649185429,
+        11.999936443482284,
+        0.1721628261816477
+      ],
+      "dir": [
+        0.9999999403953552,
+        3.771991396206431e-05,
+        0.00041432344005443156
+      ],
+      "time": 84.13200399605557
+    },
+    "traffic_3": {
+      "up": [
+        0.00037989133852533996,
+        0.3780882656574249,
+        0.9257695078849792
+      ],
+      "vel": [
+        -0.001089483848772943,
+        -0.016411738470196724,
+        0.0018893129890784621
+      ],
+      "rotation": [
+        0.0001521114754723385,
+        0.0061798556707799435,
+        0.9999809861183167,
+        -0.00012197667092550546
+      ],
+      "front": [
+        -11.999516764772125,
+        -59.34041690826416,
+        0.9487076699733734
+      ],
+      "pos": [
+        -12.000374545674276,
+        -62.22232094258652,
+        0.3452525411339593
+      ],
+      "dir": [
+        0.00024206856323871762,
+        0.999923586845398,
+        -0.012359509244561195
+      ],
+      "time": 84.13200399605557
+    },
+    "traffic_4": {
+      "up": [
+        -5.483616405399516e-06,
+        0.005111848935484886,
+        0.9999869465827942
+      ],
+      "vel": [
+        1.9167668142472394e-05,
+        0.002070918446406722,
+        0.0002959486155305058
+      ],
+      "rotation": [
+        2.2261219783104025e-06,
+        0.002535701496526599,
+        0.9999967813491821,
+        8.62833132941887e-07
+      ],
+      "front": [
+        11.999991834790762,
+        -44.0787558555603,
+        0.6869774460792542
+      ],
+      "pos": [
+        11.999998898425048,
+        -46.524342648477614,
+        0.20540372229152126
+      ],
+      "dir": [
+        -1.7369503666486708e-06,
+        0.9999871850013733,
+        -0.005071386694908142
+      ],
+      "time": 84.13200399605557
+    }
+  },
+  "verified_initial_state": {
+    "uriel_red": {
+      "up": [
+        0.010193428955972195,
+        0.00027552476967684925,
+        0.9999479651451111
+      ],
+      "vel": [
+        1.463165044784546,
+        0.00015239442291203886,
+        -0.02409316599369049
+      ],
+      "rotation": [
+        -0.0037110226694494486,
+        -0.003648398444056511,
+        -0.7071057558059692,
+        0.7070886492729187
+      ],
+      "front": [
+        -37.8633189201355,
+        0.3300102765333577,
+        0.6881407797336578
+      ],
+      "pos": [
+        -39.988828748464584,
+        -2.8062366027370444e-05,
+        0.14957896129635628
+      ],
+      "dir": [
+        0.9999458193778992,
+        2.4578384909546003e-05,
+        -0.010407650843262672
+      ],
+      "time": 84.14850399683928
+    },
+    "uriel_blue": {
+      "up": [
+        -0.0002584219619166106,
+        0.010189193300902843,
+        0.9999480843544006
+      ],
+      "vel": [
+        -9.612840949557722e-05,
+        1.1930267810821533,
+        -0.019615620374679565
+      ],
+      "rotation": [
+        4.3364037992432714e-05,
+        0.00520206056535244,
+        0.999986469745636,
+        6.141525773273315e-06
+      ],
+      "front": [
+        -0.33000136784175993,
+        -37.86556601524353,
+        0.6881993860006332
+      ],
+      "pos": [
+        2.8387989004841074e-05,
+        -39.991051399149,
+        0.14962164884491358
+      ],
+      "dir": [
+        -1.2734049050777685e-05,
+        0.9999458193778992,
+        -0.010403978638350964
+      ],
+      "time": 84.14850399683928
+    },
+    "traffic_1": {
+      "up": [
+        0.014525637961924076,
+        5.508054164238274e-05,
+        0.9998944997787476
+      ],
+      "vel": [
+        1.45181405544281,
+        0.0009042731835506856,
+        -0.018580522388219833
+      ],
+      "rotation": [
+        -0.005723804235458374,
+        -0.0055832755751907825,
+        -0.7069864273071289,
+        0.707181990146637
+      ],
+      "front": [
+        -59.313605546951294,
+        -12.000850495649502,
+        1.0896129608154297
+      ],
+      "pos": [
+        -62.054090538062155,
+        -12.000143367684359,
+        0.4316215459839441
+      ],
+      "dir": [
+        0.9998721480369568,
+        -0.00027514350949786603,
+        -0.015990139916539192
+      ],
+      "time": 84.14850399683928
+    },
+    "traffic_2": {
+      "up": [
+        -0.000492985243909061,
+        -0.0001101496527553536,
+        0.9999998211860657
+      ],
+      "vel": [
+        1.4080302715301514,
+        -0.00027307780692353845,
+        -0.010338878259062767
+      ],
+      "rotation": [
+        0.00012232194421812892,
+        0.00023237202549353242,
+        -0.7071211338043213,
+        0.7070923447608948
+      ],
+      "front": [
+        -61.942959785461426,
+        11.999989130963513,
+        0.713209480047226
+      ],
+      "pos": [
+        -64.64480138756335,
+        11.999935229872904,
+        0.17213323973737715
+      ],
+      "dir": [
+        0.9999998211860657,
+        4.0693976188777015e-05,
+        0.0005016161594539881
+      ],
+      "time": 84.14850399683928
+    },
+    "traffic_3": {
+      "up": [
+        0.00039381414535455406,
+        0.37813034653663635,
+        0.9257523417472839
+      ],
+      "vel": [
+        -0.0021637463942170143,
+        0.13771416246891022,
+        0.003038248745724559
+      ],
+      "rotation": [
+        0.00015773366612847894,
+        0.006199606228619814,
+        0.9999807476997375,
+        -0.00012863586016464978
+      ],
+      "front": [
+        -11.999496326199733,
+        -59.339396715164185,
+        0.9486255347728729
+      ],
+      "pos": [
+        -12.000402434670832,
+        -62.221336307702586,
+        0.34529284647578606
+      ],
+      "dir": [
+        0.00025531096616759896,
+        0.999923050403595,
+        -0.01239901315420866
+      ],
+      "time": 84.14850399683928
+    },
+    "traffic_4": {
+      "up": [
+        -5.259519184619421e-06,
+        0.005238237325102091,
+        0.9999862909317017
+      ],
+      "vel": [
+        6.299981578195002e-06,
+        1.722975492477417,
+        -0.021495547145605087
+      ],
+      "rotation": [
+        2.8187470888951793e-05,
+        0.0024938120041042566,
+        0.9999969005584717,
+        9.79859692051832e-07
+      ],
+      "front": [
+        11.999991115635567,
+        -44.064600467681885,
+        0.6868652850389481
+      ],
+      "pos": [
+        11.999999042357821,
+        -46.51028387993574,
+        0.2052769258589251
+      ],
+      "dir": [
+        -2.1003017991461093e-06,
+        0.9999875426292419,
+        -0.004987608641386032
+      ],
+      "time": 84.14850399683928
+    }
+  },
+  "vehicle_dimensions": {
+    "uriel_red": {
+      "length": 4.463645935058594,
+      "width": 2.1202770471572876,
+      "height": 1.3762772679328918
+    },
+    "uriel_blue": {
+      "length": 4.463645935058594,
+      "width": 2.1202776432037354,
+      "height": 1.376275897026062
+    },
+    "traffic_1": {
+      "length": 7.383144378662109,
+      "width": 2.7885379791259766,
+      "height": 3.1278247833251953
+    },
+    "traffic_2": {
+      "length": 5.021472930908203,
+      "width": 2.112386703491211,
+      "height": 1.4483687281608582
+    },
+    "traffic_3": {
+      "length": 5.5581817626953125,
+      "width": 2.210477828979492,
+      "height": 1.8297598958015442
+    },
+    "traffic_4": {
+      "length": 4.706230163574219,
+      "width": 2.0200138092041016,
+      "height": 1.4618210196495056
+    }
+  },
+  "timing": {
+    "simulation_seconds": 25.000001187436283,
+    "recording_wall_seconds": 11.046117245999994,
+    "achieved_speed_multiplier": 2.2632388042494527,
+    "target_speed_reached": false,
+    "measured_hz": 4.999999762512755,
+    "includes_setup": false
+  },
+  "outcomes": {
+    "uriel_red": {
+      "entry_seconds": 6.800000322982669,
+      "clearance_seconds": 8.00000037997961,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 1699.2974243164062,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 8.697795729971219,
+      "samples": 126
+    },
+    "uriel_blue": {
+      "entry_seconds": 7.80000037048012,
+      "clearance_seconds": 9.400000446476042,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 6.871248440688134,
+      "samples": 126
+    },
+    "traffic_1": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 5.440013857887482,
+      "samples": 126
+    },
+    "traffic_2": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 5.6812157708918676e-05,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 7.045039982902314,
+      "samples": 126
+    },
+    "traffic_3": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 7.1474197232230345,
+      "samples": 126
+    },
+    "traffic_4": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 6176.671630859375,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 7.3814221576226915,
+      "samples": 126
+    }
+  },
+  "sample_count": 756,
+  "quality": "PASS_WITH_LIMITATIONS"
+}

@@ -1,0 +1,4 @@
+{
+  "status": "FAIL",
+  "reason": "BNGDisconnectedError('The simulator ended the connection.')"
+}

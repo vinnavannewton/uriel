@@ -1,0 +1,170 @@
+{
+  "run_id": "fresh_008",
+  "seed": 903108,
+  "status": "failed",
+  "maximum_duration_seconds": 25,
+  "sampling": {
+    "graphics_fps_limit": 60,
+    "beamng_speed_factor": 4,
+    "requested_hz": 60,
+    "effective_target_hz": 5.0,
+    "steps_per_sample": 1,
+    "expected_simulation_interval_seconds": 0.2
+  },
+  "configuration": [
+    {
+      "vehicle_id": "uriel_red",
+      "role": "subject",
+      "axis": "x",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0,
+      "target_speed": 5.716,
+      "initial_speed_requested": 1.321,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "x_lane_0",
+      "color": [
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "role": "subject",
+      "axis": "y",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.194,
+      "target_speed": 6.646,
+      "initial_speed_requested": 1.854,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "y_lane_0",
+      "color": [
+        0,
+        0.15,
+        1,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_1",
+      "role": "background",
+      "axis": "x",
+      "lane": -12,
+      "progress": -46.419,
+      "start_delay": 0.872,
+      "target_speed": 6.303,
+      "initial_speed_requested": 0.377,
+      "model": "simple_traffic",
+      "source_background_id": "clone1",
+      "route_id": "x_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_2",
+      "role": "background",
+      "axis": "x",
+      "lane": 12,
+      "progress": -51.856,
+      "start_delay": 0.152,
+      "target_speed": 4.252,
+      "initial_speed_requested": 1.208,
+      "model": "simple_traffic",
+      "source_background_id": "clone0",
+      "route_id": "x_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_3",
+      "role": "background",
+      "axis": "y",
+      "lane": -12,
+      "progress": -52.931,
+      "start_delay": 0.582,
+      "target_speed": 5.892,
+      "initial_speed_requested": 1.71,
+      "model": "simple_traffic",
+      "source_background_id": "clone2",
+      "route_id": "y_lane_-12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    },
+    {
+      "vehicle_id": "traffic_4",
+      "role": "background",
+      "axis": "y",
+      "lane": 12,
+      "progress": -45.224,
+      "start_delay": 0.844,
+      "target_speed": 5.894,
+      "initial_speed_requested": 1.361,
+      "model": "simple_traffic",
+      "source_background_id": "clone3",
+      "route_id": "y_lane_12",
+      "color": [
+        0.5,
+        0.5,
+        0.5,
+        1
+      ]
+    }
+  ],
+  "beamng_speed_factor": 4,
+  "theoretical_max_wall_multiplier": 12,
+  "speed_control": "BeamNG deterministic speed factor; graphics FPS limit remains at 60. Effective sampling rate is capped at 20/speed_factor Hz. Achieved wall-clock multiplier is measured.",
+  "beamngpy": "1.36",
+  "geometry_verified": "virtual coordinates only; body proxy uncalibrated",
+  "control": "BeamNG speed-polyline AI; no Uriel controller",
+  "shift_mode": "realistic_automatic",
+  "initial_speed_semantics": "Requested using supported set_velocity over one physics frame; measured initial speed saved. Delayed cars brake until AI launch.",
+  "randomization_bounds": {
+    "subject_target_mps": [
+      5,
+      10
+    ],
+    "background_target_mps": [
+      4,
+      8
+    ],
+    "initial_speed_mps": [
+      0,
+      2
+    ],
+    "blue_delay_seconds": [
+      0,
+      2
+    ],
+    "background_delay_seconds": [
+      0,
+      2
+    ],
+    "background_progress_m": [
+      -65,
+      -45
+    ]
+  },
+  "unavailable": [
+    "verified vehicle contact detector",
+    "real road lanes/signals on Small Grid"
+  ],
+  "error": "BNGDisconnectedError('The simulator ended the connection.')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/Baba_yaga/uriel/scripts/fresh_experiment.py\", line 183, in collect\n    s.make(b);b.scenario.load(s);b.scenario.start();b.control.pause();b.settings.set_deterministic(60)\n              ~~~~~~~~~~~~~~~^^^\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/api/beamng/scenario.py\", line 190, in load\n    self._send(data).ack(\"MapLoaded\")\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/connection/connection.py\", line 316, in ack\n    message = self.recv()\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/connection/connection.py\", line 306, in recv\n    message = self.connection.recv(self.req_id)\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/connection/connection.py\", line 243, in recv\n    message = self.skt.recv()\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/connection/prefixed_length_socket.py\", line 91, in recv\n    packed_length = self._recv_exactly(self.HEADER_BYTES)\n  File \"/home/Baba_yaga/uriel/.venv/lib64/python3.14/site-packages/beamngpy/connection/prefixed_length_socket.py\", line 49, in _recv_exactly\n    raise BNGDisconnectedError(\"The simulator ended the connection.\")\nbeamngpy.logging.BNGDisconnectedError: The simulator ended the connection.\n"
+}

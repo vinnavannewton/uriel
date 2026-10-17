@@ -1,0 +1,35 @@
+{
+  "experiment_id": "experiment_65a37c95c1944d50b0488fbaf9fdcd17",
+  "first_seed": 903101,
+  "trials_requested": 10,
+  "beamng_speed_factor": 8,
+  "theoretical_max_wall_multiplier": 24,
+  "graphics_fps_limit": 60,
+  "ai": {
+    "beamng_mode": "manual",
+    "aggression_preset": "aggressive",
+    "aggression_value": 1.0,
+    "aggression_range": [
+      0.3,
+      1.0
+    ]
+  },
+  "requested_telemetry_hz": 60,
+  "expected_effective_telemetry_hz": 2.5,
+  "duration_seconds": 25,
+  "collector_sha256": "e49e8e270f734cd6cb63bd9d0a8c58244360f06b6f2ef8f7f91b2ac8de78ce28",
+  "dimensions_fixed_by": "same model/config on every reload; measured dimensions per run",
+  "status": "complete",
+  "runs": [
+    "fresh_001",
+    "fresh_002",
+    "fresh_003",
+    "fresh_004",
+    "fresh_005",
+    "fresh_006",
+    "fresh_007",
+    "fresh_008",
+    "fresh_009",
+    "fresh_010"
+  ]
+}
