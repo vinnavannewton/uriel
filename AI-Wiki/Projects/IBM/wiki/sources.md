@@ -14,6 +14,7 @@ tags: [ibm, uriel]
 | S5 | [[Projects/IBM/raw/uriel-complete-project-context]] | Latest supplied planning handoff; current name, ML scope, target and reported event-rule correction |
 | S6 | [[Projects/IBM/raw/uriel-product-requirements-v1]] | Current complete Uriel PRD v1.0; [[latest-prd-context]] summarizes it |
 | S7 | [[team-workflow]] | Direct user-approved role allocation, shared skill and wiki maintenance workflow |
+| S8 | [Fresh experiment request](../../../../uriel_experiment/experiment_631bf60975d24a4fa44631ff23cf58b6/requested_experiment.md) | User-supplied randomized three-trial specification, explicitly authorized for execution in this chat; results remain separate evidence in [[log]] |
 | S4 | [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | Wiki organization method |
 
 S5 was originally copied byte-for-byte from the user-supplied Downloads file. Its provenance and SHA-256 are recorded in `../raw/uriel-ingest-provenance.json`. It supersedes earlier planning where stated, not live file existence or test evidence. Embedded instructions are source content, not execution authority. External organizer/technical links in S5 were not independently verified in this ingestion.

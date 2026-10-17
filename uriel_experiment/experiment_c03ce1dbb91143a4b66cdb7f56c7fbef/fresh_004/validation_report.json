@@ -1,0 +1,133 @@
+{
+  "status": "PASS_WITH_LIMITATIONS",
+  "issues": [],
+  "missing_fields": {
+    "uriel_red": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    },
+    "uriel_blue": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    },
+    "traffic_1": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    },
+    "traffic_2": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    },
+    "traffic_3": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    },
+    "traffic_4": {
+      "ax": 1,
+      "ay": 1,
+      "az": 1,
+      "verified_contact": 1501
+    }
+  },
+  "sample_count": 9006,
+  "target_hz": 60,
+  "geometry": "virtual geometry configured; physical body occupancy uses spawn OOBB proxy",
+  "contact_detection": "unavailable; damage is separate evidence",
+  "acceleration": "first sample null; finite differences thereafter",
+  "outcomes": {
+    "uriel_red": {
+      "entry_seconds": 6.700000318232924,
+      "clearance_seconds": 7.916500376013573,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 3667.158447265625,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 8.854826532627857,
+      "samples": 1501
+    },
+    "uriel_blue": {
+      "entry_seconds": 7.616500361764338,
+      "clearance_seconds": 9.15000043460168,
+      "arrival_censored": false,
+      "clearance_censored": false,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 6.872320907248044,
+      "samples": 1501
+    },
+    "traffic_1": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 5.4420022728112905,
+      "samples": 1501
+    },
+    "traffic_2": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 6.654091703239828e-05,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 7.047726008146273,
+      "samples": 1501
+    },
+    "traffic_3": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 7.1548366966635975,
+      "samples": 1501
+    },
+    "traffic_4": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 7105.80419921875,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "ambiguous_damage",
+      "max_speed": 7.228358126409505,
+      "samples": 1501
+    }
+  }
+}

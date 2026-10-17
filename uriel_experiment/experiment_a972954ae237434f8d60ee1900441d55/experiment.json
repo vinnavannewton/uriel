@@ -1,0 +1,16 @@
+{
+  "experiment_id": "experiment_a972954ae237434f8d60ee1900441d55",
+  "seeds": [
+    903101,
+    903102,
+    903103
+  ],
+  "collector_sha256": "b0a699d375743ac3ff77fef2685e65f2fda368bd229bb3c97cf0bf4348f3e4fb",
+  "dimensions_fixed_by": "same model/config on every reload; measured dimensions per run",
+  "status": "completed_with_failures",
+  "runs": [
+    "fresh_001",
+    "fresh_002",
+    "fresh_003"
+  ]
+}

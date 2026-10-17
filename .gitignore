@@ -1,3 +1,13 @@
 /target/
 /runs/
 .env
+
+# Keep collected BeamNG telemetry and trial data in the project workspace,
+# but do not add raw recordings to Git.
+**/telemetry.csv
+**/arrival_labels.csv
+**/events.jsonl
+
+# Python-generated local bytecode.
+__pycache__/
+*.py[cod]

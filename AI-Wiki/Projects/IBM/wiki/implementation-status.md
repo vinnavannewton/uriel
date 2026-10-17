@@ -21,12 +21,12 @@ The table below inventories the earlier prototype; it does not certify event eli
 | Advice simulation expiry | Present in output |
 | Server wall-age checks at plan emission | Missing |
 | Dashboard | HTTP polling, read-only, labelled demo mode |
-| Detailed recording | Implemented with reliability/metadata gaps |
-| Python BeamNG bridge and calibrated control | Not present in workspace |
+| Detailed recording | Standalone seeded six-vehicle recorder implemented; BeamNG frame limiter fixed at 60 during and after collection; per-frame accelerated sampling is capped by BeamNG's physics step quantum |
+| Python BeamNG bridge and calibrated control | Connection helper and standalone Small Grid pilot collector now present; Rust telemetry/control integration and calibrated control remain absent |
 | Real West Coast USA scenario | Not configured |
-| Physical/fault/load acceptance | Not performed |
+| Physical/fault/load acceptance | Small Grid, West Coast traffic and fresh seeded 30 Hz plus ten 60 Hz baseline trials recorded; no Uriel closed-loop/fault/load acceptance established |
 | Ubuntu/LinuxONE deployment | Not performed; Ubuntu 24.04/s390x target reported confirmed in S5 |
-| Arrival-time ML, dataset labels and evaluation | Planned; no model or results established |
+| Arrival-time ML, dataset labels and evaluation | Standalone pilot collects sampled front-point arrival labels; no trained model or held-out evaluation established |
 | Python inference worker on LinuxONE | Recommended design; not implemented |
 | Mandatory labs / event readiness | Required according to S5; completion unverified |
 

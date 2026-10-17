@@ -1,0 +1,18 @@
+{
+  "experiment_id": "experiment_49ea4ab85608437db5042631b269eacd",
+  "first_seed": 903101,
+  "trials_requested": 10,
+  "beamng_speed_factor": 8,
+  "theoretical_max_wall_multiplier": 24,
+  "graphics_fps_limit": 60,
+  "requested_telemetry_hz": 60,
+  "expected_effective_telemetry_hz": 2.5,
+  "duration_seconds": 25,
+  "collector_sha256": "56dd367832c8cec782245a8ce29b468a8e4baf58e48980cf92e463565bd447ed",
+  "dimensions_fixed_by": "same model/config on every reload; measured dimensions per run",
+  "status": "interrupted",
+  "error": "KeyboardInterrupt()",
+  "runs": [
+    "fresh_001"
+  ]
+}

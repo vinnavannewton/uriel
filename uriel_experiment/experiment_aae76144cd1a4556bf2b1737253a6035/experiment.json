@@ -1,0 +1,20 @@
+{
+  "experiment_id": "experiment_aae76144cd1a4556bf2b1737253a6035",
+  "first_seed": 903101,
+  "trials_requested": 10,
+  "requested_speed_multiplier": 2.0,
+  "telemetry_hz": 60,
+  "duration_seconds": 25,
+  "collector_sha256": "3695a9c8645a21a91e540a7c50ea04fd49deff97bd265da5c350ca3c0901829d",
+  "dimensions_fixed_by": "same model/config on every reload; measured dimensions per run",
+  "status": "interrupted",
+  "error": "KeyboardInterrupt()",
+  "runs": [
+    "fresh_001",
+    "fresh_002",
+    "fresh_003",
+    "fresh_004",
+    "fresh_005",
+    "fresh_006"
+  ]
+}
