@@ -1,4 +1,8 @@
+mod collision_observer;
 mod coordinator;
+mod headon;
+mod headon_bridge;
+mod headon_protocol;
 mod protocol;
 mod scenario;
 mod world;
@@ -41,6 +45,8 @@ struct App {
     compute: Arc<Semaphore>,
     records: mpsc::Sender<Value>,
     started: Instant,
+    headon: headon_bridge::Hub,
+    collision: collision_observer::Hub,
 }
 
 #[tokio::main]
@@ -67,6 +73,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         compute: Arc::new(Semaphore::new(4)),
         records: tx,
         started: Instant::now(),
+        headon: headon_bridge::Hub::default(),
+        collision: collision_observer::Hub::default(),
     };
     let router = Router::new()
         .route(
@@ -97,6 +105,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/worlds/{id}", get(world_detail))
         .route("/api/scenarios/{id}", get(scenario_detail))
         .route("/ws/bridge", get(bridge_upgrade))
+        .route("/ws/headon", get(headon_upgrade))
+        .route(
+            "/api/collision/telemetry",
+            axum::routing::post(collision_telemetry),
+        )
         .with_state(app);
     let bind: SocketAddr = std::env::var("ARC_BIND")
         .unwrap_or_else(|_| "127.0.0.1:3000".into())
@@ -144,8 +157,15 @@ fn record(app: &App, kind: &str, data: Value) {
 }
 
 async fn status(State(app): State<App>) -> Json<Value> {
+    let crossing_count = app.worlds.lock().await.len();
+    let headon_count = app.headon.snapshots().await.len();
+    let collision_count = usize::from(app.collision.snapshot().await.is_some());
     Json(
-        json!({"service":"Arc Angel","version":env!("CARGO_PKG_VERSION"),"protocol_version":VERSION,"uptime_s":app.started.elapsed().as_secs(),"scenario_config_id":app.scenario.id,"world_count":app.worlds.lock().await.len(),"recording":"jsonl"}),
+        json!({"service":"Arc Angel","version":env!("CARGO_PKG_VERSION"),
+        "protocol_version":VERSION,"maneuver_protocol_version":headon_protocol::VERSION,
+        "uptime_s":app.started.elapsed().as_secs(),"scenario_config_id":app.scenario.id,
+        "world_count":crossing_count+headon_count+collision_count,"collision_world_count":collision_count,"crossing_world_count":crossing_count,
+        "headon_world_count":headon_count,"recording":"jsonl"}),
     )
 }
 async fn worlds(State(app): State<App>) -> Json<Value> {
@@ -154,12 +174,27 @@ async fn worlds(State(app): State<App>) -> Json<Value> {
     for w in all {
         snapshots.push(w.lock().await.snapshot());
     }
+    let mut snapshots: Vec<Value> = snapshots
+        .into_iter()
+        .map(|s| serde_json::to_value(s).unwrap())
+        .collect();
+    snapshots.extend(app.headon.snapshots().await);
+    snapshots.extend(app.collision.snapshot().await);
+    snapshots.sort_by_key(|s| s["wall_age_ms"].as_u64().unwrap_or(u64::MAX));
     Json(json!(snapshots))
 }
 async fn world_detail(
     Path(id): Path<String>,
     State(app): State<App>,
 ) -> Result<Json<Value>, StatusCode> {
+    if let Some(snapshot) = app.collision.snapshot().await {
+        if snapshot["world_id"] == id {
+            return Ok(Json(snapshot));
+        }
+    }
+    if let Some(snapshot) = app.headon.get(&id).await {
+        return Ok(Json(snapshot));
+    }
     let w = app
         .worlds
         .lock()
@@ -174,6 +209,12 @@ async fn scenario_detail(
     Path(id): Path<String>,
     State(app): State<App>,
 ) -> Result<Json<Value>, StatusCode> {
+    if id == collision_observer::SCENARIO {
+        return Ok(Json(collision_observer::scenario()));
+    }
+    if id == headon_protocol::SCENARIO {
+        return Ok(Json(headon_bridge::scenario()));
+    }
     if id != app.scenario.id {
         return Err(StatusCode::NOT_FOUND);
     }
@@ -194,6 +235,24 @@ async fn bridge_upgrade(
     }
     ws.max_message_size(256 * 1024)
         .on_upgrade(move |socket| bridge(socket, app))
+        .into_response()
+}
+
+async fn headon_upgrade(
+    ws: WebSocketUpgrade,
+    headers: HeaderMap,
+    State(app): State<App>,
+) -> impl IntoResponse {
+    if let Some(expected) = &app.token {
+        let supplied = headers
+            .get(header::AUTHORIZATION)
+            .and_then(|v| v.to_str().ok());
+        if supplied != Some(format!("Bearer {expected}").as_str()) {
+            return StatusCode::UNAUTHORIZED.into_response();
+        }
+    }
+    ws.max_message_size(256 * 1024)
+        .on_upgrade(move |socket| headon_bridge::serve(socket, app.headon, app.records))
         .into_response()
 }
 
@@ -627,4 +686,27 @@ async fn compute_plan(
         json!({"world_id":world_id,"compute_ms":started.elapsed().as_millis(),"plan":out}),
     );
     Ok(out)
+}
+
+async fn collision_telemetry(
+    State(app): State<App>,
+    headers: HeaderMap,
+    Json(frame): Json<collision_observer::Frame>,
+) -> Result<StatusCode, StatusCode> {
+    if let Some(expected) = &app.token {
+        if headers
+            .get(header::AUTHORIZATION)
+            .and_then(|v| v.to_str().ok())
+            != Some(format!("Bearer {expected}").as_str())
+        {
+            return Err(StatusCode::UNAUTHORIZED);
+        }
+    }
+    let event = json!({"kind":"collision_observation","data":{"world_id":frame.world_id,"frame_seq":frame.frame_seq,"sim_time_s":frame.sim_time_s,"finished":frame.finished,"mode":frame.mode,"vehicles":frame.vehicles}});
+    app.collision
+        .publish(frame)
+        .await
+        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    let _ = app.records.try_send(event);
+    Ok(StatusCode::NO_CONTENT)
 }

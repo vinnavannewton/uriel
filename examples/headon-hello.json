@@ -1,0 +1,13 @@
+{
+  "type": "hello",
+  "protocol_version": 2,
+  "world_id": "headon-example",
+  "world_epoch": "reset-001",
+  "scenario_config_id": "headon-grid-v2",
+  "bridge_id": "beamng-headon-python",
+  "map_id": "smallgrid",
+  "capabilities": [
+    "path_origin_xy_v2",
+    "sim_pause_fallback"
+  ]
+}

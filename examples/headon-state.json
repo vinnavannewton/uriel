@@ -1,0 +1,67 @@
+{
+  "type": "headon_state",
+  "protocol_version": 2,
+  "world_id": "headon-example",
+  "world_epoch": "reset-001",
+  "session_id": "REPLACE_WITH_HELLO_ACK_SESSION",
+  "frame_seq": 0,
+  "sim_time_s": 1.0,
+  "vehicles": [
+    {
+      "vehicle_id": "thePlayer",
+      "position_xyz_m": [
+        0,
+        55,
+        0.2
+      ],
+      "velocity_xyz_mps": [
+        0,
+        0,
+        0
+      ],
+      "forward_xyz": [
+        0,
+        -1,
+        0
+      ],
+      "up_xyz": [
+        0,
+        0,
+        1
+      ],
+      "sensor_sim_time_s": 1.0,
+      "length_m": 4.5,
+      "width_m": 2.02,
+      "enclosing_radius_m": 2.8,
+      "damage": 0.0
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "position_xyz_m": [
+        0,
+        -55,
+        0.2
+      ],
+      "velocity_xyz_mps": [
+        0,
+        0,
+        0
+      ],
+      "forward_xyz": [
+        0,
+        1,
+        0
+      ],
+      "up_xyz": [
+        0,
+        0,
+        1
+      ],
+      "sensor_sim_time_s": 1.0,
+      "length_m": 4.5,
+      "width_m": 2.02,
+      "enclosing_radius_m": 2.8,
+      "damage": 0.0
+    }
+  ]
+}

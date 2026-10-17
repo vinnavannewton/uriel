@@ -1,0 +1,29 @@
+{
+  "kind": "current-source and live-run provenance",
+  "scope": "local plain Grid Plane two-car algorithm-only Rust integration; no ML or obstacles",
+  "live_run": "runs/avoidance-e8d6280410",
+  "server_run": "runs/63ecd444-4f4b-4139-9638-57b1485736ef",
+  "verification": "runs/avoidance-e8d6280410/verification.json",
+  "protocol_checks": "runs/protocol-check-fed323c18e/verification.json",
+  "server_executable_sha256": "62a008658065f76ecbca26100f12b03ad2424a970ba00302f23656e76fb422b9",
+  "source_sha256": {
+    "src/main.rs": "441105a14c8e9630d373b9de84f4c02424ee56e4b097f66096e0fa6c85d4defd",
+    "src/headon_protocol.rs": "f61013f9f2f955950fac2d75b5dd2414677d012e46123bc31980413220e18008",
+    "src/headon.rs": "bf9207c0bbb0b597f222079aac500019209ef4710ae7ee12e02b9b0207065ccc",
+    "src/headon_bridge.rs": "98c65c910f1579493e93e3681307edb5108335f4c19b1ad8b562c84653f66d9e",
+    "scripts/beamng_headon.py": "1887ad8fd8f763866f65ac3c6cef0e241b5abd8d7c55047b76c461f0df152174",
+    "scripts/headon_client.py": "7643245573105d9aeeb184f8b60ae92c3438c5618bccbc1e998de4423e53cad4",
+    "scripts/headon_planner.py": "5919b78edffadb83197e82dfd691c8f2c5e8a04d1f4a1fff8726a0c1aba73961",
+    "scripts/requirements-beamng.txt": "a8919407796b0e6fa32ab2a04ca3279af8463c221cc26f2355cb3a894fd8a33a"
+  },
+  "unit_checks": {
+    "rust": 9,
+    "python": 21
+  },
+  "limitations": [
+    "no trained model or LinuxONE deployment",
+    "no live obstacles",
+    "no broad acceptance or process-death watchdog",
+    "simulator pause is not physical emergency braking"
+  ]
+}

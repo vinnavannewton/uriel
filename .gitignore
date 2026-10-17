@@ -1,3 +1,5 @@
 /target/
 /runs/
 .env
+.venv-beamng/
+__pycache__/

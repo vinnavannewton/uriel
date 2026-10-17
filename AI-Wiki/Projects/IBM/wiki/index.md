@@ -20,7 +20,7 @@ Uriel is the current project name in the supplied handoff. Earlier Arc Angel and
 - [[event-preparation]] — source-reported rules, prerequisite labs and submission needs.
 - [[ml-arrival-prediction]] — training data, evaluation and LinuxONE inference plan.
 - [[architecture]] — existing prototype and proposed ML-enabled architecture.
-- [[protocol]] — current prototype messages and future interface requirements.
+- [[protocol]] — legacy crossing-v1 and implemented head-on maneuver-v2 messages; remaining interface requirements.
 - [[coordination]] — existing scheduler and intended physical constraints.
 - [[dashboard]] — current template and planned operator features.
 - [[operations]] — local setup and specified remote target.

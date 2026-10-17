@@ -1,0 +1,19 @@
+[Unit]
+Description=Uriel Rust coordination server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/uriel
+ExecStart=%h/uriel/target/release/arc-angel
+Environment=ARC_BIND=127.0.0.1:3000
+Environment=ARC_RUN_DIR=%h/.local/state/uriel/runs
+Environment=ARC_SCENARIO=scenarios/crossing-v1.json
+Environment=RUST_LOG=arc_angel=info
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+UMask=0077
+
+[Install]
+WantedBy=default.target
