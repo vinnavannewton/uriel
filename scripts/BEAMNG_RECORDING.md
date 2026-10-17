@@ -4,6 +4,7 @@ From the Uriel folder, with BeamNG.tech already listening on localhost:25252:
 
 ```bash
 .venv/bin/python scripts/fresh_experiment.py --trials 10 --speed 2 --telemetry-hz 60
+.venv/bin/python scripts/fresh_experiment.py --trials 3 --ai-aggression aggressive
 ```
 
 Defaults: three trials, 25 simulation seconds per trial, BeamNG speed factor 2, requested telemetry cap 60 Hz, first seed 903101. Each subsequent trial increments the seed. The graphics FPS limit is fixed at 60 throughout setup, recording, and cleanup. BeamNG's deterministic speed factor advances `factor × 50 ms` per rendered frame, so effective simulation-time sampling remains capped at `20 / speed` Hz: speed 2 records at 10 Hz, speed 8 at 2.5 Hz. The requested and effective rates are both saved in metadata.
@@ -19,6 +20,8 @@ python scripts/fresh_experiment.py --trials 1 --duration 1 --output runs/collect
 ```
 
 `--duration` is the maximum simulation time; the final horizon can differ by at most half a sample interval. `--speed` accepts integer BeamNG factors 1–8. `--telemetry-hz` accepts requested caps of 30, 60 or 120, but the effective rate is `min(requested, 20/speed)`. Graphics FPS is fixed at 60. Optional host, port, output-parent and background-config paths are available. No existing recording directory is reused. The simulator must have its BeamNGpy API enabled; the script connects to an existing instance and does not launch one.
+
+`--ai-aggression` applies BeamNG's native AI aggression setting to all six route-following cars. It accepts the BeamNG UI endpoint names `conservative` (0.3) and `aggressive` (1.0), or any numeric value in the native 0.3–1.0 range; default is `conservative`. The trial summary and telemetry store the selected level/value. The route-following controller uses BeamNG's `manual` AI mode; inactive vehicles are recorded as `disabled`.
 
 ## Scene and data
 

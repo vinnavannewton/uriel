@@ -19,9 +19,11 @@ from beamngpy.sensors import Damage, Electrics
 ROOT = Path(__file__).resolve().parents[1]
 DURATION = 25
 TELEMETRY_HZ = 60
+AI_AGGRESSION_PRESETS = {'conservative': 0.3, 'aggressive': 1.0}
 FIELDS = ['run_id','frame_id','sim_time','elapsed','vehicle_id','vehicle_role',
           'x','y','z','yaw','pitch','roll','vx','vy','vz','speed','ax','ay','az',
-          'throttle','brake','steering','gear','ai_mode','target_speed','route_id','start_delay',
+          'throttle','brake','steering','gear','ai_mode','ai_aggression','ai_aggression_preset',
+          'target_speed','route_id','start_delay',
           'nearest_vehicle_id','relative_distance','relative_speed','damage',
           'verified_contact','lane_state','conflict_zone_state','route_deviation',
           'front_progress','rear_progress','bbox_json']
@@ -29,6 +31,38 @@ FIELDS = ['run_id','frame_id','sim_time','elapsed','vehicle_id','vehicle_role',
 
 def dump(path, obj):
     path.write_text(json.dumps(obj, indent=2, allow_nan=False))
+
+
+def parse_ai_aggression(value):
+    """Parse BeamNG aggression endpoint names or an explicit 0.3–1.0 value."""
+    text=str(value).strip().lower()
+    if text in AI_AGGRESSION_PRESETS:
+        return AI_AGGRESSION_PRESETS[text]
+    try:
+        aggression=float(text)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError('use conservative, aggressive, or a number from 0.3 to 1.0') from exc
+    if not math.isfinite(aggression) or not 0.3<=aggression<=1.0:
+        raise argparse.ArgumentTypeError('BeamNG AI aggression must be between 0.3 and 1.0')
+    return aggression
+
+
+def aggression_preset(value):
+    for name, preset_value in AI_AGGRESSION_PRESETS.items():
+        if math.isclose(value, preset_value, abs_tol=1e-9):
+            return name
+    return 'custom'
+
+
+def set_ai_aggression(vehicle, aggression):
+    """Set native BeamNG AI aggression across BeamNGpy API versions."""
+    setter=getattr(vehicle.ai, 'set_aggression', None)
+    if setter is not None:
+        setter(aggression)
+    else:
+        # BeamNG.tech 0.39 exposes SetAiAggression in its vehicle API, while
+        # BeamNGpy 1.36 lacks the public wrapper available in newer releases.
+        vehicle.ai._send({'type':'SetAiAggression','aggression':aggression}).ack('AiAggressionSet')
 
 
 def configuration(seed, background):
@@ -137,7 +171,7 @@ def validate(rows,configs,outcomes,duration=DURATION,hz=TELEMETRY_HZ):
         acceleration='first sample null; finite differences thereafter',outcomes=outcomes)
 
 
-def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TELEMETRY_HZ, speed=2.0):
+def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TELEMETRY_HZ, speed=2.0, ai_aggression=0.3):
     # BeamNG deterministic speed factors advance speed * 50 ms per graphics
     # frame. Keep the graphics FPS limit at 60 throughout. Samples per sim
     # second remain limited to 20/speed because of that physics quantum.
@@ -159,6 +193,8 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
             requested_hz=hz,effective_target_hz=sample_hz,steps_per_sample=1,
             expected_simulation_interval_seconds=frame_dt),configuration=configs,
         beamng_speed_factor=speed_factor,theoretical_max_wall_multiplier=3*speed_factor,
+        ai=dict(beamng_mode='manual',aggression_preset=aggression_preset(ai_aggression),
+            aggression_value=ai_aggression,aggression_range=[0.3,1.0]),
         speed_control='BeamNG deterministic speed factor; graphics FPS limit remains at 60. Effective sampling rate is capped at 20/speed_factor Hz. Achieved wall-clock multiplier is measured.',
         beamngpy=importlib.metadata.version('beamngpy'),geometry_verified='virtual coordinates only; body proxy uncalibrated',
         control='BeamNG speed-polyline AI; no Uriel controller',
@@ -228,6 +264,7 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
                 for v,c in zip(vehicles,configs):
                     if v.vid not in active and elapsed+1e-9>=c['start_delay']:
                         v.control(throttle=0,brake=0,parkingbrake=0);v.ai.set_line(ai_line(c))
+                        set_ai_aggression(v,ai_aggression)
                         active.add(v.vid);event_rows.append(dict(run_id=run_id,vehicle_id=v.vid,event='AI_launch_command',frame_id=frame,elapsed=elapsed,requested_delay=c['start_delay']))
                 # Each vehicle has an independent socket; all polling finishes before physics advances.
                 list(pool.map(lambda v:v.sensors.poll(),vehicles))
@@ -259,7 +296,8 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
                         yaw=math.atan2(direction[1],direction[0]),pitch=math.atan2(direction[2],math.hypot(*direction[:2])),roll=roll,
                         vx=vel[0],vy=vel[1],vz=vel[2],speed=math.sqrt(sum(a*a for a in vel)),ax=acc[0],ay=acc[1],az=acc[2],
                         throttle=e.get('throttle'),brake=e.get('brake'),steering=e.get('steering'),gear=e.get('gear_index',e.get('gear')),
-                        ai_mode='speed_polyline_commanded' if v.vid in active else 'disabled_braked',target_speed=c['target_speed'],
+                        ai_mode='manual' if v.vid in active else 'disabled',ai_aggression=ai_aggression,
+                        ai_aggression_preset=aggression_preset(ai_aggression),target_speed=c['target_speed'],
                         route_id=c['route_id'],start_delay=c['start_delay'],nearest_vehicle_id=nearest.vid,
                         relative_distance=distance,relative_speed=relative,damage=v.sensors['damage'].get('damage'),verified_contact=None,
                         lane_state='within_virtual_lane' if abs(lateral)<=1.8 else 'outside_virtual_lane',
@@ -308,6 +346,7 @@ def parse_args(argv=None):
     parser=argparse.ArgumentParser(description="Seeded 90-degree Small Grid crossing: two ETK cars, four traffic cars and recorded telemetry.")
     parser.add_argument('--trials',type=int,default=3,help='Number of trials (default: 3)')
     parser.add_argument('--speed',type=int,choices=range(1,9),default=2,help='BeamNG deterministic speed factor 1-8 (default: 2); graphics FPS limit remains 60, telemetry is capped at 20/speed Hz')
+    parser.add_argument('--ai-aggression',type=parse_ai_aggression,default=0.3,metavar='LEVEL',help='BeamNG AI aggression: conservative (0.3), aggressive (1.0), or a value from 0.3 to 1.0; default conservative')
     parser.add_argument('--telemetry-hz',type=int,choices=[30,60,120],default=60,help='Requested maximum samples per simulation second; effective rate is capped at 20/speed (default request: 60)')
     parser.add_argument('--duration',type=float,default=25,help='Simulation seconds per trial (default: 25)')
     parser.add_argument('--seed',type=int,default=903101,help='First seed; successive runs increment it by one')
@@ -331,7 +370,9 @@ def main():
     shutil.copyfile(__file__,exp/'collector_source.py')
     dump(exp/'source_background_configs.json',backgrounds)
     manifest=dict(experiment_id=exp.name,first_seed=args.seed,trials_requested=args.trials,
-        beamng_speed_factor=args.speed,theoretical_max_wall_multiplier=3*args.speed,graphics_fps_limit=60,requested_telemetry_hz=args.telemetry_hz,
+        beamng_speed_factor=args.speed,theoretical_max_wall_multiplier=3*args.speed,graphics_fps_limit=60,
+        ai=dict(beamng_mode='manual',aggression_preset=aggression_preset(args.ai_aggression),
+            aggression_value=args.ai_aggression,aggression_range=[0.3,1.0]),requested_telemetry_hz=args.telemetry_hz,
         expected_effective_telemetry_hz=min(args.telemetry_hz,20/args.speed),duration_seconds=args.duration,
         collector_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         dimensions_fixed_by='same model/config on every reload; measured dimensions per run',status='running')
@@ -344,7 +385,7 @@ def main():
         with ThreadPoolExecutor(max_workers=6) as pool:
             for i in range(args.trials):
                 run_id=f'fresh_{i+1:03d}';folder=exp/run_id;folder.mkdir(exist_ok=False)
-                results.append(collect(b,folder,run_id,args.seed+i,backgrounds,pool,args.duration,args.telemetry_hz,args.speed))
+                results.append(collect(b,folder,run_id,args.seed+i,backgrounds,pool,args.duration,args.telemetry_hz,args.speed,args.ai_aggression))
                 write_summary(exp,results)
         manifest['status']='complete' if all(r['status']=='complete' for r in results) else 'completed_with_failures'
     except BaseException as error:
@@ -363,12 +404,14 @@ def main():
 
 
 def write_summary(exp,results):
-    fields=['run_id','seed','status','quality','sample_count','red_initial_speed','blue_initial_speed','red_target','blue_target','blue_delay','background_parameters','red_entry','blue_entry','red_clearance','blue_clearance','red_damage_increase','blue_damage_increase','contact_evidence','telemetry_hz','requested_speed','achieved_speed','recording_wall_seconds']
+    fields=['run_id','seed','status','quality','ai_mode','ai_aggression_preset','ai_aggression_value','sample_count','red_initial_speed','blue_initial_speed','red_target','blue_target','blue_delay','background_parameters','red_entry','blue_entry','red_clearance','blue_clearance','red_damage_increase','blue_damage_increase','contact_evidence','telemetry_hz','requested_speed','achieved_speed','recording_wall_seconds']
     with (exp/'trial_summary.csv').open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
         for m in results:
             a,z=m['configuration'][:2];o=m.get('outcomes',{});r=o.get('uriel_red',{});b=o.get('uriel_blue',{})
-            w.writerow(dict(run_id=m['run_id'],seed=m['seed'],status=m['status'],quality=m.get('quality'),sample_count=m.get('sample_count'),
+            w.writerow(dict(run_id=m['run_id'],seed=m['seed'],status=m['status'],quality=m.get('quality'),
+                ai_mode=m.get('ai',{}).get('beamng_mode'),ai_aggression_preset=m.get('ai',{}).get('aggression_preset'),
+                ai_aggression_value=m.get('ai',{}).get('aggression_value'),sample_count=m.get('sample_count'),
                 red_initial_speed=a.get('initial_speed_measured'),blue_initial_speed=z.get('initial_speed_measured'),
                 red_target=a['target_speed'],blue_target=z['target_speed'],blue_delay=z['start_delay'],background_parameters=json.dumps(m['configuration'][2:]),
                 red_entry=r.get('entry_seconds'),blue_entry=b.get('entry_seconds'),red_clearance=r.get('clearance_seconds'),blue_clearance=b.get('clearance_seconds'),
