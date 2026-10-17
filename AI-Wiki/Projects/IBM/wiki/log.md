@@ -216,3 +216,7 @@ At the user’s request, checked accepted data counts, repeated seed/configurati
 ## [2026-10-17] documentation | README first-half rewrite and teammate handoff
 
 Rewrote the README overview, component status, prerequisites, local startup, configuration, and scenario caveat. Verified claims against Cargo.toml, server routes/defaults, dashboard source, and the maintained PRD context. Preserved the original second half from `Bridge protocol` onward for the requested teammate contribution; supplied its proposed replacement in chat. Updated [[operations]] with the handoff boundary. No application code, behavioural tests, deployment, commit, or push was performed.
+
+## [2026-10-17] documentation | Apply supplied README second-half replacement
+
+Replaced `README.md` from `Bridge protocol` through the end with the user-supplied bridge integration, API, recording, layout, limitations and collaboration text. Preserved the preceding README content exactly and checked that all replacement Markdown link targets exist. This is an editorial replacement, not a new implementation-status assessment; [[implementation-status]] retains the detailed current evidence. No application code, behavioural tests, deployment, commit or push.

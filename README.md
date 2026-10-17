@@ -51,64 +51,94 @@ Keep the default localhost binding for local development. The optional token pro
 
 The default scenario is a **schematic crossing**. Before using a BeamNG scenario, measure and configure its route geometry, conflict-zone size, and controller limits. West Coast USA is the intended map, but the included coordinates are not calibrated to it.
 
-## Bridge protocol
+## Bridge integration
 
-The first WebSocket message must be `hello`. Use the returned `session_id` in later messages. Every state batch contains all cars in the world at one simulator frame. See `examples/hello.json` and `examples/state_batch.json`. The server returns a `recommendation_batch` with simulation-time expiry. The bridge must also enforce its own wall-time expiry and local fallback.
+Connect the simulator bridge to:
 
-The browser dashboard uses `/api/status`, `/api/worlds`, `/api/worlds/{id}` and `/api/scenarios/{id}`. It polls every 500 ms. Its `web/` files are intentionally plain HTML, CSS and JavaScript for the frontend team to replace.
-
-## Current validation boundary
-
-The source compiles; 12 Rust tests and 26 Python tests pass. A scoped, algorithm-only two-car Grid Plane head-on pass has been exercised through the Rust server. Broad physical acceptance, control calibration, fault/load suites, obstacle handling, ML and LinuxONE deployment remain unverified. In particular, brake acknowledgements did not prove a stop in the installed BeamNG arcade controller; the bounded demo pauses simulator physics on completion or failure.
-
-## Teammate’s 90-degree crossing recorder
-
-The standalone crossing collectors and seeded six-car experiment tooling are preserved alongside the head-on controller. See [crossing collection instructions](scripts/BEAMNG_RECORDING.md). Those tools default to BeamNG port 25252 and ETK subjects; the head-on commands below default to port 64256 and matched Vivaces. Run only one controller against a simulator at a time. Crossing recording is an AI baseline and does not use Rust coordination or train a model. The requested telemetry cap and measured sampling rate are recorded separately.
-
-## Integrated two-car Grid Plane demo
-
-Rust's maneuver-v2 endpoint is `ws://127.0.0.1:3000/ws/headon`. The legacy crossing endpoint above remains version 1. V2 prepares fixed paired paths, waits for both controller acknowledgements and renews a 500 ms execution lease from fresh measured telemetry. Acknowledgements mean path commands were accepted; subsequent telemetry establishes motion.
-
-With BeamNG.tech 0.39 running **Grid Plane / `smallgrid`**, its BeamNGpy server enabled on localhost:64256, and exactly the existing Vivaces `thePlayer` and `uriel_blue`, run:
-
-```sh
-python3 -m venv .venv-beamng
-.venv-beamng/bin/pip install -r scripts/requirements-beamng.txt
+```text
+ws://127.0.0.1:3000/ws/bridge
 ```
 
-Start `cargo run` in one terminal, then:
+1. Send `hello` as the first WebSocket message.
+2. Use the returned `session_id` in subsequent messages.
+3. Send each state batch with all vehicles in the world at one simulator frame.
+4. Handle the server's `recommendation_batch`, including its simulation-time expiry.
 
-```sh
-.venv-beamng/bin/python scripts/beamng_headon.py --run
+The bridge must also enforce wall-time expiry and local fallback behaviour.
+
+Example payloads:
+
+- [Hello message](examples/hello.json)
+- [Vehicle state batch](examples/state_batch.json)
+
+When `ARC_TOKEN` is configured, include it in the WebSocket upgrade request:
+
+```text
+Authorization: Bearer <token>
 ```
 
-This repairs and repositions those two cars, colors them red/blue, and executes Rust's paths at a target 30 km/h. Each moves to its own left, passes, and returns to the original line. The script applies paths once; subsequent plans renew the same maneuver rather than restarting BeamNG AI. It leaves the game paused. `--server-url` selects the server; `--standalone` explicitly selects the earlier Python-only baseline. Without `--run`, the script only prints that local baseline plan. There is no silent local fallback when Rust is unavailable.
+Do not include the token in JSON payloads.
 
-## Two-car dodge with live dashboard
+## Dashboard and API
 
-The historical filename `scripts/beamng_headon_collision.py` now runs a cooperative dodge rather than an intentional crash. With BeamNG.tech open on Grid Plane (`smallgrid`) and its server on localhost:64256:
+The dashboard polls every 500 ms and provides a read-only view of server state.
 
-```sh
-.venv-beamng/bin/python scripts/beamng_headon_collision.py
-.venv-beamng/bin/python scripts/beamng_headon_collision.py --run
-```
+| Endpoint | Purpose |
+| --- | --- |
+| `/health` | Basic service health response |
+| `/api/status` | Server status |
+| `/api/worlds` | Available worlds |
+| `/api/worlds/{id}` | Details for a world |
+| `/api/scenarios/{id}` | Scenario details |
 
-The default command is a no-connection dry run. `--run` repositions the two matching red/blue Vivaces 110 m apart and selects paired open-grid paths using the existing Python planner. At the default 30 km/h both move to their own left, pass, and return to the original line. This prepared geometry requires 110 m separation and supports 10–36 km/h. It selects the correct DCT Drive/manual first-gear input and releases parking brakes before resuming physics. A failed launch, path deviation, predicted overlap, damage or completion stops the trial through simulator-pause cleanup. A timeout is recorded as incomplete; completion requires measured passing and return.
+Dashboard files live in `web/` and use plain HTML, CSS, and JavaScript.
 
-Measured state streams to `http://127.0.0.1:3001` by default. Refresh the dashboard with Preview demo off to see two red/blue dots on the grid. `--dashboard-url` selects another HTTP dashboard; `--no-dashboard` disables display delivery. Dashboard delivery errors abort the trial and pause the simulator. Rust displays observations only for this runner; Python plans the dodge and no ML model is involved. Run metadata, telemetry and summary are written under `runs/headon-dodge-<id>/`. The converted runner has source/protocol tests but has not yet been exercised in a new live trial.
+## Experiment records
 
-Samples: [hello](examples/headon-hello.json), [state](examples/headon-state.json), [plan](examples/headon-plan.json). Full contract and limitations are in the [project protocol wiki](AI-Wiki/Projects/IBM/wiki/protocol.md). Bridge logs and Rust records remain under `runs/`; they are not yet a labelled ML dataset. Keep the localhost bind for this local-first demo. No remote deployment is configured.
+Each server startup creates a run directory under `ARC_RUN_DIR`.
 
-Checks:
+| File | Contents |
+| --- | --- |
+| `metadata.json` | Scenario, protocol version, and build version |
+| `events.jsonl` | Accepted telemetry, plans, acknowledgements, removals, rejected messages, and disconnects |
 
-```sh
-cargo test --offline
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
-.venv-beamng/bin/python tests/check_headon_wire.py
-```
+Recording has known reliability and metadata gaps. See the [recording notes](AI-Wiki/Projects/IBM/wiki/recording.md) before relying on logs as complete experiment evidence.
 
-The last command needs the local Rust server and exercises synthetic protocol messages, including legacy-v1 compatibility; it does not control BeamNG. The simulator bridge assumes empty, flat space, two matched cars and calibrated starting poses. It is not a general obstacle or late-emergency dodge controller, and has no simulator-side watchdog for Python process death.
+## Repository layout
 
-## Project knowledge wiki
+| Path | Contents |
+| --- | --- |
+| `src/` | Rust service, protocol, world state, and coordination logic |
+| `web/` | Browser dashboard |
+| `scenarios/` | Scenario configuration |
+| `examples/` | Bridge message examples |
+| `AI-Wiki/` | Requirements, architecture, team workflow, and implementation evidence |
+| `.agents/skills/uriel/` | Shared project guidance for AI assistants |
 
-Open `AI-Wiki` as an Obsidian vault. Start at [the IBM / Arc Angel index](AI-Wiki/Projects/IBM/wiki/index.md). AI agents should read the root `AGENTS.md` and keep the wiki current after meaningful project work.
+## Validation and limitations
+
+Earlier work reported successful compilation and basic dashboard checks. These do not establish physical coordination correctness.
+
+The following remain unvalidated or incomplete:
+
+- BeamNG bridge integration and controller calibration.
+- Physical acceptance, fault trials, and load measurements.
+- Arrival-time ML training, inference integration, and evaluation.
+- LinuxONE deployment and performance.
+
+Speed recommendations are advisory. Collision prevention has not been demonstrated, and stop/hold behaviour for a zero speed cap depends on the installed BeamNG AI controller.
+
+Behavioural testing is deferred to hackathon day unless separately authorized.
+
+## Project documentation and collaboration
+
+Start with the [project wiki](AI-Wiki/Projects/IBM/wiki/index.md).
+
+- [Latest requirements](AI-Wiki/Projects/IBM/wiki/latest-prd-context.md)
+- [Implementation status and evidence](AI-Wiki/Projects/IBM/wiki/implementation-status.md)
+- [Team ownership and workflow](AI-Wiki/Projects/IBM/wiki/team-workflow.md)
+- [Local operations and deployment context](AI-Wiki/Projects/IBM/wiki/operations.md)
+
+Open `AI-Wiki/` as an Obsidian vault for linked navigation.
+
+AI assistants should read `AGENTS.md` and the repo-local Uriel skill before working, then update relevant wiki pages and the chronological log after meaningful changes.
