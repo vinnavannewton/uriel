@@ -1,0 +1,4 @@
+interface:
+  display_name: "Uriel"
+  short_description: "Uriel teamwork, wiki upkeep, and scenario test guides"
+  default_prompt: "Use $uriel to work on my assigned Uriel task and keep the project wiki current."

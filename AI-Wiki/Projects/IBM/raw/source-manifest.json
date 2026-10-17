@@ -1,0 +1,19 @@
+{
+  "workspace": "/home/vinnavan/user/MegaProjects/IBM",
+  "sha256": {
+    "README.md": "ae7adb941b1ceb385ee8e6c358af3cce77f0566c599db85d807c42cfb671ba02",
+    "Cargo.toml": "f95e9a75052dbc464b7012e37c945d826390896a6ac82ec5546bc33e8ced5b1a",
+    "Cargo.lock": "aab4f940ebb9036a734dac5d3015f315bfb005bc94cc4c674670e18ec2f2ac69",
+    "src/main.rs": "6b840194fe9a7d76b678c0cedf297d05c72983ab320e0184ee35e3676726bed0",
+    "src/protocol.rs": "ca8259b57946bf99945e8ed7b828c3847f55d92ef5c423a821c1d81ee5c5c9ee",
+    "src/scenario.rs": "997bc66033013ae460a5337185f4b0fd622424d04b60c7eeab3846cc13057e23",
+    "src/world.rs": "2b12d684ceb42b33462782289ca9c3aa6b74302ba32b074aaa4851c7e18f4eee",
+    "src/coordinator.rs": "8cc34b8ad5b9f7857de4ae6ca66794fe624901f7bf76c6062c8bab21600aa684",
+    "scenarios/crossing-v1.json": "74e0e7e5e646dd8258ad9584078583b612cda228ab9e24c4486354be01d0f765",
+    "web/index.html": "3401bd7b8ca3f9c5cffb9159dde68c18f34bfe35e02bbfac8e3a4fb933aa57c4",
+    "web/style.css": "293857b8d99110975553ac40a7329a33458f857754f6f277111f6d1fcbb16fcc",
+    "web/app.js": "ac4a6b4e4b79b9aa9de3521c36258b715caf923d049ccc4fcc8bda71f19586af",
+    "examples/hello.json": "16c757eda981a56e12c77ff3545b32ac398fa8763b2f5e6935b87b451c2e2abf",
+    "examples/state_batch.json": "8377716c1122743cddcdd7968435fab8e57f656cdade2c5069282ea7026f909a"
+  }
+}

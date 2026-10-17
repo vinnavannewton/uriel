@@ -1,0 +1,41 @@
+{
+  "id": "crossing-v1",
+  "label": "Schematic crossing (replace with calibrated West Coast USA routes)",
+  "zone_half_extent_m": 5.0,
+  "margin_m": 2.0,
+  "max_speed_mps": 12.0,
+  "routes": [
+    {
+      "id": "west-east",
+      "points_xy_m": [
+        [
+          -100.0,
+          0.0
+        ],
+        [
+          100.0,
+          0.0
+        ]
+      ],
+      "zone_center_s_m": 100.0,
+      "yield_s_m": 80.0,
+      "commit_s_m": 86.0
+    },
+    {
+      "id": "south-north",
+      "points_xy_m": [
+        [
+          0.0,
+          -100.0
+        ],
+        [
+          0.0,
+          100.0
+        ]
+      ],
+      "zone_center_s_m": 100.0,
+      "yield_s_m": 80.0,
+      "commit_s_m": 86.0
+    }
+  ]
+}

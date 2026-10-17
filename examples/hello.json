@@ -1,0 +1,8 @@
+{
+  "type": "hello",
+  "protocol_version": 1,
+  "world_id": "laptop-a-world",
+  "world_epoch": "trial-001",
+  "scenario_config_id": "crossing-v1",
+  "bridge_id": "fedora-bridge-a"
+}

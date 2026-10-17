@@ -1,0 +1,42 @@
+{
+  "type": "state_batch",
+  "protocol_version": 1,
+  "world_id": "laptop-a-world",
+  "world_epoch": "trial-001",
+  "session_id": "REPLACE_WITH_HELLO_ACK_SESSION",
+  "frame_seq": 1,
+  "sim_time_s": 1.0,
+  "scenario_config_id": "crossing-v1",
+  "vehicles": [
+    {
+      "vehicle_id": "car-1",
+      "route_id": "west-east",
+      "position_xy_m": [
+        -40.0,
+        0.0
+      ],
+      "velocity_xy_mps": [
+        8.0,
+        0.0
+      ],
+      "heading_rad": 0.0,
+      "length_m": 4.5,
+      "width_m": 1.8
+    },
+    {
+      "vehicle_id": "car-2",
+      "route_id": "south-north",
+      "position_xy_m": [
+        0.0,
+        -40.0
+      ],
+      "velocity_xy_mps": [
+        0.0,
+        8.0
+      ],
+      "heading_rad": 1.57,
+      "length_m": 4.5,
+      "width_m": 1.8
+    }
+  ]
+}
