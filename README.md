@@ -1,30 +1,55 @@
-# Arc Angel server
+# Uriel
 
-Rust coordination server and a read-only dashboard template for the Arc Angel PRD.
+Cooperative vehicle conflict and road-hazard coordination for the IBM datathon project.
 
-## Run locally
+Uriel aims to combine a Rust coordination server, BeamNG simulation, arrival-time machine learning, and an operator dashboard. This repository currently contains the **historical Arc Angel prototype**: a Rust server and a read-only browser dashboard. BeamNG bridge integration, ML inference, and LinuxONE deployment remain planned work.
+
+The Cargo package, environment variables, and parts of the UI still use the Arc Angel name.
+
+## At a glance
+
+| Component | Current status |
+| --- | --- |
+| Coordination server | Rust with Axum and Tokio; simplified route projection, reservations, and headway logic |
+| Dashboard | Plain HTML, CSS, and JavaScript; read-only live view and labelled demo data |
+| Bridge interface | WebSocket protocol and example messages; Python BeamNG bridge not included |
+| Scenario | Schematic crossing; not calibrated to West Coast USA |
+| Arrival-time ML | Planned; no trained model or evaluation results established |
+| LinuxONE deployment | Planned; deployment and remote access not verified |
+
+## Quick start
+
+### Prerequisites
+
+- A Rust toolchain with Cargo and support for Rust edition 2021.
+- Access to the dependencies declared in `Cargo.toml`, or an existing local cache.
+- A browser to view the dashboard.
+
+### Start the server
+
+Run from the repository root:
 
 ```sh
 cargo run
 ```
 
-Open `http://127.0.0.1:3000`. The bridge WebSocket is `ws://127.0.0.1:3000/ws/bridge`.
+Open [the local dashboard](http://127.0.0.1:3000). The bridge connects at `ws://127.0.0.1:3000/ws/bridge`.
 
-The dashboard's **Preview demo** button displays labelled example data without a connected bridge. Turn it off to view live worlds from the server. The frontend template is in `web/`.
+Select **Preview demo** to explore labelled example data without a connected bridge. Turn it off to view live worlds supplied to the server. Demo data does not demonstrate simulator integration or coordination correctness.
 
-The default scenario in `scenarios/crossing-v1.json` is a **schematic crossing**. Its coordinates are not calibrated to West Coast USA. Replace the route geometry, conflict-zone size and control limits after measuring a BeamNG scenario.
-
-Configuration:
+### Configure the environment
 
 | Variable | Default | Purpose |
-|---|---|---|
-| `ARC_BIND` | `127.0.0.1:3000` | HTTP/WebSocket listen address |
-| `ARC_SCENARIO` | `scenarios/crossing-v1.json` | Scenario file |
+| --- | --- | --- |
+| `ARC_BIND` | `127.0.0.1:3000` | HTTP and WebSocket listen address |
+| `ARC_SCENARIO` | `scenarios/crossing-v1.json` | Scenario configuration file |
 | `ARC_RUN_DIR` | `runs` | Experiment record directory |
-| `ARC_TOKEN` | unset | Optional bridge Bearer token |
-| `RUST_LOG` | `arc_angel=info` | Log level |
+| `ARC_TOKEN` | Unset | Optional bridge Bearer token |
+| `RUST_LOG` | `arc_angel=info` | Log filter |
 
-Each startup creates a run directory with `metadata.json` and `events.jsonl`. The latter records accepted telemetry, plans, acknowledgements, removals, rejected messages and disconnects. Do not send the token in JSON; when configured, pass it as an `Authorization: Bearer ...` header on the WebSocket upgrade.
+Keep the default localhost binding for local development. The optional token protects the bridge connection; browser observation endpoints are unauthenticated.
+
+The default scenario is a **schematic crossing**. Before using a BeamNG scenario, measure and configure its route geometry, conflict-zone size, and controller limits. West Coast USA is the intended map, but the included coordinates are not calibrated to it.
 
 ## Bridge protocol
 
