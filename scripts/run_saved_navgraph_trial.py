@@ -3,6 +3,7 @@
 import argparse
 import json
 import math
+import sys
 import time
 import uuid
 from pathlib import Path
@@ -16,6 +17,32 @@ SCENE = ROOT / 'scenarios/west_coast_red_black_20261018'
 COLLISION_LAUNCH_DELAY_S = 12.5
 
 
+def resolve_participant_ids(manifest, red_override, black_override, loaded_ids):
+    """Map saved red/black roles to live BeamNG IDs and fail with setup guidance."""
+    roles = {spec.get('role'): vehicle_id
+             for vehicle_id, spec in manifest['vehicles'].items()}
+    red_key = roles.get('known_red_ego', 'thePlayer')
+    black_key = roles.get('unknown_black_vehicle', 'clone0')
+    actual_ids = {
+        red_key: red_override or red_key,
+        black_key: black_override or black_key,
+    }
+    if actual_ids[red_key] == actual_ids[black_key]:
+        raise RuntimeError('Red and black vehicle IDs resolve to the same live vehicle')
+    missing = [(saved_key, live_id) for saved_key, live_id in actual_ids.items()
+               if live_id not in loaded_ids]
+    if missing:
+        details = ', '.join(f'{saved_key} (looked for {live_id!r})'
+                            for saved_key, live_id in missing)
+        raise RuntimeError(
+            f"Saved scenario participant(s) not loaded: {details}. "
+            f"BeamNG currently reports {sorted(loaded_ids)}. Load the saved "
+            f"scenario with both cars, or pass --red-id/--black-id if BeamNG "
+            f"assigned different IDs. No trial frames were collected."
+        )
+    return red_key, black_key, actual_ids
+
+
 def run_trial(args, out):
     manifest = json.loads((args.scene / 'manifest.json').read_text())
     session = json.loads((args.scene / 'drive-path-session.json').read_text())
@@ -23,6 +50,8 @@ def run_trial(args, out):
     (out / 'ground_truth').mkdir()
     bng = BeamNGpy('localhost', 25252, quit_on_close=False, socket_timeout=8)
     vehicles, sensors, baseline, background = {}, {}, {}, {}
+    red_key, black_key = 'thePlayer', 'clone0'
+    actual_ids = {}
     summary = {'status': 'setup', 'output': str(out), 'frames': 0, 'lidar_frames': 0,
                'minimum_reference_separation_m': None, 'controller': 'native BeamNG waypoint AI',
                'guard': 'ground-truth damage/proximity monitor; not LiDAR control',
@@ -35,8 +64,10 @@ def run_trial(args, out):
             raise RuntimeError('Current map is not West Coast USA')
         bng.control.pause()
         current = bng.vehicles.get_current(include_config=False)
+        red_key, black_key, actual_ids = resolve_participant_ids(
+            manifest, args.red_id, args.black_id, current.keys())
         for vid, saved in manifest['vehicles'].items():
-            v = current[vid]
+            v = current[actual_ids[vid]]
             v.connect(bng)
             vehicles[vid] = v
             if args.reset_start:
@@ -53,7 +84,8 @@ def run_trial(args, out):
                 v.ai.set_mode('disabled')
                 v.control(throttle=0, brake=1, parkingbrake=1)
             bng.traffic.stop(stop=True)
-            background = {k:v for k,v in current.items() if k not in vehicles}
+            background = {k:v for k,v in current.items()
+                          if k not in actual_ids.values()}
             if len(background)<args.traffic:
                 bng.traffic.spawn(max_amount=args.traffic, police_ratio=0,
                                   extra_amount=0, parked_amount=0)
@@ -61,7 +93,8 @@ def run_trial(args, out):
                 deadline = time.monotonic()+30
                 while time.monotonic()<deadline:
                     current = bng.vehicles.get_current(include_config=False)
-                    background = {k:v for k,v in current.items() if k not in vehicles}
+                    background = {k:v for k,v in current.items()
+                                  if k not in actual_ids.values()}
                     if len(background)>=args.traffic:
                         break
                     time.sleep(.2)
@@ -79,22 +112,23 @@ def run_trial(args, out):
             summary['traffic_vehicle_ids'] = sorted(background)
         bng.control.pause()
         for vid, v in vehicles.items():
-            v.ai.set_mode('stopping' if args.collision_mode and vid == 'thePlayer' else 'disabled')
+            v.ai.set_mode('stopping' if args.collision_mode and vid == red_key else 'disabled')
             v.control(throttle=0, brake=1, parkingbrake=1)
             v.sensors.attach('navgraph_trial_damage', Damage())
         # Reset/teleport can return a stale first damage value (especially on
         # the MD70). Let the parked vehicles settle before capturing baselines.
         bng.control.step(10)
-        for v in vehicles.values():
+        for vid, v in vehicles.items():
             v.sensors.poll('navgraph_trial_damage')
-            baseline[v.vid] = v.sensors['navgraph_trial_damage'].get('damage', 0)
-        sensors = attach_sensors(bng, vehicles['thePlayer'], sample_hz=5)
+            baseline[vid] = v.sensors['navgraph_trial_damage'].get('damage', 0)
+        sensors = attach_sensors(bng, vehicles[red_key], sample_hz=5)
         meta = {'scenario': manifest, 'editor_session': session, 'duration_limit_sim_s': 45,
                 'wall_timeout_s': 180, 'sensors': 'red LiDAR + wheel speed + IMU; no cameras',
                 'control': 'BeamNG native AI; no Rust', 'baseline_damage': baseline,
                 'collision_mode': args.collision_mode,
-                'target_speed_kmh': {'thePlayer': args.red_speed_kmh,
-                                     'clone0': args.black_speed_kmh},
+                'participant_vehicle_ids': actual_ids,
+                'target_speed_kmh': {red_key: args.red_speed_kmh,
+                                     black_key: args.black_speed_kmh},
                 'collision_launch_delay_s': (args.collision_launch_delay_s
                                              if args.collision_mode else None),
                 'traffic_requested': args.traffic,
@@ -104,11 +138,11 @@ def run_trial(args, out):
         if args.collision_mode:
             # Approximate crossing alignment from saved route geometry and
             # chosen speed caps; telemetry records whether it was achieved.
-            route_items.sort(key=lambda item: item[0] == 'thePlayer')
+            route_items.sort(key=lambda item: item[0] == red_key)
         def start_route(vid, route):
             v = vehicles[vid]
             s = next(s for s in session['splines'] if s['id'] == route['spline_id'])
-            target_kmh = args.red_speed_kmh if vid == 'thePlayer' else args.black_speed_kmh
+            target_kmh = args.red_speed_kmh if vid == red_key else args.black_speed_kmh
             route_options = {}
             if target_kmh is not None:
                 route_options.update(
@@ -125,34 +159,34 @@ def run_trial(args, out):
                 avoid_cars=(s['isAvoidCars'] and not args.collision_mode),
                 **route_options)
         if args.collision_mode:
-            black_route = next((r for vid, r in route_items if vid == 'clone0'), None)
-            red_route = next((r for vid, r in route_items if vid == 'thePlayer'), None)
+            black_route = next((r for vid, r in route_items if vid == black_key), None)
+            red_route = next((r for vid, r in route_items if vid == red_key), None)
             if black_route is None or red_route is None:
                 raise RuntimeError('Collision mode requires saved red and black routes')
-            start_route('clone0', black_route)
+            start_route(black_key, black_route)
             # A saved editor route can remain active on the player car after
             # teleport/reset. Explicitly disable and brake it during the black
             # lead-in, then reject the trial if it drifts before release.
-            vehicles['thePlayer'].ai.set_mode('stopping')
-            vehicles['thePlayer'].control(throttle=0, brake=1, parkingbrake=1)
+            vehicles[red_key].ai.set_mode('stopping')
+            vehicles[red_key].control(throttle=0, brake=1, parkingbrake=1)
             bng.control.resume()
-            vehicles['clone0'].sensors.poll('state')
-            launch_time = float(vehicles['clone0'].state['time'])
-            red_start = manifest['vehicles']['thePlayer']['position_m']
+            vehicles[black_key].sensors.poll('state')
+            launch_time = float(vehicles[black_key].state['time'])
+            red_start = manifest['vehicles'][red_key]['position_m']
             while True:
-                vehicles['clone0'].sensors.poll('state')
-                vehicles['thePlayer'].sensors.poll('state')
-                red_state = vehicles['thePlayer'].state
+                vehicles[black_key].sensors.poll('state')
+                vehicles[red_key].sensors.poll('state')
+                red_state = vehicles[red_key].state
                 red_drift = math.dist(red_state['pos'], red_start)
                 if red_drift > 3:
                     raise RuntimeError(
                         f'red car moved before release (drift={red_drift:.1f} m); '
                         'aborting trial')
-                if (float(vehicles['clone0'].state['time']) - launch_time
+                if (float(vehicles[black_key].state['time']) - launch_time
                         >= args.collision_launch_delay_s):
                     break
                 time.sleep(.02)
-            start_route('thePlayer', red_route)
+            start_route(red_key, red_route)
         else:
             for vid, route in route_items:
                 start_route(vid, route)
@@ -167,10 +201,10 @@ def run_trial(args, out):
                 for vid,v in vehicles.items():
                     v.sensors.poll('state', 'navgraph_trial_damage')
                     states[vid] = dict(v.state)
-                now = float(states['thePlayer']['time'])
+                now = float(states[red_key]['time'])
                 if start_sim is None: start_sim = now
                 elapsed = now-start_sim
-                separation = math.dist(states['thePlayer']['pos'], states['clone0']['pos'])
+                separation = math.dist(states[red_key]['pos'], states[black_key]['pos'])
                 old = summary['minimum_reference_separation_m']
                 summary['minimum_reference_separation_m'] = separation if old is None else min(old,separation)
                 damages = {vid:max(0,v.sensors['navgraph_trial_damage'].get('damage',0)-baseline[vid]) for vid,v in vehicles.items()}
@@ -183,8 +217,8 @@ def run_trial(args, out):
                 summary['elapsed_sim_s'] = elapsed
                 summary['damage_increase'] = damages
                 # A conservative monitor ends this trial before close approach. It is not a perception controller.
-                p=[states['clone0']['pos'][i]-states['thePlayer']['pos'][i] for i in range(3)]
-                vel=[states['clone0']['vel'][i]-states['thePlayer']['vel'][i] for i in range(3)]
+                p=[states[black_key]['pos'][i]-states[red_key]['pos'][i] for i in range(3)]
+                vel=[states[black_key]['vel'][i]-states[red_key]['vel'][i] for i in range(3)]
                 vv=sum(x*x for x in vel)
                 ttc=max(0,min(2,-sum(a*c for a,c in zip(p,vel))/vv)) if vv>0.01 else 0
                 closest=math.sqrt(sum((a+ttc*c)**2 for a,c in zip(p,vel)))
@@ -193,7 +227,7 @@ def run_trial(args, out):
                 if not args.collision_mode and (separation<12 or (ttc>0 and separation<35 and closest<10)):
                     summary['status']='stopped_proximity_guard';break
                 if now-last_sensor >= .2:
-                    data=sensor_frame(sensors,vehicles['thePlayer'],out,summary['lidar_frames'])
+                    data=sensor_frame(sensors,vehicles[red_key],out,summary['lidar_frames'])
                     si.write(json.dumps(jsonable({'sim_time_s':now,'elapsed_s':elapsed,**data}))+'\n');si.flush()
                     summary['lidar_frames'] += 1;last_sensor=now
                 for vid,route in manifest['navigation_graph']['routes'].items():
@@ -240,6 +274,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--scene', type=Path, default=SCENE,
                         help='saved scenario directory containing manifest and editor session')
+    parser.add_argument('--red-id', help='live BeamNG ID for the saved red participant (default: saved ID)')
+    parser.add_argument('--black-id', help='live BeamNG ID for the saved black participant (default: saved ID)')
     parser.add_argument('--trials', type=positive_int, default=1,
                         help='number of trials (default: 1); reset cars before each trial')
     parser.add_argument('--traffic', type=int, default=0, choices=range(0, 9),
@@ -287,17 +323,25 @@ def main(argv=None):
             batch['trials'].append({'trial': index, **result})
             save_batch()
         batch['status'] = 'finished'
-    except BaseException as exc:
-        batch['status'] = 'interrupted' if isinstance(exc, KeyboardInterrupt) else 'error'
+    except KeyboardInterrupt as exc:
+        batch['status'] = 'interrupted'
         batch['error'] = repr(exc)
         # The trial runner persists partial data and its failure in finally.
         failed_report = trial_dir / 'summary.json' if trial_dir is not None else None
         if failed_report is not None and failed_report.exists():
             batch['trials'].append({'trial': index, **json.loads(failed_report.read_text())})
-        raise
+        return 130
+    except Exception as exc:
+        batch['status'] = 'error'
+        batch['error'] = str(exc)
+        failed_report = trial_dir / 'summary.json' if trial_dir is not None else None
+        if failed_report is not None and failed_report.exists():
+            batch['trials'].append({'trial': index, **json.loads(failed_report.read_text())})
+        print(f'ERROR: {exc}', file=sys.stderr, flush=True)
+        return 1
     finally:
         save_batch()
 
 
 if __name__=='__main__':
-    main()
+    raise SystemExit(main())

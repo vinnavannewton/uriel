@@ -363,3 +363,8 @@ Following the user's instruction, called BeamNG `traffic.reset()` through a seco
 ## [2026-10-18] complete | 30-minute West Coast LiDAR collection
 
 The six-traffic run `runs/sensor-crossing/navgraph-hour-d50474577c27/` completed at 1,800.6 simulated seconds in 681.2 wall seconds (2.64x observed average). Final data: 2,047 paired state/LiDAR frames, 2,047 red and 2,047 black point-cloud files (4,094 clouds total), 2,047 ground-truth rows, and 44 legs. Leg results: 20 both-endpoints observed, 15 time-limited with an endpoint unreached, 8 damage-guard stops, and one completion leg. Folder size is 4,454,620,388 bytes (~4.15 GiB), including 2.12 GB red LiDAR and 2.24 GB black LiDAR. The user-requested traffic reset is in metadata; pre-reset stalled-red data and post-reset intervention-conditioned data must remain distinguishable. This West Coast JSONL/NPZ data has not been trained by the existing Small Grid CSV trainer.
+
+
+## [2026-10-18] fix | Saved-route participant ID preflight
+
+The user's three-trial command failed before collecting frames with `KeyError('clone0')` because that saved ID was absent from the live BeamNG vehicle map. Updated `scripts/run_saved_navgraph_trial.py` to resolve saved red/black roles, allow live-ID overrides via `--red-id` and `--black-id`, report loaded IDs when a participant is missing, and store the selected IDs in metadata. Four offline tests passed for defaults, overrides, missing-participant diagnostics and duplicate IDs; Python compilation, CLI help and whitespace checks passed. No BeamNG behavioral retest was run, so rerun only after loading both saved participants or supplying their live IDs.

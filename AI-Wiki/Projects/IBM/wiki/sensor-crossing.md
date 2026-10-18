@@ -81,6 +81,10 @@ Added `--traffic` and `--reset-start` to `scripts/run_saved_navgraph_trial.py`, 
 
 `scripts/run_saved_navgraph_trial.py` now accepts positive `--trials N` (default 1). Every trial resets subject cars by default, reconnects after cleanup, and saves separate trial directories plus a batch summary under ignored `runs/sensor-crossing/navgraph-batch-<id>/`. `--traffic 4` retains the optional background traffic mode; existing background cars are reused, participants restricted to the requested count, and traffic reset between trials. Guard-stopped attempts remain recorded; setup/API errors stop the batch with partial failure reports. `finished` is an attempt-count status, not a safety or endpoint pass. Offline mocked orchestration checked three-trial execution, reset/traffic arguments, fail-fast reporting and invalid inputs; syntax/help/whitespace checks passed. No live BeamNG trial was run for this change. Repeated fixed configurations must stay grouped for ML evaluation.
 
+## [2026-10-18] fix | Saved-route participant ID preflight
+
+The user ran the three-trial command and the first attempt failed before collecting frames with `KeyError('clone0')`: the current BeamNG vehicle list did not contain that saved ID. The runner now resolves red/black IDs from saved roles, accepts `--red-id` and `--black-id` overrides, and reports the loaded IDs plus setup guidance before trial control if a participant is missing. Metadata records the actual live IDs. Four offline unit tests cover defaults, overrides, missing-car diagnostics and duplicate-ID rejection; Python compilation, help output and whitespace checks passed. This fix has not been tested against the live simulator; load the saved two-car scenario or provide its current IDs before retrying.
+
 
 ## [2026-10-18] trial | Reload saved scene and run with traffic
 
