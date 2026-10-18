@@ -570,3 +570,7 @@ The user clarified that a teammate successfully ran the IBM-hosted server versio
 ## [2026-10-18] product framing | Shared AI supervisor for connected vehicles
 
 The lead clarified that Uriel's wider vision connects autonomous vehicles' local AI through a shared supervisor for cooperative road safety. Reframed the README and overview around that vision, explained LinuxONE's intended role in timely shared coordination/inference, and identified the 90-degree BeamNG crossing as a small representative demonstration. Kept real-vehicle deployment and broader capabilities distinct from implemented simulator/server evidence. Updated implementation-status context. Documentation only; no application or simulator behavior changed.
+
+## [2026-10-18] licensing | Adopt Apache License 2.0
+
+At the lead's request, added the canonical Apache License 2.0 text as the root LICENSE, declared Apache-2.0 in Cargo package metadata, and added the README license section with Uriel contributor attribution and preservation of third-party component/asset/trademark rights. Updated implementation-status. Verified the license download and scoped file changes; no application code, simulator runs or deployment was changed, and no behavioral tests were needed for this licensing-only update.

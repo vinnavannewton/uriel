@@ -151,3 +151,10 @@ Start with the [project wiki](AI-Wiki/Projects/IBM/wiki/index.md):
 - [Team workflow](AI-Wiki/Projects/IBM/wiki/team-workflow.md)
 
 Open `AI-Wiki/` as an Obsidian vault for linked navigation. AI assistants should read `AGENTS.md` and `.agents/skills/uriel/SKILL.md`, then update the wiki and chronological log after meaningful project work.
+
+## License
+
+Copyright 2026 Uriel contributors.
+
+Uriel's original source code and documentation are licensed under the [Apache License, Version 2.0](LICENSE).
+Third-party components, assets and trademarks, including BeamNG branding, retain their respective licenses and rights.
