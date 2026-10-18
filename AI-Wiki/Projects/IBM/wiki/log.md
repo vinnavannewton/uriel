@@ -363,3 +363,18 @@ Following the user's instruction, called BeamNG `traffic.reset()` through a seco
 ## [2026-10-18] complete | 30-minute West Coast LiDAR collection
 
 The six-traffic run `runs/sensor-crossing/navgraph-hour-d50474577c27/` completed at 1,800.6 simulated seconds in 681.2 wall seconds (2.64x observed average). Final data: 2,047 paired state/LiDAR frames, 2,047 red and 2,047 black point-cloud files (4,094 clouds total), 2,047 ground-truth rows, and 44 legs. Leg results: 20 both-endpoints observed, 15 time-limited with an endpoint unreached, 8 damage-guard stops, and one completion leg. Folder size is 4,454,620,388 bytes (~4.15 GiB), including 2.12 GB red LiDAR and 2.24 GB black LiDAR. The user-requested traffic reset is in metadata; pre-reset stalled-red data and post-reset intervention-conditioned data must remain distinguishable. This West Coast JSONL/NPZ data has not been trained by the existing Small Grid CSV trainer.
+
+
+## [2026-10-18] fix | Saved-route participant ID preflight
+
+The user's three-trial command failed before collecting frames with `KeyError('clone0')` because that saved ID was absent from the live BeamNG vehicle map. Updated `scripts/run_saved_navgraph_trial.py` to resolve saved red/black roles, allow live-ID overrides via `--red-id` and `--black-id`, report loaded IDs when a participant is missing, and store the selected IDs in metadata. Four offline tests passed for defaults, overrides, missing-participant diagnostics and duplicate IDs; Python compilation, CLI help and whitespace checks passed. No BeamNG behavioral retest was run, so rerun only after loading both saved participants or supplying their live IDs.
+
+
+## [2026-10-18] trial | Three saved-route runs after participant reload
+
+The user asked to run the saved West Coast scenario after a three-trial attempt had failed because `clone0` was absent. BeamNG's scenario catalog contained the installed `west_coast_red_black_20261018` scenario. Loading it timed out waiting for the API `MapLoaded` acknowledgement, but a fresh read confirmed both expected cars were present at their saved positions, so the requested three-trial native-AI batch proceeded with zero background traffic. Batch `runs/sensor-crossing/navgraph-batch-6b833c216195/` finished: state/LiDAR frames 130/65, 152/64 and 125/63; both cars met endpoint-proximity checks in all trials. Minimum sampled center-reference separations were 14.21, 31.95 and 30.15 m. Red damage deltas were 0; black deltas were 0.642, 0.644 and 0.676. Verified contact data remains unavailable, so collision-free behavior is not established. Data totals 201,238,938 bytes under ignored `runs/`; no traffic, cameras, Rust or LiDAR-driven controller was used. The scenario was left paused by runner cleanup.
+
+
+## [2026-10-18] trial | Saved routes with four traffic vehicles
+
+The user requested repeating the saved West Coast route trial with background traffic. Ran `scripts/run_saved_navgraph_trial.py --trials 3 --traffic 4` using traffic IDs `clone`, `clone1`, `clone2`, and `clone3`. Batch `runs/sensor-crossing/navgraph-batch-6e0faed50d53/` completed all three endpoint-proximity checks, with 84/83, 82/81 and 74/74 state/LiDAR frames. Minimum subject center-reference separations were 33.98, 34.37 and 31.91 m; nearest sampled traffic-to-subject center separations were 8.41, 8.24 and 60.02 m. Red damage deltas were 0; black deltas were 0.635, 0.675 and 0.638. Verified contacts are unavailable. The run collected 252,855,432 bytes (~241 MiB) under ignored `runs/`; it used native waypoint AI and red LiDAR capture, without cameras, Rust or LiDAR-derived decisions. After recording, the four traffic cars were re-enabled and left moving for the user's submission video.
