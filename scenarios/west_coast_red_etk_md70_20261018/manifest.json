@@ -1,0 +1,133 @@
+{
+  "scenario_name": "west_coast_red_etk_md70_20261018",
+  "level": "west_coast_usa",
+  "captured_at_utc": "2026-10-18T01:30:27.768659+00:00",
+  "vehicles": {
+    "thePlayer": {
+      "model": "etkc",
+      "role": "known_red_ego",
+      "position_m": [
+        -432.8819580078125,
+        681.429443359375,
+        75.14981079101562
+      ],
+      "rotation_xyzw": [
+        -0.0002737940230872482,
+        -0.00011326435924274847,
+        -0.38226622343063354,
+        0.9240522980690002
+      ],
+      "part_config": "vehicles/etkc/kc6x_310d_A.pc",
+      "paint": {
+        "baseColor": [
+          0.42,
+          0.05,
+          0.05,
+          1.2
+        ],
+        "roughness": 1.0,
+        "clearcoat": 1.0,
+        "metallic": 1.0,
+        "clearcoatRoughness": 1.0
+      },
+      "direction": [
+        0.7064677476882935,
+        -0.7077450156211853,
+        -0.0005925941513851285
+      ],
+      "up": [
+        0.00041864870581775904,
+        -0.00041940563824027777,
+        0.9999997615814209
+      ]
+    },
+    "clone0": {
+      "model": "md_series",
+      "role": "unknown_black_vehicle",
+      "position_m": [
+        -442.87835693359375,
+        525.3888549804688,
+        75.18940734863281
+      ],
+      "rotation_xyzw": [
+        6.566980300704017e-05,
+        0.00016190165479201823,
+        0.9266714453697205,
+        -0.37587234377861023
+      ],
+      "part_config": "vehicles/md_series/md_70_pickup.pc",
+      "paint": {
+        "baseColor": [
+          0.02,
+          0.02,
+          0.02,
+          1.2
+        ],
+        "roughness": 1.0,
+        "clearcoat": 1.0,
+        "metallic": 1.0,
+        "clearcoatRoughness": 1.0
+      },
+      "direction": [
+        0.6966202855110168,
+        0.7174398303031921,
+        -0.00034942617639899254
+      ],
+      "up": [
+        0.0002434174093650654,
+        0.00025069230468943715,
+        0.9999999403953552
+      ]
+    }
+  },
+  "navigation_graph": {
+    "status": "captured from live Drive Path Editor",
+    "routes": {
+      "clone0": {
+        "spline_name": "bllck",
+        "spline_id": "afe030c6-feea-4399-8498-80167bee531b",
+        "graph_nodes": [
+          "tunnel_city_A_59",
+          "DR323_3"
+        ],
+        "start_node": "tunnel_city_A_59",
+        "end_node": "DR323_3",
+        "saved_runtime_vehicle_id": 73115
+      },
+      "thePlayer": {
+        "spline_name": "red",
+        "spline_id": "7ea5867f-15b4-4342-82b2-26b7c65dca29",
+        "graph_nodes": [
+          "junction1_wp25",
+          "junction1_wp3"
+        ],
+        "start_node": "junction1_wp25",
+        "end_node": "junction1_wp3",
+        "saved_runtime_vehicle_id": 74448
+      }
+    },
+    "node_positions_m": {
+      "junction1_wp3": [
+        -319.54713948568,
+        567.8896891276,
+        74.754742940267
+      ],
+      "junction1_wp25": [
+        -432.88196563721,
+        681.42943572998,
+        74.849809646606
+      ],
+      "DR323_3": [
+        -313.76019287109,
+        658.36590576172,
+        74.824638366699
+      ],
+      "tunnel_city_A_59": [
+        -442.87835693359,
+        525.38885498047,
+        74.889404296875
+      ]
+    },
+    "session_file": "drive-path-session.json"
+  }
+}

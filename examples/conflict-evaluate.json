@@ -1,0 +1,55 @@
+{
+  "frame_seq": 1,
+  "sim_time_s": 12.5,
+  "config": {
+    "reaction_time_s": 0.5,
+    "safety_margin_m": 2.0,
+    "control_delay_s": 0.2,
+    "max_telemetry_age_s": 0.25,
+    "max_uncertainty_s": 0.2
+  },
+  "observations": [
+    {
+      "vehicle_id": "red",
+      "route_id": "east",
+      "speed_mps": 5.0,
+      "acceleration_mps2": 0.0,
+      "distance_to_entry_m": 50.0,
+      "distance_to_rear_clearance_m": 60.0,
+      "time_to_entry_s": 10.0,
+      "time_to_rear_clearance_s": 12.0,
+      "waiting_time_s": 4.0,
+      "length_m": 4.5,
+      "width_m": 1.8,
+      "telemetry_age_s": 0.01,
+      "uncertainty_s": 0.01,
+      "occupies_zone": false,
+      "rear_clear": false,
+      "continue_to_clear_verified": false,
+      "braking_deceleration_mps2": 5.0,
+      "braking_envelope_validated": true
+    },
+    {
+      "vehicle_id": "blue",
+      "route_id": "north",
+      "speed_mps": 5.0,
+      "acceleration_mps2": 0.0,
+      "distance_to_entry_m": 55.0,
+      "distance_to_rear_clearance_m": 65.0,
+      "time_to_entry_s": 11.0,
+      "time_to_rear_clearance_s": 13.0,
+      "waiting_time_s": 1.0,
+      "length_m": 4.5,
+      "width_m": 1.8,
+      "telemetry_age_s": 0.01,
+      "uncertainty_s": 0.01,
+      "occupies_zone": false,
+      "rear_clear": false,
+      "continue_to_clear_verified": false,
+      "braking_deceleration_mps2": 5.0,
+      "braking_envelope_validated": true
+    }
+  ],
+  "previous_reservations": [],
+  "conflicting_routes": [["east", "north"]]
+}

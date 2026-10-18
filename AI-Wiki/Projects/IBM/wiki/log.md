@@ -213,3 +213,153 @@ Ran `.venv-ml/bin/python scripts/train_arrival.py --data-root uriel_experiment -
 ## [2026-10-17] verification | Recheck offline ML completion
 
 At the user’s request, checked accepted data counts, repeated seed/configuration split isolation, simulation-time sampling, elapsed-time target labels, target-specific damage exclusions/censoring, causal speed history, stopped baseline handling and reproduction of every saved held-out prediction after model reload. All passed. Confirmed 48 valid trials across 8 batches. Found and fixed audit serialization rereading malformed validation JSON; a temporary malformed-input check now records an exclusion and returns insufficient data without crashing. Repeated offline training in `runs/ml-arrival/pilot-20261017T141915Z-48132635/`; metrics and held-out predictions match the earlier verified run exactly, and the source hash matches the final environment artifact. `verification.json` records checks. Dependency consistency and whitespace checks passed; model artifacts, environment and raw telemetry are ignored. Corrected a stale trained-ML status sentence and refreshed current evidence links. No simulator execution, live integration, commit or push.
+
+## [2026-10-17] investigation | Sensor-based 90-degree crossing proposal
+
+Explained a proposed RGB/LiDAR perception pipeline in response to the user's request to avoid direct vehicle locations. Checked official BeamNG sensor capabilities and recorded input/ground-truth separation, relative-coordinate tracking, timestamp/calibration requirements, marked-road geometry, occlusion handling, model reevaluation and the distinction between AI route scaffolding and sensor-driven steering in [[ml-arrival-prediction]]. This is a proposal; no new sensor implementation, simulator execution, commit or push was performed.
+
+## [2026-10-17] implementation | West Coast sensor crossing collector
+
+Added `scripts/collect_sensor_crossing.py` for three AI-driven West Coast crossing recordings using the currently loaded `thePlayer` and `clone` vehicles and the existing perpendicular waypoint pair. It records three ego RGB camera views, a 360-degree LiDAR point cloud, ego wheel speed and Advanced IMU data at up to 5 Hz. Sensor files/index and exact simulator ground truth are written to separate ignored `runs/sensor-crossing/` paths; the unknown car's simulator state, model and identity are not part of sensor input records. Updated [[sensor-crossing]], [[recording]], [[implementation-status]], [[sources]] and the index. Syntax/CLI help and whitespace checks passed. No live BeamNG trial or Rust/server integration was run. The loaded clone model, start poses, camera mount directions and route directions still require an in-simulator preflight; no detector/tracker or sensor-track server protocol is implemented.
+
+## [2026-10-17] fix | Allow sensor collector to handle an unloaded clone
+
+The user's startup output showed only `thePlayer` loaded, so the collector's required `clone` lookup stopped before recording. Updated vehicle selection to reuse `clone` when present, otherwise reuse the first non-ego vehicle, and request one BeamNG traffic vehicle when the ego is the only loaded car. The traffic controller is stopped after it spawns, then the selected vehicle is assigned the existing perpendicular AI waypoint for the trials. Run metadata records the selected vehicle ID, model and spawn source; sensor-input files remain separated from ground truth. Updated [[sensor-crossing]], [[recording]], [[implementation-status]], [[open-questions]] and removed a duplicate index link. Static validation passed; no simulator was launched, so random-spawn position, model and route completion remain unverified.
+
+## [2026-10-17] fix | Remove duplicate sensor attachment in crossing collector
+
+The user ran `scripts/collect_sensor_crossing.py`; BeamNG loaded the spawned/selected vehicle, but startup failed while attaching sensors because the ego's `Damage` sensor was attached once before `attach_sensors()` and again inside it under the same name. Removed the second attachment. The failed run is `runs/sensor-crossing/run-0e7c2f415312/`; it did not produce trial telemetry. Python syntax/CLI and diff checks passed after the fix. No simulator rerun was performed; the three trials and random-vehicle route remain unverified. Updated [[sensor-crossing]], [[recording]] and [[implementation-status]].
+
+## [2026-10-17] run | Sensor crossing retry stopped during reset
+
+The user positioned a red ego and black unknown car and explicitly asked to start the scenario. Run `runs/sensor-crossing/run-321cd0c9bcbd/` correctly identified loaded `thePlayer` and `clone` (both `etkc`) and attached the three cameras, LiDAR and IMU. It initially exposed that BeamNGpy's `Vehicle.state` must be polled, so state polling was added before pose capture and per sample. On retry, the 60-step reset call ended with `BNGDisconnectedError`; metadata is `failed`, `trials` is empty, and there are no trial frames. BeamNG's process was no longer running after the disconnect. Updated [[sensor-crossing]] and [[implementation-status]]. Reopen the simulator in Freeroam, verify its API before another attempt.
+
+## [2026-10-17] inspection | Save live West Coast vehicle positions
+
+At the user's request, inspected the active BeamNG map and both loaded vehicles through a read-only API connection. The scene was West Coast USA; `thePlayer` (user-identified red ego) and `clone` (user-identified black unknown) were both ETK K-Series vehicles. Their centers were 174.998 m apart, path directions differed by 0.487° as unoriented lines, and lateral offset was -12.435 m. The current poses therefore do not identify the intended 90-degree crossing; no crossing point was fabricated. Saved both states and the geometry assessment in `runs/sensor-crossing/scene-snapshots/west-coast-live-20261017T154736Z.json`. Updated [[sensor-crossing]] and [[implementation-status]]. No vehicles were moved and no trials were started.
+
+## [2026-10-17] setup | Restore saved West Coast vehicle poses
+
+At the user's request, restored `thePlayer` (red ego) and `clone` (black unknown) from `runs/sensor-crossing/scene-snapshots/west-coast-live-20261017T154736Z.json` in the active West Coast USA scene. Live state readback matched both saved positions within 0.1 mm; the simulator was left paused. The restored positions retain the earlier geometry finding: nearly collinear paths, roughly 175 m apart, with no identified 90-degree crossing. No trials were started. Updated [[sensor-crossing]] and [[implementation-status]].
+
+## [2026-10-17] setup | Load saved poses as a BeamNG scene
+
+The user repeated the request to put the saved positions into BeamNG after the simulator had exited. Launched BeamNG.tech through BeamNGpy, created and loaded `saved_west_coast_poses_20261017` on West Coast USA, and recreated `thePlayer` and `clone` as red/black ETK K-Series vehicles using the saved position and rotation quaternions. Readback was within 8.6 mm for both positions. Physics is paused and the API-owning process remains open so the scene stays loaded. The vehicles still do not form a 90-degree crossing; no trials were started. Updated [[sensor-crossing]] and [[implementation-status]].
+
+## [2026-10-17] run and recovery | Crossing collector disconnected; restore saved poses
+
+The user requested that the scenario run. Starting the existing three-trial sensor collector created `runs/sensor-crossing/run-30da5758e95b/`, but BeamNG disconnected during setup before trial 1; no frames or trials were recorded, and the simulator generated a crash dump. The user then requested the saved positions. Reloaded the West Coast saved-pose scenario with both ETK cars; readback matched the saved coordinates at displayed precision. Scene left paused, with the BeamNGpy API process held open. This setup is still not a 90-degree crossing and does not constitute a trial result. Updated [[sensor-crossing]] and [[implementation-status]].
+
+## [2026-10-17] simulator tooling | Remove camera from sensor crossing collector
+
+At the user's request, changed the West Coast collector to LiDAR-only perception. It attaches no camera and writes no images; ego wheel speed and IMU remain auxiliary motion inputs, while simulator ground truth stays in a separate scoring stream. Changed manual advancement to individually acknowledged one-frame calls, including traffic-spawn waiting, after earlier disconnects on larger step batches. Python syntax compilation passed. No BeamNG API listener was available at the time of verification, and the saved poses remain nearly collinear rather than a verified 90-degree crossing, so no new trial was run. Updated [[sensor-crossing]] and [[implementation-status]].
+
+## [2026-10-17] implementation | State-aware multi-vehicle conflict evaluator
+
+User supplied the Safe Multi-Vehicle Conflict Resolution requirements. Added `src/conflict_resolution.rs` with freshness-aware vehicle classification, conservative stopping feasibility requiring an explicitly validated braking envelope, occupancy-first reservation retention, rear-clearance release, one conflicting reservation at a time with waiting-age priority, an independent proposal monitor, and command/response verification records. Exposed bounded JSON endpoints `POST /api/conflicts/evaluate` and `/api/conflicts/command-result`; both honor `ARC_TOKEN` when configured. Added `examples/conflict-evaluate.json` and preserved the user request at `raw/safe-multi-vehicle-conflict-resolution-20261017.txt` (SHA-256 in [[sources]] S12).
+
+Verification: all 22 Rust unit tests passed; `cargo fmt`, `cargo build`, and a sample HTTP request against an isolated local server passed. The evaluation released only the oldest waiter on one of two conflicting routes, with both monitor decisions accepted. No BeamNG behavioral run was performed. The API does not yet command vehicles or connect to `/ws/bridge`; caller-supplied braking validation, conflict route pairs and prior reservations remain external. LiDAR point-track/ground-truth cross-checks and timed swept footprints are still absent. Updated [[conflict-resolution]], [[coordination]], [[protocol]], [[implementation-status]], [[open-questions]], [[sources]] and the index. No commit or push.
+
+## [2026-10-17] verification | Enforce one-at-a-time and verify command response logging
+
+Extended the evaluator so it grants at most one reservation per managed zone per assessment, including route pairs absent from the supplied conflict table; added a test for that conservative rule. A vehicle already inside receives `continue_to_clear` only when the caller explicitly verifies its continuation path; otherwise it is kept reserved in `SAFE_HOLD`. The latest run passed all 23 Rust tests, formatting, build, JSON parsing and whitespace checks. A fresh isolated HTTP check passed both endpoints and confirmed that command acknowledgement without measured speed remains `response_verified: null`. No BeamNG trial was run. Updated [[conflict-resolution]], [[coordination]] and [[implementation-status]].
+
+## [2026-10-17] evidence | Complete randomized Small Grid LiDAR batch and audit braking run
+
+Completed the previously authorized `uriel_lidar_experiment/experiment_20261017T180027Z_e64db751/` batch after a three-second `PASS_WITH_LIMITATIONS` preflight. Three seeded 25-second trials (781003–781005) each recorded 751 frames × 6 vehicles at 29.9999986 Hz and 500 LiDAR reads per red/blue subject at 20 Hz target. Both subjects entered and cleared the virtual zone in all trials. Trial 3 subject damage increased (red 2,784.127; blue 7,224.108), so its proxy labels are ambiguous; damage/contact remains unverified. The output is about 1.54 GiB, remains in the project folder and is ignored by Git. Small Grid crossing/lane geometry is virtual, and the run did not test the Rust coordinator.
+
+Audited the existing West Coast LiDAR braking run `runs/sensor-crossing/lidar-brake-4bd3f2c95a84/`: its three trials used red target 35 km/h and black target 60 km/h, but red ground-truth speed reached 82.3 km/h and damage readings increased in both cars in trials 1–2, and black in trial 3. This is not verified contact, but it fails safe-controller acceptance; the runner is not calibrated and its target speed behavior needs correction before reuse. Updated [[sensor-crossing]], [[recording]], [[implementation-status]], [[sources]] and the index. No new BeamNG trial, commit or push.
+
+## [2026-10-17] verification | Replay safe conflict sequence; live BeamNG unavailable
+
+The user requested running the scenario. BeamNG.tech remained as a process, but its API port 25252 refused connections; no Rust server was listening on 3000, and the alternate head-on port 64256 was also closed. Because the simulator had a recent crash history, did not restart or alter its process. Fixed the evaluator so a tentative reservation becomes committed when its vehicle is observed occupying the zone. `cargo fmt --check`, all 23 Rust tests, `cargo build` and `git diff --check` passed. Ran a five-frame two-car sequence against a temporary isolated Rust HTTP server: red released/black yielded; red occupied and continued/black yielded; red rear-cleared and black released; black occupied and continued; black rear-cleared and reservation emptied. Every safety-monitor verdict was accepted. This is an API replay only: no simulator commands or vehicle movement occurred. Updated [[conflict-resolution]] and this status. No commit or push.
+
+## [2026-10-17] run attempt | Standalone ML data collection blocked by BeamNG API
+
+The user clarified that the requested data run should not use the Rust server. Rechecked the BeamNG.tech process and both `127.0.0.1` and `localhost` port 25252; both refused the connection, so the existing standalone BeamNGpy collector cannot attach (`launch=False`). Did not start a second BeamNG process or create a failed empty collection: the current simulator instance is still running but its API listener is unavailable, and earlier collector attempts crashed the simulator. No new trial data were collected. The previous randomized Small Grid LiDAR dataset remains available at `uriel_lidar_experiment/experiment_20261017T180027Z_e64db751/`; it is prior data, not a result of this request.
+
+
+## [2026-10-18] scenario | Save and recheck user-placed West Coast cars
+
+Saved the live red `thePlayer` ETK K-Series and black `clone0` midsize placements/configuration in `scenarios/west_coast_adjacent_navgraph_20261018/`, with native scenario files also installed in BeamNG's West Coast USA user folder. The manifest is the capture/provenance record. A later live recheck differed from saved positions by 0.000127 m and 0.000364 m respectively. No reload or trial was performed. Navigation graph endpoints remain uncaptured: the installed BeamNGpy interface exposes route setters but no route readback, and the inspected recent user-folder files did not contain a corresponding route/session export. The saved layout must not be described as a saved AI route.
+
+## [2026-10-18] correction | Capture live Drive Path Editor routes
+
+The user clarified that the routes were created in the Free Roam editor. Read the installed editor source, then inspected live Lua closure state without invoking the destructive editor onSerialize callback. Found two Drive Path splines linked to the two current cars and exported them using the native Save Session format. Saved `drive-path-session.json` in the project scenario directory and the BeamNG user scenario folder; updated the manifest with stable vehicle names, full node sequences and node coordinates. All referenced navgraph nodes exist. This corrects the prior incomplete capture: the routes are now saved. No AI start, movement command, reload or behavioural trial occurred; numeric vehicle links require relinking after respawn.
+
+
+## [2026-10-18] Live saved-route trial
+
+User authorized one trial on the saved West Coast Drive Path node sequences. `scripts/run_saved_navgraph_trial.py` connected to the placed cars, used native waypoint AI with the saved 0.3 aggression, lane driving/avoid-cars flags and per-node speeds, and recorded red LiDAR + wheel speed/IMU without cameras or Rust. A ground-truth damage/proximity guard is separate from perception; this is not LiDAR-driven stopping. Run `runs/sensor-crossing/navgraph-trial-5a063eb59f06/` stopped on the damage guard at 22.7165 simulation seconds: 182 paired state frames, 91 LiDAR frames, red damage increase 0 and black increase 6.58238. Minimum sampled reference separation was 72.2499 m; verified contacts remain unavailable, so damage cause is unclassified. Neither car reached its endpoint proximity condition. Cleanup paused physics, disabled AI and applied brakes. This is an incomplete route trial, not collision-free acceptance or a completed arrival-training group.
+
+
+## [2026-10-18] repeat | Native AI saved-route trial
+
+At the user's request, restored both cars to the saved transforms with reset and ran the saved navgraph waypoint sequences with BeamNG native AI, without Rust or cameras. Run `runs/sensor-crossing/navgraph-trial-69e3eabd7217/` reached its 45.1165-second time limit, recording 424 paired state frames and 178 red LiDAR frames plus wheel-speed/IMU. Minimum sampled car-reference separation was 44.9211 m. Damage increases were red 0 and black 0.971509, below the 1.0 guard threshold but not zero; verified contact/cause remains unavailable. Neither endpoint proximity condition was observed. Cleanup paused physics and disabled/braked both AIs. This is a full recording horizon with unfinished routes, not a collision-free or completed-route acceptance result.
+
+
+## [2026-10-18] trial | Saved West Coast routes with four traffic cars
+
+Added `--traffic` and `--reset-start` to `scripts/run_saved_navgraph_trial.py`, then executed the user-authorized repeat with four background cars (`clone1`–`clone4`). The traffic manager was explicitly restricted to background cars; both subjects kept their saved waypoint AI routes. Run `runs/sensor-crossing/navgraph-trial-0aa71001e54c/` recorded 204 paired state/traffic samples and 204 red LiDAR frames plus wheel speed/IMU over 45.1500 simulation seconds. Minimum subject-to-subject reference separation was 48.0147 m; minimum sampled subject-to-traffic reference separation was 4.8906 m. Subject damage increases: red 0, black 0.242175 (below guard threshold); background damage was not monitored and verified contacts remain unavailable. Both endpoints were unfinished at timeout. Cleanup paused physics, stopped background traffic and disabled/braked subject AIs. No cameras or Rust were used. Syntax and whitespace checks passed. Traffic spawn is unseeded; this is not a collision-free acceptance result.
+
+
+## [2026-10-18] implementation | Configurable saved-route trial batches
+
+`scripts/run_saved_navgraph_trial.py` now accepts positive `--trials N` (default 1). Every trial resets subject cars by default, reconnects after cleanup, and saves separate trial directories plus a batch summary under ignored `runs/sensor-crossing/navgraph-batch-<id>/`. `--traffic 4` retains the optional background traffic mode; existing background cars are reused, participants restricted to the requested count, and traffic reset between trials. Guard-stopped attempts remain recorded; setup/API errors stop the batch with partial failure reports. `finished` is an attempt-count status, not a safety or endpoint pass. Offline mocked orchestration checked three-trial execution, reset/traffic arguments, fail-fast reporting and invalid inputs; syntax/help/whitespace checks passed. No live BeamNG trial was run for this change. Repeated fixed configurations must stay grouped for ML evaluation.
+
+
+## [2026-10-18] trial | Reload saved scene and run with traffic
+
+The user requested another scenario run. First attempt `navgraph-batch-73f9c68a87ea` stopped with zero frames because BeamNG was at the menu (empty mission filename). Loaded the saved native West Coast scenario and verified `thePlayer`/`clone0` present. Retried with `--trials 1 --traffic 4`: `runs/sensor-crossing/navgraph-batch-1fa2070b1469/trial-001/` stopped on the damage guard at 24.1135 simulation seconds, recording 112 paired subject/traffic state frames and 111 red LiDAR frames plus wheel speed/IMU. Red damage increase was 0, black 9.37181; minimum subject reference separation was 53.7534 m. Verified contacts/cause are unavailable; neither endpoint was observed. Four background traffic IDs were clone/clone1/clone2/clone3. Cleanup paused physics, stopped traffic and disabled/braked subject AIs. No Rust or cameras used; this is an incomplete trial, not collision-free acceptance.
+
+
+## [2026-10-18] repeat | Saved AI routes with traffic
+
+User-authorized one-trial repeat using `--trials 1 --traffic 4` recorded `runs/sensor-crossing/navgraph-batch-b6038d1d7356/trial-001/`: 45.0480 simulation seconds, 208 paired subject/traffic state frames and 207 red LiDAR frames plus wheel-speed/IMU. Minimum subject reference separation was 47.3101 m. Damage increases were red 0 and black 0.233165; verified contacts/cause remain unavailable. Neither endpoint proximity condition was reached. Cleanup paused physics, stopped traffic and disabled/braked both subject AIs. This is a completed recording horizon with unfinished routes, not collision-free acceptance. No Rust or cameras were used.
+
+
+## [2026-10-18] repeat | Saved AI routes stopped on damage guard
+
+The requested one-trial repeat with four background traffic cars saved `runs/sensor-crossing/navgraph-batch-179ddcaa2152/trial-001/`. It stopped at 22.6665 simulation seconds on black damage increase 5.16970; red damage increase was 0. Recorded 105 paired subject/traffic state frames and 104 red LiDAR frames plus wheel-speed/IMU. Minimum sampled subject reference separation was 68.4933 m; verified contact/cause remains unavailable and neither endpoint was reached. Cleanup paused physics, stopped traffic and disabled/braked subject AI. No Rust or cameras used. This incomplete attempt is not collision-free acceptance.
+
+
+## [2026-10-18] repeat | Saved-route traffic recording horizon
+
+User-requested single-trial repeat with four AI traffic cars saved `runs/sensor-crossing/navgraph-batch-b1eaa8a831c5/trial-001/`: 45.1510 simulation seconds, 204 paired subject/traffic state frames and 204 red LiDAR frames plus wheel-speed/IMU. Minimum sampled subject reference separation was 47.2709 m; damage increases were red 0 and black 0.0509927. Verified contact/cause remains unavailable; neither endpoint proximity condition was reached. Cleanup paused physics, stopped traffic and disabled/braked the subject AIs. No Rust or cameras used. This completed recording horizon is not completed-route or collision-free acceptance.
+
+
+## [2026-10-18] scenario and trials | Updated two-car-only editor routes
+
+The user requested saving the newly positioned red/black cars and current graph routes, then three trials without the extra cars. Captured live poses/configuration and two linked editor splines (`red`: junction1_wp25 → junction1_wp3; `bllck`: tunnel_city_A_59 → DR323_3) into `scenarios/west_coast_red_black_20261018/`, installed its native scenario, and verified all node IDs. Preserved the earlier scenario separately. Removed the four previously generated traffic cars and verified only `thePlayer`/`clone0` remained. Added `--scene` to the runner and made the new saved scene its default; syntax/whitespace checks passed.
+
+Executed `--scene scenarios/west_coast_red_black_20261018 --trials 3 --traffic 0`, saving `runs/sensor-crossing/navgraph-batch-fc0e932f6981/`. Trial 1: 45.1015 s, 308 state frames/181 LiDAR frames, red endpoint observed/black not, minimum subject reference separation 29.5698 m, red damage increase 0/black 0.368478. Trial 2: 15.0590 s, 121/61 frames, both endpoint proximity conditions observed, separation 28.4645 m, damage 0/0.372699. Trial 3: 14.9510 s, 120/60 frames, both endpoint proximity conditions observed, separation 29.4206 m, damage 0/0.321626. Total: 302 red LiDAR frames with wheel-speed/IMU and separate simulator ground truth. These are endpoint proximity results, not verified route compliance or collision-free acceptance; verified contacts remain unavailable. Cleanup paused physics and disabled/braked both AIs. No Rust, cameras or background traffic were used.
+
+
+## [2026-10-18] attempt | Red ETK speed increase for ETK/MD70 impact
+
+The user requested higher red-car speed for an impact trial. Added red/black speed-cap and collision-delay flags to `scripts/run_saved_navgraph_trial.py` and ran the saved ETK/MD70 scene at red 60 km/h, black 25 km/h, 12.5 s truck lead-in. The first attempt had an unstable damage baseline; after adding a parked warm-up the next attempt began telemetry with the red about 180 m from its saved position, a large damage delta and 282 m car separation, so it does not prove a pair impact. Three additional pre-release guards found red drift exceeding 3 m and aborted before data collection, even after switching red AI to `stopping`. The runner does not establish a valid speed-limited impact yet. Static Python compile/help and `git diff --check` passed; the invalid/aborted records are preserved and must be excluded from ML training.
+
+
+## [2026-10-18] training | Bounded offline arrival-model retraining
+
+At the user's request, ran the existing offline grouped training pipeline with a nine-minute process timeout; it completed in about seven seconds. `runs/ml-arrival/pilot-20261018T023331Z-1b27bbac/` audited 61 Small Grid trial folders (50 accepted, zero exact telemetry duplicates). The entry model evaluated on 1,069 held-out rows across 16 trials/3 independent groups: MAE/p95 0.375/1.211 s overall, and 0.307/1.052 s on 941 common moving rows versus the distance/speed baseline's 4.343/18.967 s. The entry estimator is saved as `models/entry.joblib`. No new clearance model was fitted: only one clearance-bearing group landed in validation, so the report is `insufficient_data` and process exit code 2. The currently running West Coast LiDAR/JSONL collection is not consumed by this CSV-based trainer. No Rust/live inference integration occurred.
+
+
+## [2026-10-18] check | Red car appears blocked in active traffic run
+
+Checked live saved-route run `runs/sensor-crossing/navgraph-hour-d50474577c27/`. At the latest telemetry sample (frame 1067, 940.4 sim seconds), red remained near its saved start with speed below 0.3 km/h across recent samples. Background `clone2` was 1.8 m from the red car and `clone1` 11.4 m forward on its heading, suggesting a traffic blockage without proving causality. The run remains active; stalled-red samples are not route-progress evidence. No controls or simulator state were changed.
+
+
+## [2026-10-18] follow-up | Red stall persists
+
+A follow-up read of the active run reached frame 1193 at 1,052.8 simulated seconds. Red remained at its saved start position and below 0.3 km/h; the recorder was still running. This confirms the prolonged stall, while the exact mechanical/traffic cause remains unverified.
+
+
+## [2026-10-18] intervention | Clear traffic from red start and continue collection
+
+Following the user's instruction, called BeamNG `traffic.reset()` through a second BeamNGpy connection while the 30-minute recorder remained active. The API moved the six traffic participants away from the player; no vehicles were deleted and no scenario restart was needed. The intervention is recorded in the run metadata. Red resumed movement; legs 28 and 29 reported both endpoints observed, with maximum red speeds 59.51 and 59.22 km/h and recorded damage deltas 0.0349 and 0.0. At the latest summary read, `navgraph-hour-d50474577c27` remained active at 1,372.9/1,800 sim seconds with 1,557 paired state/LiDAR samples. Earlier stalled-red frames remain in the run and should be excluded from route-progress learning. This current LiDAR JSONL/NPZ format is not accepted by the existing Small Grid CSV trainer.
+
+
+## [2026-10-18] complete | 30-minute West Coast LiDAR collection
+
+The six-traffic run `runs/sensor-crossing/navgraph-hour-d50474577c27/` completed at 1,800.6 simulated seconds in 681.2 wall seconds (2.64x observed average). Final data: 2,047 paired state/LiDAR frames, 2,047 red and 2,047 black point-cloud files (4,094 clouds total), 2,047 ground-truth rows, and 44 legs. Leg results: 20 both-endpoints observed, 15 time-limited with an endpoint unreached, 8 damage-guard stops, and one completion leg. Folder size is 4,454,620,388 bytes (~4.15 GiB), including 2.12 GB red LiDAR and 2.24 GB black LiDAR. The user-requested traffic reset is in metadata; pre-reset stalled-red data and post-reset intervention-conditioned data must remain distinguishable. This West Coast JSONL/NPZ data has not been trained by the existing Small Grid CSV trainer.

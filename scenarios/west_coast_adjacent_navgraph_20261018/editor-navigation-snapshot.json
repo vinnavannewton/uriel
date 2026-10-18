@@ -1,0 +1,123 @@
+{
+  "drivePaths": [
+    {
+      "isDriveInLane": true,
+      "nodes": {},
+      "isFreeMode": false,
+      "startingNode": 1,
+      "roadLength": 0,
+      "name": "Drive Path Spline 1",
+      "isEnabled": true,
+      "id": "85797206-6744-4adb-b4f1-eeed9c371db1",
+      "linkVehId": 89448,
+      "vels": [
+        13.5,
+        13.5,
+        13.5,
+        13.5
+      ],
+      "graphPath": {},
+      "speedProfileMode": 0,
+      "routeSpeed": 31.3,
+      "routeSpeedMode": "off",
+      "velLimits": [
+        13.5,
+        13.5,
+        13.5,
+        13.5
+      ],
+      "numLaps": 1,
+      "nmls": {},
+      "widths": {},
+      "isLoop": false,
+      "delayTime": 0,
+      "isVehicleLink": true,
+      "isAvoidCars": true,
+      "aggression": 0.3,
+      "graphNodes": [
+        "tunnel_city_A_58",
+        "DR323_2",
+        "junction1_wp25",
+        "DR360_2"
+      ]
+    },
+    {
+      "isDriveInLane": true,
+      "nodes": {},
+      "isFreeMode": false,
+      "startingNode": 1,
+      "roadLength": 0,
+      "name": "Drive Path Spline 2",
+      "isEnabled": true,
+      "id": "c7c569da-2dec-43b1-ad6e-94f44746ea07",
+      "linkVehId": 87534,
+      "vels": [
+        13.5,
+        13.5,
+        13.5,
+        13.5,
+        13.5,
+        13.5
+      ],
+      "graphPath": {},
+      "speedProfileMode": 0,
+      "routeSpeed": 31.3,
+      "routeSpeedMode": "off",
+      "velLimits": [
+        13.5,
+        13.5,
+        13.5,
+        13.5,
+        13.5,
+        13.5
+      ],
+      "numLaps": 1,
+      "nmls": {},
+      "widths": {},
+      "isLoop": false,
+      "delayTime": 0,
+      "isVehicleLink": true,
+      "isAvoidCars": true,
+      "aggression": 0.3,
+      "graphNodes": [
+        "DR371_4",
+        "junction1_wp25",
+        "DR360_2",
+        "tunnel_city_B_6",
+        "tunnel_city_A_58",
+        "DR323_2"
+      ]
+    }
+  ],
+  "racePath": {
+    "difficulty": 24,
+    "startNode": -1,
+    "startPositions": {},
+    "classification": {
+      "allowRollingStart": false,
+      "reversible": false
+    },
+    "pacenotes": {},
+    "rollingReverseStartPosition": -1,
+    "description": "Description",
+    "prefabs": {},
+    "authors": "Anonymous",
+    "forwardPrefabs": {},
+    "date": 1792264925,
+    "rollingStartPosition": -1,
+    "reverseStartPosition": -1,
+    "defaultStartPosition": -1,
+    "hideMission": false,
+    "reversePrefabs": {},
+    "segments": {},
+    "simplifyAiPath": false,
+    "pathnodes": {},
+    "defaultLaps": 1,
+    "name": "Path",
+    "endNode": -1
+  },
+  "aiTests": {
+    "markers": {},
+    "path": {}
+  }
+}

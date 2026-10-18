@@ -1,0 +1,41 @@
+{
+  "status": "PASS_WITH_LIMITATIONS",
+  "run_id": "validation",
+  "expected_state_hz": 30,
+  "measured_state_hz": 29.99999857507653,
+  "initial_positions_and_headings_verified": true,
+  "initial_vehicle_dimensions_m": {
+    "uriel_red": {
+      "length_m": 4.450401306152344,
+      "width_m": 2.1200690865516663,
+      "height_m": 1.3313193321228027
+    },
+    "uriel_blue": {
+      "length_m": 4.450401306152344,
+      "width_m": 2.1200685501098633,
+      "height_m": 1.3313181400299072
+    }
+  },
+  "subjects_perpendicular": true,
+  "lidar_nonempty_readings": {
+    "uriel_blue": 60,
+    "uriel_red": 59
+  },
+  "lidar_mean_points": {
+    "uriel_blue": 58427.066666666666,
+    "uriel_red": 57635.85
+  },
+  "background_vehicle_count": 0,
+  "background_ai_commanded": true,
+  "safe_sequential": true,
+  "rear_clearance_and_stops_verified": false,
+  "simulator_oobb_overlap_frames": 0,
+  "unresolved": [
+    "Small Grid has no calibrated public-road intersection; the 90-degree crossing and lane boundaries are virtual coordinates.",
+    "Conflict events use spawn OOBB proxies, not deforming collision geometry.",
+    "BeamNG damage is recorded, but verified contact sensing is unavailable.",
+    "LiDAR data are raw observations; simulator IDs, poses and labels stay in separate ground-truth telemetry.",
+    "Semantic annotations are disabled to avoid ground-truth labels leaking into perception input.",
+    "Vehicles are released sequentially using simulator ground truth; this is not LiDAR-driven conflict control."
+  ]
+}

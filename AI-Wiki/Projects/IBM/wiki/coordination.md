@@ -6,6 +6,10 @@ tags: [ibm, uriel]
 
 # Implemented coordination and limits
 
+## Safe multi-vehicle evaluator
+
+The user-specified state-aware conflict evaluator now exists in `src/conflict_resolution.rs` and is exposed at `POST /api/conflicts/evaluate`; command-response records can be appended at `POST /api/conflicts/command-result`. It preserves committed occupancy, requires a validated braking envelope before classifying a moving approach as stop-feasible, checks input freshness/uncertainty, chooses one reservation with waiting age before ETA, and validates proposals independently. Uncertain braking/state blocks new releases and yields `SAFE_HOLD`; an occupied vehicle gets a continue-to-clear action only when the caller marks continuation as verified safe. The API is standalone: it has not replaced the legacy v1 scheduler, and no BeamNG producer/actuator sends it the required assessment frame yet. Its caller supplies prior reservations and the route conflict table. See [[conflict-resolution]] for request fields, endpoint behavior, tests and limits.
+
 ## Uriel planning update
 
 S5 adds learned arrival timing to buffered occupancy estimates while retaining explicit geometry, feasibility, conservative reservations and headway. It does not claim ML directly commands braking or certifies safety. First-approach waiting age, actual clearance and response calibration remain requirements. The code described below is the earlier simplified non-ML scheduler; it does not implement the new predictor. Source: [[sources]] S5 sections 7–9. Related: [[ml-arrival-prediction]], [[context-reconciliation]].

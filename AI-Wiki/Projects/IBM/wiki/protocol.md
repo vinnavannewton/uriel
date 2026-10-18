@@ -53,6 +53,12 @@ Examples: [headon-hello.json](../../../../examples/headon-hello.json), [headon-s
 
 `POST /api/collision/telemetry` is display-only and returns HTTP 204, never a driving plan. With `ARC_TOKEN` configured it requires the same Bearer header as the bridges. Fields: `world_id` (a valid ID beginning `headon-collision-` or `headon-dodge-`), increasing `frame_seq`, nondecreasing `sim_time_s`, `finished`, optional `mode` (`collision` by default, or `dodge`), and exactly the two registered cars in the existing v2 `VehicleState` shape. Rust validates identities, dimensions and finite measurements; rejects duplicate/out-of-order frames and a competing recently active producer; retains one latest collision world. Snapshots use scenario `collision-grid-observer-v1`, `observation_only=true`, `observation_mode` reflecting the sender’s mode, `last_plan=null` and a fixed grid extent from the first positions. These are read through the ordinary world APIs; the protocol-version field on the snapshot selects the existing XY head-on rendering and does not grant a maneuver-v2 execution lease. Completion preserves positions as disconnected; missing frames become stale.
 
+## Conflict evaluator HTTP contract (new, standalone)
+
+`POST /api/conflicts/evaluate` accepts one bounded assessment frame with `frame_seq`, `sim_time_s`, validated stop-estimator thresholds, observations, caller-supplied prior reservations and route-conflict pairs. An observation includes identity/route, speed and optional acceleration, front-to-entry and rear-clearance distances, predicted times, waiting age, dimensions, telemetry age/uncertainty, occupancy/clearance facts and an optional braking deceleration explicitly marked as validated. It returns the state-aware actions, retained/allocated reservations, phase, safe-hold flag and independent monitor verdict for each action. The route-conflict matrix is caller-supplied; the endpoint does not infer intersection topology from the map.
+
+`POST /api/conflicts/command-result` accepts a command record and the observed speed. It preserves separate acknowledgement and verified-response fields and appends the result to the event log. It does not send a command or authenticate it against a prior plan/reservation. Both endpoints use the configured Bearer token when `ARC_TOKEN` is set. See [[conflict-resolution]] and the example request `examples/conflict-evaluate.json`. This API is currently not wired into `/ws/bridge` or any BeamNG controller.
+
 ## Sources
 
 - [[sources]]: S1 PRD section 8; S3 code inspection.

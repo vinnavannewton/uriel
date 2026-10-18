@@ -1,0 +1,76 @@
+{
+  "tool": "Drive Path Spline",
+  "splines": [
+    {
+      "isDriveInLane": true,
+      "nodes": {},
+      "isFreeMode": false,
+      "startingNode": 1,
+      "roadLength": 0,
+      "name": "bllck",
+      "isEnabled": true,
+      "id": "afe030c6-feea-4399-8498-80167bee531b",
+      "linkVehId": 73115,
+      "vels": [
+        13.5,
+        13.5
+      ],
+      "graphPath": {},
+      "speedProfileMode": 0,
+      "routeSpeed": 31.3,
+      "routeSpeedMode": "off",
+      "velLimits": [
+        13.5,
+        13.5
+      ],
+      "numLaps": 1,
+      "nmls": {},
+      "widths": {},
+      "isLoop": false,
+      "delayTime": 0,
+      "isVehicleLink": true,
+      "isAvoidCars": true,
+      "aggression": 0.3,
+      "graphNodes": [
+        "tunnel_city_A_59",
+        "DR323_3"
+      ]
+    },
+    {
+      "isDriveInLane": true,
+      "nodes": {},
+      "isFreeMode": false,
+      "startingNode": 1,
+      "roadLength": 0,
+      "name": "red",
+      "isEnabled": true,
+      "id": "7ea5867f-15b4-4342-82b2-26b7c65dca29",
+      "linkVehId": 74448,
+      "vels": [
+        13.5,
+        13.5
+      ],
+      "graphPath": {},
+      "speedProfileMode": 0,
+      "routeSpeed": 31.3,
+      "routeSpeedMode": "off",
+      "velLimits": [
+        13.5,
+        13.5
+      ],
+      "numLaps": 1,
+      "nmls": {},
+      "widths": {},
+      "isLoop": false,
+      "delayTime": 0,
+      "isVehicleLink": true,
+      "isAvoidCars": true,
+      "aggression": 0.3,
+      "graphNodes": [
+        "junction1_wp25",
+        "junction1_wp3"
+      ]
+    }
+  ],
+  "mapName": "west_coast_usa"
+}

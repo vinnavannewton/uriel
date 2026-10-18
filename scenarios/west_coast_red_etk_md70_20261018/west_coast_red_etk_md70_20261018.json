@@ -1,0 +1,22 @@
+[
+  {
+    "difficulty": 0,
+    "name": "West Coast Red ETK and Black MD70 Pickup \u2014 Saved Routes",
+    "lapConfig": {},
+    "authors": "Manikanta / Uriel",
+    "forceNoCountDown": true,
+    "description": "Saved red ETK and black MD70 medium-duty pickup on the two graph routes; no background traffic.",
+    "vehicles": {
+      "thePlayer": {
+        "startFocus": true,
+        "playerUsable": true
+      },
+      "clone0": {
+        "playerUsable": true
+      }
+    },
+    "prefabs": [
+      "levels/west_coast_usa/scenarios/west_coast_red_etk_md70_20261018/west_coast_red_etk_md70_20261018.prefab.json"
+    ]
+  }
+]

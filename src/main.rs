@@ -1,4 +1,5 @@
 mod collision_observer;
+mod conflict_resolution;
 mod coordinator;
 mod headon;
 mod headon_bridge;
@@ -104,6 +105,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/worlds", get(worlds))
         .route("/api/worlds/{id}", get(world_detail))
         .route("/api/scenarios/{id}", get(scenario_detail))
+        .route(
+            "/api/conflicts/evaluate",
+            axum::routing::post(conflict_evaluate),
+        )
+        .route(
+            "/api/conflicts/command-result",
+            axum::routing::post(conflict_command_result),
+        )
         .route("/ws/bridge", get(bridge_upgrade))
         .route("/ws/headon", get(headon_upgrade))
         .route(
@@ -709,4 +718,64 @@ async fn collision_telemetry(
         .map_err(|_| StatusCode::BAD_REQUEST)?;
     let _ = app.records.try_send(event);
     Ok(StatusCode::NO_CONTENT)
+}
+
+async fn conflict_evaluate(
+    State(app): State<App>,
+    headers: HeaderMap,
+    Json(request): Json<conflict_resolution::EvaluateRequest>,
+) -> Result<Json<conflict_resolution::EvaluateResponse>, StatusCode> {
+    if !authorized(&headers, app.token.as_deref()) {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+    let response = conflict_resolution::evaluate(request).map_err(|_| StatusCode::BAD_REQUEST)?;
+    record(&app, "conflict_evaluation", json!(response));
+    Ok(Json(response))
+}
+
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct CommandResultRequest {
+    record: conflict_resolution::CommandRecord,
+    observed_speed_mps: Option<f64>,
+    stopped_threshold_mps: f64,
+}
+
+async fn conflict_command_result(
+    State(app): State<App>,
+    headers: HeaderMap,
+    Json(mut request): Json<CommandResultRequest>,
+) -> Result<StatusCode, StatusCode> {
+    if !authorized(&headers, app.token.as_deref()) {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+    if !protocol::valid_id(&request.record.command_id)
+        || !protocol::valid_id(&request.record.vehicle_id)
+        || !request.record.sim_time_s.is_finite()
+        || request.record.sim_time_s < 0.0
+        || !request.stopped_threshold_mps.is_finite()
+        || request.stopped_threshold_mps < 0.0
+        || request.stopped_threshold_mps > 2.0
+        || request
+            .observed_speed_mps
+            .is_some_and(|v| !v.is_finite() || v < 0.0)
+    {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    conflict_resolution::verify_command_response(
+        &mut request.record,
+        request.observed_speed_mps,
+        request.stopped_threshold_mps,
+    );
+    record(&app, "conflict_command_result", json!(request.record));
+    Ok(StatusCode::NO_CONTENT)
+}
+
+fn authorized(headers: &HeaderMap, expected: Option<&str>) -> bool {
+    expected.is_none_or(|token| {
+        headers
+            .get(header::AUTHORIZATION)
+            .and_then(|v| v.to_str().ok())
+            == Some(format!("Bearer {token}").as_str())
+    })
 }
