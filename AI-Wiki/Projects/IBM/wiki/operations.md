@@ -120,6 +120,9 @@ Current final evidence: **`runs/avoidance-e8d6280410/`**, with 127 simulator sam
 Checks passed: 9 Rust unit tests, 21 Python unit tests, offline build, Rust formatting, Python syntax and diff whitespace. `tests/check_headon_wire.py` against the local server (no simulator calls) records `runs/protocol-check-fed323c18e/`: v2 prepare/accept/execute, frozen-telemetry pause, active ownership, new reset epoch, legacy crossing-v1 handshake/plan and dashboard world counts. Independent review identified and then confirmed fixes for old-lease renewal and frozen sensor timestamps. The earlier integrated run `avoidance-2af29f8528` predates those fixes and is historical evidence, not the final implementation snapshot.
 
 Only the basic open-map, two-car algorithm/integration slice is demonstrated. No obstacle spawning/testing, ML worker, model training, varied-scenario acceptance, load campaign, LinuxONE deployment, commit or push occurred.
+## README documentation handoff
+
+The README overview and local setup now use Uriel naming while identifying the existing Arc Angel prototype and retaining its configuration names. Current defaults, routes, and dashboard demo behaviour were inspected in source. The remaining README sections, starting at `Bridge protocol`, are reserved for a teammate to replace with the second-half Markdown supplied in chat. This is documentation work; no server, simulator, deployment, or behavioural checks were run.
 
 ## Sources
 
