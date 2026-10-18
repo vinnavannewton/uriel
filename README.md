@@ -15,6 +15,10 @@ An onboard Uriel client would connect each vehicle to the shared supervisor. The
 
 **The 90-degree crossing is a small demonstration of this broader idea.** We used two vehicles in BeamNG.drive to make one cooperative decision visible: when their paths conflict, one vehicle slows so the other can pass. This prototype represents one part of the proposed supervisory system; deployment on real autonomous vehicles and the wider road-safety capabilities remain future work.
 
+## DEMO
+
+https://github.com/user-attachments/assets/5bdba852-4bb7-40b5-a2f5-eea233101bd0
+
 ## Why IBM LinuxONE
 
 Road-safety coordination is time critical: a useful prediction must arrive while vehicles still have time to respond. IBM LinuxONE hosts Uriel's shared Rust coordination service and ML inference worker, bringing prediction and coordination together on the server. The intended role is to handle shared information and timely decisions across connected vehicles while their onboard AI handles immediate driving. Rust provides the coordination runtime; the trained models estimate arrival and clearance timing.
