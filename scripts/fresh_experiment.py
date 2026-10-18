@@ -11,6 +11,8 @@ import random
 import shutil
 import traceback
 import time
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 import uuid
 
 from beamngpy import BeamNGpy, Scenario, Vehicle
@@ -63,6 +65,33 @@ def set_ai_aggression(vehicle, aggression):
         # BeamNG.tech 0.39 exposes SetAiAggression in its vehicle API, while
         # BeamNGpy 1.36 lacks the public wrapper available in newer releases.
         vehicle.ai._send({'type':'SetAiAggression','aggression':aggression}).ack('AiAggressionSet')
+
+
+class DashboardObserver:
+    """Publish measured positions to the read-only crossing map."""
+    def __init__(self, base_url, run_id):
+        self.base_url=base_url.rstrip('/')
+        self.world_id=f'crossing-observer-{run_id}-{uuid.uuid4().hex[:10]}'
+        self.last_payload=None
+
+    def publish(self, frame_seq, sim_time_s, vehicles, finished=False):
+        payload=dict(mode='crossing',world_id=self.world_id,frame_seq=frame_seq,
+            sim_time_s=sim_time_s,finished=finished,vehicles=vehicles)
+        request=Request(self.base_url+'/api/collision/telemetry',
+            data=json.dumps(payload,allow_nan=False).encode(),
+            headers={'Content-Type':'application/json'},method='POST')
+        try:
+            with urlopen(request,timeout=2) as response:
+                if response.status!=204:
+                    raise RuntimeError(f'Dashboard observer returned HTTP {response.status}')
+        except (HTTPError,URLError,TimeoutError) as error:
+            raise RuntimeError(f'Could not publish live dashboard telemetry to {self.base_url}: {error}') from error
+        self.last_payload=payload
+
+    def finish(self):
+        if self.last_payload is None:return
+        self.publish(self.last_payload['frame_seq']+1,self.last_payload['sim_time_s'],
+            self.last_payload['vehicles'],finished=True)
 
 
 def configuration(seed, background):
@@ -171,7 +200,7 @@ def validate(rows,configs,outcomes,duration=DURATION,hz=TELEMETRY_HZ):
         acceleration='first sample null; finite differences thereafter',outcomes=outcomes)
 
 
-def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TELEMETRY_HZ, speed=2.0, ai_aggression=0.3):
+def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TELEMETRY_HZ, speed=2.0, ai_aggression=0.3, dashboard_url=None):
     # BeamNG deterministic speed factors advance speed * 50 ms per graphics
     # frame. Keep the graphics FPS limit at 60 throughout. Samples per sim
     # second remain limited to 20/speed because of that physics quantum.
@@ -180,6 +209,7 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
     frame_dt=1.0/sample_hz
     frame_count=round(duration*sample_hz)+1
     configs=configuration(seed,background)
+    observer=DashboardObserver(dashboard_url,run_id) if dashboard_url else None
     geometry=dict(map='smallgrid',virtual_intersection=True,zone={'x':[-3,3],'y':[-3,3]},
         virtual_lane_half_width=1.8,route_deviation_reference_threshold_m=2,stop_line_progress=-6,
         subject_route_angle_degrees=90,
@@ -270,6 +300,7 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
                 list(pool.map(lambda v:v.sensors.poll(),vehicles))
                 boxes=json.loads(b.control.queue_lua_command(lua,response=True))
                 if start is None:start=vehicles[0].state['time']
+                observer_vehicles=[]
                 for v,c in zip(vehicles,configs):
                     st=v.state;p=st['pos'];vel=st['vel'];direction=st['dir'];up=st['up'];e=v.sensors['electrics']
                     acc=[None]*3
@@ -304,6 +335,16 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
                         conflict_zone_state='overlap' if overlap else 'outside',route_deviation=deviation,
                         front_progress=front,rear_progress=rear,bbox_json=json.dumps(boxes[v.vid],separators=(',',':')))
                     writer.writerow(row);rows.append(row)
+                    if observer is not None:
+                        length=dimensions[v.vid]['length'];width=dimensions[v.vid]['width']
+                        observer_vehicles.append(dict(vehicle_id=v.vid,
+                            position_xyz_m=list(p),velocity_xyz_mps=list(vel),
+                            forward_xyz=list(direction),up_xyz=list(up),sensor_sim_time_s=st['time'],
+                            length_m=length,width_m=width,
+                            enclosing_radius_m=math.hypot(length/2,width/2),
+                            damage=v.sensors['damage'].get('damage',0)))
+                if observer is not None:
+                    observer.publish(frame,observer_vehicles[0]['sensor_sim_time_s'],observer_vehicles)
                 f.flush()
                 progress_frames=max(1,round(sample_hz*10))
                 if frame and frame%progress_frames==0:
@@ -340,6 +381,9 @@ def collect(b, folder, run_id, seed, background, pool, duration=DURATION, hz=TEL
         for v in vehicles:
             try:v.ai.set_mode('disabled');v.control(throttle=0,brake=1,parkingbrake=1)
             except Exception:pass
+        if observer is not None:
+            try:observer.finish()
+            except Exception as error:print('DASHBOARD_FINISH_WARNING',repr(error),flush=True)
 
 
 def parse_args(argv=None):
@@ -354,6 +398,7 @@ def parse_args(argv=None):
     parser.add_argument('--port',type=int,default=25252)
     parser.add_argument('--output',type=Path,default=ROOT/'uriel_experiment',help='Parent directory; a new experiment UUID is always created')
     parser.add_argument('--background-config',type=Path,default=ROOT/'scenarios'/'smallgrid_background_configs.json')
+    parser.add_argument('--dashboard-url',default=None,help='Optional local Arc Angel dashboard base URL for live two-subject display, e.g. http://127.0.0.1:3001')
     args=parser.parse_args(argv)
     if args.trials<1:parser.error('--trials must be positive')
     if not math.isfinite(args.duration) or args.duration<=0:parser.error('--duration must be finite and positive')
@@ -365,6 +410,14 @@ def main():
     backgrounds=json.loads(args.background_config.read_text())
     if len(backgrounds)!=4 or not all(c.get('model') and 'name' in c for c in backgrounds):
         raise ValueError('Background config must describe exactly four named vehicle models')
+    if args.dashboard_url:
+        try:
+            with urlopen(args.dashboard_url.rstrip('/')+'/api/status',timeout=2) as response:
+                status=json.load(response)
+            if status.get('service')!='Arc Angel':raise RuntimeError('Unexpected dashboard service response')
+        except (HTTPError,URLError,TimeoutError,ValueError) as error:
+            raise RuntimeError(f'Dashboard preflight failed at {args.dashboard_url}: {error}') from error
+        print('DASHBOARD',args.dashboard_url,'ready; live crossing telemetry is observation-only',flush=True)
     exp=args.output/('experiment_'+uuid.uuid4().hex)
     exp.mkdir(parents=True,exist_ok=False)
     shutil.copyfile(__file__,exp/'collector_source.py')
@@ -385,7 +438,7 @@ def main():
         with ThreadPoolExecutor(max_workers=6) as pool:
             for i in range(args.trials):
                 run_id=f'fresh_{i+1:03d}';folder=exp/run_id;folder.mkdir(exist_ok=False)
-                results.append(collect(b,folder,run_id,args.seed+i,backgrounds,pool,args.duration,args.telemetry_hz,args.speed,args.ai_aggression))
+                results.append(collect(b,folder,run_id,args.seed+i,backgrounds,pool,args.duration,args.telemetry_hz,args.speed,args.ai_aggression,args.dashboard_url))
                 write_summary(exp,results)
         manifest['status']='complete' if all(r['status']=='complete' for r in results) else 'completed_with_failures'
     except BaseException as error:

@@ -1,1 +1,2 @@
 beamngpy==1.36
+websockets==17.1

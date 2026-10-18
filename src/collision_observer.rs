@@ -6,6 +6,14 @@ use std::{sync::Arc, time::Instant};
 use tokio::sync::Mutex;
 
 pub const SCENARIO: &str = "collision-grid-observer-v1";
+const CROSSING_VEHICLE_IDS: [&str; 6] = [
+    "uriel_red",
+    "uriel_blue",
+    "traffic_1",
+    "traffic_2",
+    "traffic_3",
+    "traffic_4",
+];
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Frame {
@@ -24,13 +32,22 @@ fn default_mode() -> String {
 pub struct Hub(Arc<Mutex<Option<(Frame, Instant, Value)>>>);
 impl Hub {
     pub async fn publish(&self, frame: Frame) -> Result<(), &'static str> {
+        let crossing = frame.mode == "crossing";
+        let expected_ids: &[&str] = if crossing && frame.vehicles.len() == 2 {
+            &["uriel_red", "uriel_blue"]
+        } else if crossing {
+            CROSSING_VEHICLE_IDS.as_slice()
+        } else {
+            VEHICLE_IDS.as_slice()
+        };
         if !(frame.world_id.starts_with("headon-collision-")
-            || frame.world_id.starts_with("headon-dodge-"))
-            || !matches!(frame.mode.as_str(), "collision" | "dodge")
+            || frame.world_id.starts_with("headon-dodge-")
+            || (crossing && frame.world_id.starts_with("crossing-observer-")))
+            || !matches!(frame.mode.as_str(), "collision" | "dodge" | "crossing")
             || !crate::protocol::valid_id(&frame.world_id)
             || !frame.sim_time_s.is_finite()
-            || frame.vehicles.len() != 2
-            || VEHICLE_IDS.iter().any(|id| {
+            || frame.vehicles.len() != expected_ids.len()
+            || expected_ids.iter().any(|id| {
                 frame
                     .vehicles
                     .iter()
@@ -53,13 +70,13 @@ impl Hub {
                     || !v.sensor_sim_time_s.is_finite()
             })
         {
-            return Err("invalid collision telemetry");
+            return Err("invalid observer telemetry");
         }
         let mut latest = self.0.lock().await;
         let bounds = if let Some((prior, received, bounds)) = latest.as_ref() {
             if prior.world_id == frame.world_id {
                 if frame.frame_seq <= prior.frame_seq || frame.sim_time_s < prior.sim_time_s {
-                    return Err("old collision frame");
+                    return Err("old observer frame");
                 }
                 bounds.clone()
             } else {
@@ -83,7 +100,7 @@ impl Hub {
             "scenario_config_id":SCENARIO,"protocol_version":2,"frame_seq":f.frame_seq,"sim_time_s":f.sim_time_s,
             "wall_age_ms":age,"status":if f.finished {"disconnected"} else if age>1500 {"stale"} else {"connected"},
             "observation_only":true,"observation_mode":f.mode,"map_bounds_xy_m":bounds,"vehicles":f.vehicles.iter().map(|v|json!({
-                "vehicle_id":v.vehicle_id,"route_id":if f.mode=="dodge" {"cooperative dodge"} else {"collision baseline"},"position_xy_m":[v.position_xyz_m[0],v.position_xyz_m[1]],
+                "vehicle_id":v.vehicle_id,"route_id":if f.mode=="dodge" {"cooperative dodge"} else if f.mode=="crossing" {"perpendicular approach"} else {"collision baseline"},"position_xy_m":[v.position_xyz_m[0],v.position_xyz_m[1]],
                 "velocity_xy_mps":[v.velocity_xyz_mps[0],v.velocity_xyz_mps[1]],"heading_rad":v.forward_xyz[1].atan2(v.forward_xyz[0]),
                 "length_m":v.length_m,"width_m":v.width_m,"damage":v.damage
             })).collect::<Vec<_>>(),"reservations":[],"rejected":0,"coalesced":0,"acknowledgements":{},"last_plan":null}),
@@ -91,6 +108,11 @@ impl Hub {
     }
 }
 fn bounds_for(f: &Frame) -> Value {
+    if f.mode == "crossing" {
+        // The seeded subjects approach the origin on perpendicular lanes.
+        // Keep a stable extent so the live grid does not zoom as they move.
+        return json!([[-75., -75.], [110., 110.]]);
+    }
     let a = f.vehicles[0].position_xyz_m;
     let b = f.vehicles[1].position_xyz_m;
     json!([
@@ -154,6 +176,36 @@ mod tests {
         hub.publish(dodge).await.unwrap();
         let snapshot = hub.snapshot().await.unwrap();
         assert_eq!(snapshot["observation_mode"], "dodge");
+        assert!(snapshot["last_plan"].is_null());
+    }
+    #[tokio::test]
+    async fn crossing_observation_accepts_teammate_subject_ids_and_keeps_grid_bounds() {
+        let hub = Hub::default();
+        let mut crossing = frame(0, false);
+        crossing.mode = "crossing".into();
+        crossing.world_id = "crossing-observer-fresh_001-test".into();
+        crossing.vehicles[0].vehicle_id = CROSSING_VEHICLE_IDS[0].into();
+        crossing.vehicles[1].vehicle_id = CROSSING_VEHICLE_IDS[1].into();
+        let template = crossing.vehicles[0].clone();
+        crossing
+            .vehicles
+            .extend(CROSSING_VEHICLE_IDS[2..].iter().enumerate().map(|(i, id)| {
+                let mut vehicle = template.clone();
+                vehicle.vehicle_id = (*id).into();
+                vehicle.position_xyz_m[0] = i as f64 * 12.;
+                vehicle
+            }));
+        hub.publish(crossing).await.unwrap();
+        let snapshot = hub.snapshot().await.unwrap();
+        assert_eq!(snapshot["observation_mode"], "crossing");
+        assert_eq!(
+            snapshot["map_bounds_xy_m"],
+            json!([[-75., -75.], [110., 110.]])
+        );
+        assert_eq!(
+            snapshot["vehicles"][0]["route_id"],
+            "perpendicular approach"
+        );
         assert!(snapshot["last_plan"].is_null());
     }
     #[tokio::test]

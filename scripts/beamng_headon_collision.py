@@ -20,20 +20,21 @@ BLUE_ID = 'uriel_blue'
 
 
 class CollisionObserver:
-    def __init__(self, url, world_id, dimensions, mode="collision"):
+    def __init__(self, url, world_id, dimensions, mode="collision", vehicle_ids=(RED_ID, BLUE_ID)):
         self.url = url.rstrip('/') + '/api/collision/telemetry'
         self.world_id = world_id
         self.dimensions = dimensions
         self.mode = mode
+        self.vehicle_ids = vehicle_ids
         self.frame_seq = 0
         self.latest = None
 
     def publish(self, data, finished=False):
         self.latest = data
         vehicles = []
-        for name in (RED_ID, BLUE_ID):
+        for name, display_id in zip(self.vehicle_ids, (RED_ID, BLUE_ID)):
             state = data[name]['state']
-            vehicles.append({'vehicle_id': name, 'position_xyz_m': state['pos'],
+            vehicles.append({'vehicle_id': display_id, 'position_xyz_m': state['pos'],
                              'velocity_xyz_mps': state['vel'], 'forward_xyz': state['dir'],
                              'up_xyz': state['up'], 'sensor_sim_time_s': state['time'],
                              'damage': data[name]['damage'].get('damage', 0),
@@ -118,7 +119,8 @@ def main():
     if not (0 < args.impact_threshold <= 1000):
         parser.error('--impact-threshold must be in (0, 1000]')
 
-    settings = {'map': 'smallgrid', 'vehicles': [RED_ID, BLUE_ID],
+    red_id, blue_id = RED_ID, BLUE_ID
+    settings = {'map': 'smallgrid', 'vehicles': [red_id, blue_id],
                 'separation_m': args.separation_m, 'speed_kmh': args.speed_kmh,
                 'duration_s': args.duration_s, 'impact_threshold': args.impact_threshold,
                 'dashboard_url': None if args.no_dashboard else args.dashboard_url,
@@ -150,34 +152,37 @@ def main():
 
         info = bng.vehicles.get_current_info()
         present = set(info)
-        if present not in ({RED_ID}, {RED_ID, BLUE_ID}):
-            raise RuntimeError(f'Expected only {RED_ID} or the pair {RED_ID}/{BLUE_ID}; found {sorted(present)}. No vehicles changed.')
-        if info[RED_ID].get('model') != 'vivace':
-            raise RuntimeError(f'{RED_ID} must be a Vivace; found {info[RED_ID].get("model")!r}.')
-        spawned_blue = BLUE_ID not in info
+        if present == {'red', 'blue'}:
+            red_id, blue_id = 'red', 'blue'
+        elif present not in ({red_id}, {red_id, blue_id}):
+            raise RuntimeError(f'Expected only {RED_ID} or the pair {RED_ID}/{BLUE_ID}, or the loaded red/blue pair; found {sorted(present)}. No vehicles changed.')
+        settings['vehicles'] = [red_id, blue_id]
+        if info[red_id].get('model') != 'vivace':
+            raise RuntimeError(f'{red_id} must be a Vivace; found {info[red_id].get("model")!r}.')
+        spawned_blue = blue_id not in info
         if not spawned_blue:
-            if info[BLUE_ID].get('model') != 'vivace':
-                raise RuntimeError(f'{BLUE_ID} must be a Vivace; found {info[BLUE_ID].get("model")!r}.')
+            if info[blue_id].get('model') != 'vivace':
+                raise RuntimeError(f'{blue_id} must be a Vivace; found {info[blue_id].get("model")!r}.')
             from headon_planner import matching_configs
-            if not matching_configs(info[RED_ID]['config'], info[BLUE_ID]['config']):
+            if not matching_configs(info[red_id]['config'], info[blue_id]['config']):
                 raise RuntimeError('The two Vivace configurations differ. Match their physical parts before running.')
 
         safe_to_pause = True
         bng.control.pause()
         current = bng.vehicles.get_current()
-        red = current[RED_ID]
+        red = current[red_id]
         red.connect(bng)
         red.connection.skt.skt.settimeout(2)
         vehicles.append(red)
         if not spawned_blue:
-            blue = current[BLUE_ID]
+            blue = current[blue_id]
             blue.connect(bng)
             blue.connection.skt.skt.settimeout(2)
             vehicles.append(blue)
         else:
-            config = dict(info[RED_ID]['config'])
+            config = dict(info[red_id]['config'])
             config.pop('paints', None)
-            blue = Vehicle(BLUE_ID, model='vivace', part_config=config,
+            blue = Vehicle(blue_id, model='vivace', part_config=config,
                            color=(.02, .15, .95, 1), color2=(.02, .15, .95, 1),
                            color3=(.02, .15, .95, 1))
             vehicles.append(blue)
@@ -191,17 +196,17 @@ def main():
         center_x, center_y, _ = red.state['pos']
         half = args.separation_m / 2
         z = .35
-        starts = {RED_ID: (center_x, center_y + half, z),
-                  BLUE_ID: (center_x, center_y - half, z)}
-        rotations = {RED_ID: (0, 0, 0, 1), BLUE_ID: (0, 0, 1, 0)}
+        starts = {red_id: (center_x, center_y + half, z),
+                  blue_id: (center_x, center_y - half, z)}
+        rotations = {red_id: (0, 0, 0, 1), blue_id: (0, 0, 1, 0)}
 
         red.set_color((.95, .03, .02, 1))
-        if not bng.vehicles.teleport(red, starts[RED_ID], rot_quat=rotations[RED_ID], reset=True):
+        if not bng.vehicles.teleport(red, starts[red_id], rot_quat=rotations[red_id], reset=True):
             raise RuntimeError('Could not position the red car.')
         if spawned_blue:
-            if not bng.vehicles.spawn(blue, starts[BLUE_ID], rot_quat=rotations[BLUE_ID], safe_spawn=False):
+            if not bng.vehicles.spawn(blue, starts[blue_id], rot_quat=rotations[blue_id], safe_spawn=False):
                 raise RuntimeError('Could not spawn the blue matching Vivace.')
-        elif not bng.vehicles.teleport(blue, starts[BLUE_ID], rot_quat=rotations[BLUE_ID], reset=True):
+        elif not bng.vehicles.teleport(blue, starts[blue_id], rot_quat=rotations[blue_id], reset=True):
             raise RuntimeError('Could not position the blue car.')
 
         blue.set_color((.02, .15, .95, 1))
@@ -229,10 +234,10 @@ def main():
                 'enclosing_radius_m': max(math.dist(initial[vehicle.vid]['state']['pos'], p)
                                           for p in box.values())}
         if not args.no_dashboard:
-            observer = CollisionObserver(args.dashboard_url, run_dir.name, dimensions, mode="dodge")
+            observer = CollisionObserver(args.dashboard_url, run_dir.name, dimensions, mode="dodge", vehicle_ids=(red_id, blue_id))
             observer.publish(initial)
             print(f'DASHBOARD {args.dashboard_url} (live dodge telemetry)', flush=True)
-        for vehicle_id, sign in ((RED_ID, -1), (BLUE_ID, 1)):
+        for vehicle_id, sign in ((red_id, -1), (blue_id, 1)):
             state = initial[vehicle_id]['state']
             expected_y = starts[vehicle_id][1]
             if abs(state['pos'][0] - center_x) > .5 or abs(state['pos'][1] - expected_y) > .5:
@@ -244,9 +249,9 @@ def main():
 
         from headon_planner import front_aligned_path, guard_reason, path_distance
         speed = args.speed_kmh / 3.6
-        radii = [dimensions[name]['enclosing_radius_m'] for name in (RED_ID, BLUE_ID)]
+        radii = [dimensions[name]['enclosing_radius_m'] for name in (red_id, blue_id)]
         dodge_plan, paths = plan_dodge_paths((center_x, center_y), radii, speed)
-        for i, vehicle_id in enumerate((RED_ID, BLUE_ID)):
+        for i, vehicle_id in enumerate((red_id, blue_id)):
             vehicle = next(v for v in vehicles if v.vid == vehicle_id)
             state = initial[vehicle_id]['state']
             line = [{'pos': p, 'speed': speed}
@@ -269,7 +274,7 @@ def main():
             'spawned_blue_this_run': spawned_blue, 'start_states': initial,
             'dodge_offsets_m': dodge_plan.offsets, 'dodge_paths_xy_m': paths,
             'forward_selector_indices': forward_selectors,
-            'vehicle_config': info[RED_ID]['config'],
+            'vehicle_config': info[red_id]['config'],
             'source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'started_utc': datetime.now(timezone.utc).isoformat(),
             'collision_detection': 'damage sensor increase; not a synchronized contact label',
@@ -280,9 +285,9 @@ def main():
         print(f'Both Vivaces target {args.speed_kmh:g} km/h from {args.separation_m:g} m apart. Press Ctrl+C to stop early.', flush=True)
 
         baselines = {vehicle_id: initial[vehicle_id]['damage'].get('damage', 0.0)
-                     for vehicle_id in (RED_ID, BLUE_ID)}
+                     for vehicle_id in (red_id, blue_id)}
         start_positions = {vehicle_id: initial[vehicle_id]['state']['pos'][:]
-                           for vehicle_id in (RED_ID, BLUE_ID)}
+                           for vehicle_id in (red_id, blue_id)}
         started = time.monotonic()
         event = None
         # Physics was paused after positioning; queued controls and AI paths
@@ -292,12 +297,12 @@ def main():
             while time.monotonic() - started < args.duration_s:
                 elapsed = time.monotonic() - started
                 sample = snapshot(vehicles)
-                states = {vehicle_id: sample[vehicle_id]['state'] for vehicle_id in (RED_ID, BLUE_ID)}
-                distance = math.dist(states[RED_ID]['pos'], states[BLUE_ID]['pos'])
+                states = {vehicle_id: sample[vehicle_id]['state'] for vehicle_id in (red_id, blue_id)}
+                distance = math.dist(states[red_id]['pos'], states[blue_id]['pos'])
                 previous_min = out['minimum_reference_distance_m']
                 out['minimum_reference_distance_m'] = distance if previous_min is None else min(previous_min, distance)
                 increases = {vehicle_id: max(0.0, sample[vehicle_id]['damage'].get('damage', 0.0) - baselines[vehicle_id])
-                             for vehicle_id in (RED_ID, BLUE_ID)}
+                             for vehicle_id in (red_id, blue_id)}
                 record = {'elapsed_wall_s': elapsed, 'reference_distance_m': distance,
                           'vehicles': sample, 'damage_increase': increases}
                 telemetry.write(json.dumps(record) + '\n')
@@ -311,30 +316,30 @@ def main():
                 if max(increases.values(), default=0.0) >= args.impact_threshold:
                     event = 'damage_sensor_threshold'
                     break
-                reason = guard_reason([states[name] for name in (RED_ID, BLUE_ID)], radii)
+                reason = guard_reason([states[name] for name in (red_id, blue_id)], radii)
                 if reason is None and any(path_distance(states[name]['pos'][:2], paths[i]) > 1.2
-                                          for i, name in enumerate((RED_ID, BLUE_ID))):
+                                          for i, name in enumerate((red_id, blue_id))):
                     reason = 'vehicle deviated from assigned dodge path'
                 if reason:
                     bng.control.pause()
                     out['reason'] = reason
                     event = 'emergency_paused'
                     break
-                if (states[RED_ID]['pos'][1] < center_y - 30
-                        and states[BLUE_ID]['pos'][1] > center_y + 30
+                if (states[red_id]['pos'][1] < center_y - 30
+                        and states[blue_id]['pos'][1] > center_y + 30
                         and all(abs(states[name]['pos'][0] - center_x) < .6
-                                for name in (RED_ID, BLUE_ID))):
+                                for name in (red_id, blue_id))):
                     event = 'passed_and_returned'
                     break
                 if elapsed >= 2.5 and any(
                         math.dist(states[vehicle_id]['pos'], start_positions[vehicle_id]) < 1.0
-                        for vehicle_id in (RED_ID, BLUE_ID)):
+                        for vehicle_id in (red_id, blue_id)):
                     event = 'launch_failed_no_motion'
                     out['launch_diagnostics'] = {
                         vehicle_id: {key: sample[vehicle_id]['electrics'].get(key)
                                      for key in ('gear', 'parkingbrake_input',
                                                  'throttle_input', 'rpm')}
-                        for vehicle_id in (RED_ID, BLUE_ID)}
+                        for vehicle_id in (red_id, blue_id)}
                     break
                 time.sleep(.08)
 
@@ -347,7 +352,7 @@ def main():
         out['impact_signal'] = event
         out['elapsed_wall_s'] = time.monotonic() - started
         out['final'] = snapshot(vehicles)
-        for vehicle_id in (RED_ID, BLUE_ID):
+        for vehicle_id in (red_id, blue_id):
             out['damage_increase'][vehicle_id] = max(
                 out['damage_increase'].get(vehicle_id, 0.0),
                 max(0.0, out['final'][vehicle_id]['damage'].get('damage', 0.0) - baselines[vehicle_id]))

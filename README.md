@@ -1,144 +1,137 @@
-# Uriel
+<p align="center">
+  <img src="assets/uriel-angel-wings.svg" width="190" alt="Uriel angel wings mark" />
+</p>
 
-Cooperative vehicle conflict and road-hazard coordination for the IBM datathon project.
+<h1 align="center">Uriel</h1>
+<p align="center"><strong>Local-first vehicle conflict coordination, demonstrated in BeamNG.drive.</strong></p>
 
-Uriel aims to combine a Rust coordination server, BeamNG simulation, arrival-time machine learning, and an operator dashboard. This repository currently contains the **historical Arc Angel prototype**: a Rust server and a read-only browser dashboard. BeamNG bridge integration, ML inference, and LinuxONE deployment remain planned work.
+<p align="center">
+  <img src="assets/beamng-drive-logo-mark.png" width="360" alt="BeamNG.drive logo, the simulation platform used for Uriel trials" />
+</p>
 
-The Cargo package, environment variables, and parts of the UI still use the Arc Angel name.
+Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive experiment tooling, and an exploratory arrival-time ML path. This repository includes the current implementation and evidence from the project’s recorded tests and simulator runs. The angel-wings mark is an original Uriel asset; the BeamNG.drive mark above is the user-provided logo.
 
 ## At a glance
 
-| Component | Current status |
+| Area | What is implemented and evidenced |
 | --- | --- |
-| Coordination server | Rust with Axum and Tokio; simplified route projection, reservations, and headway logic |
-| Dashboard | Plain HTML, CSS, and JavaScript; read-only live view and labelled demo data |
-| Bridge interface | WebSocket protocol and example messages; Python BeamNG bridge not included |
-| Scenario | Schematic crossing; not calibrated to West Coast USA |
-| Arrival-time ML | Planned; no trained model or evaluation results established |
-| LinuxONE deployment | Planned; deployment and remote access not verified |
+| Rust coordinator | Axum/Tokio service, WebSocket bridge, reservations, conflict evaluation, and optional hybrid arrival-time inference |
+| BeamNG.drive | Python tooling for telemetry, route experiments, head-on avoidance, and a matched 90-degree crossing comparison |
+| Machine learning | GPU-trained XGBoost entry and clearance models; a Python worker, Rust integration, portable LinuxONE inference, and recorded grouped evaluation |
+| Dashboard | Browser dashboard for live telemetry plus selectable synthetic head-on and 90-degree demos |
+| Tests recorded | 38 Rust tests and 4 ML-worker Python tests passed for the hybrid integration; additional focused checks and BeamNG runs are listed below |
+| Deployment | LinuxONE hybrid service deployment and HTTP inference were verified; remote BeamNG control remains blocked by network latency |
+
+## BeamNG.drive results
+
+BeamNG.drive is the simulator used for the vehicle experiments in this project. The latest paired 90-degree demonstration used two matching Vivace cars on perpendicular routes in Small Grid:
+
+| Trial | Setup | Recorded outcome |
+| --- | --- | --- |
+| Uncoordinated baseline | Both cars targeted 8 m/s; native car avoidance disabled | Stopped after 7.4 simulation seconds on the damage guard; damage readings 4,175.430 and 4,203.463; minimum sampled reference-point separation 2.905 m |
+| Uriel hybrid | Local Rust coordinator and ML worker; red yielded while blue crossed | Both cars cleared after 14.4 simulation seconds; zero reported damage; minimum sampled reference-point separation 25.322 m |
+
+This is one paired demonstration (two trials) in one simulator setup. Damage is a proxy and contact attribution was unavailable. It demonstrates the observed behavior for this setup; it is not a general collision-prevention guarantee or a certified safety result. The run evidence is recorded under `runs/grid-comparison-62ce5ba2fe/` when available locally.
+
+A separate local hybrid pass also recorded both cars clearing with zero reported damage. Two head-on avoidance pairs (four trials total) recorded `passed_and_returned` with zero reported damage in each run. These are bounded demonstrations; the exact route, controller, and conditions matter. The project also recorded West Coast USA route and vehicle experiments, but those route/clearance labels are provisional and are not interchangeable with the marked Small Grid crossing.
+
+## Training data and evaluation
+
+The combined training run used teammate-provided Downloads data and local recordings on the laptop RTX 4060 GPU (`cuda:0`). The audit accepted **52 Small Grid trial folders** (50 teammate-provided and 2 local) plus **27 exploratory West Coast trials** as source folders. Incomplete, damaged, incompatible, and duplicate records were excluded as appropriate for each target.
+
+| Target | Training examples | Independent groups | Held-out evaluation |
+| --- | ---: | ---: | --- |
+| Entry time | 8,073 | 22 | 2,256 rows across 23 trials and 5 groups; MAE 0.369 s, p95 absolute error 1.442 s |
+| Rear-clearance time | 7,568 | 18 | 2,200 rows across 18 trials and 5 groups; MAE 0.438 s, p95 absolute error 1.954 s |
+
+These are grouped held-out regression metrics, not collision-avoidance scores. The final models are XGBoost UBJ files under `runs/ml-arrival/combined-gpu-cf2bc118ec/models/` when the local training artifacts are present. The hybrid path loads those models in a Python worker and can use estimates to widen the crossing occupancy window while retaining Rust’s physical checks. The learned two-second allowance and West Coast labels are experimental; model calibration, missing-feature behavior, and broader scenario validation remain open. Point clouds were not used for this training run.
+
+## Validation recorded
+
+- **38 Rust tests passed.**
+- **4 Python ML-worker tests passed.**
+- An isolated local integration loaded the trained models and received ten model-bearing Rust crossing responses; maximum measured local round trip was 2.20 ms.
+- Ten remote HTTP conflict-evaluation calls through the deployed LinuxONE service returned accepted monitor results; maximum measured remote-local elapsed time was 4.97 ms. The LinuxONE health endpoint returned `ok` and both user services were active.
+- A portable inference export matched XGBoost on 500 finite and missing-value inputs.
+- Three laptop HTTP health checks through the SSH tunnel took 1.95–2.81 seconds. That exceeds the bridge’s 350 ms request and 500 ms plan-lease limits, so remote live BeamNG control has not been demonstrated.
+
+Counts above describe the named verification runs in the project record; they are not a claim that every test in the repository was run in one suite. The dashboard’s two selectable demos are synthetic previews, separate from BeamNG measurements.
 
 ## Quick start
 
 ### Prerequisites
 
-- A Rust toolchain with Cargo and support for Rust edition 2021.
-- Access to the dependencies declared in `Cargo.toml`, or an existing local cache.
-- A browser to view the dashboard.
+- Rust toolchain and Cargo (Rust 2021 edition).
+- Python dependencies from `requirements-beamng.txt` for BeamNG scripts.
+- BeamNG.tech/BeamNG.drive with its API enabled for live simulator experiments.
+- A browser for the dashboard.
 
-### Start the server
-
-Run from the repository root:
+### Run the local service
 
 ```sh
 cargo run
 ```
 
-Open [the local dashboard](http://127.0.0.1:3000). The bridge connects at `ws://127.0.0.1:3000/ws/bridge`.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000). The bridge endpoint is `ws://127.0.0.1:3000/ws/bridge`. The project’s live demonstration scripts and their options are documented in `scripts/BEAMNG_RECORDING.md` and `scripts/ARRIVAL_HYBRID.md`.
 
-Select **Preview demo** to explore labelled example data without a connected bridge. Turn it off to view live worlds supplied to the server. Demo data does not demonstrate simulator integration or coordination correctness.
-
-### Configure the environment
+### Environment variables
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `ARC_BIND` | `127.0.0.1:3000` | HTTP and WebSocket listen address |
-| `ARC_SCENARIO` | `scenarios/crossing-v1.json` | Scenario configuration file |
-| `ARC_RUN_DIR` | `runs` | Experiment record directory |
+| `ARC_SCENARIO` | `scenarios/crossing-v1.json` | Scenario configuration |
+| `ARC_RUN_DIR` | `runs` | Local experiment record directory |
 | `ARC_TOKEN` | Unset | Optional bridge Bearer token |
+| `ARC_ML_ADDR` | Unset | Optional same-host ML worker address |
+| `ARC_ML_MODE` | Observe-only/default | Set to `hybrid` to opt into experimental learned timing |
 | `RUST_LOG` | `arc_angel=info` | Log filter |
 
-Keep the default localhost binding for local development. The optional token protects the bridge connection; browser observation endpoints are unauthenticated.
-
-The default scenario is a **schematic crossing**. Before using a BeamNG scenario, measure and configure its route geometry, conflict-zone size, and controller limits. West Coast USA is the intended map, but the included coordinates are not calibrated to it.
-
-## Bridge integration
-
-Connect the simulator bridge to:
-
-```text
-ws://127.0.0.1:3000/ws/bridge
-```
-
-1. Send `hello` as the first WebSocket message.
-2. Use the returned `session_id` in subsequent messages.
-3. Send each state batch with all vehicles in the world at one simulator frame.
-4. Handle the server's `recommendation_batch`, including its simulation-time expiry.
-
-The bridge must also enforce wall-time expiry and local fallback behaviour.
-
-Example payloads:
-
-- [Hello message](examples/hello.json)
-- [Vehicle state batch](examples/state_batch.json)
-
-When `ARC_TOKEN` is configured, include it in the WebSocket upgrade request:
-
-```text
-Authorization: Bearer <token>
-```
-
-Do not include the token in JSON payloads.
+Keep the default localhost binding for local development. Do not expose the ML worker port publicly. The optional bridge token does not authenticate browser observation endpoints.
 
 ## Dashboard and API
 
-The dashboard polls every 500 ms and provides a read-only view of server state.
+The dashboard polls the Rust service for world and vehicle state. Its **Preview demo** control switches between synthetic head-on and 90-degree illustrations; these do not command BeamNG vehicles. The live observer is display-only.
 
 | Endpoint | Purpose |
 | --- | --- |
-| `/health` | Basic service health response |
+| `/health` | Service health |
 | `/api/status` | Server status |
 | `/api/worlds` | Available worlds |
-| `/api/worlds/{id}` | Details for a world |
+| `/api/worlds/{id}` | World details |
 | `/api/scenarios/{id}` | Scenario details |
+| `/api/conflicts/evaluate` | Conflict assessment; hybrid estimates are optional and experimental |
+| `/ws/bridge` | Vehicle state and recommendation exchange |
 
-Dashboard files live in `web/` and use plain HTML, CSS, and JavaScript.
-
-## Experiment records
-
-Each server startup creates a run directory under `ARC_RUN_DIR`.
-
-| File | Contents |
-| --- | --- |
-| `metadata.json` | Scenario, protocol version, and build version |
-| `events.jsonl` | Accepted telemetry, plans, acknowledgements, removals, rejected messages, and disconnects |
-
-Recording has known reliability and metadata gaps. See the [recording notes](AI-Wiki/Projects/IBM/wiki/recording.md) before relying on logs as complete experiment evidence.
-
-## Repository layout
+## Repository map
 
 | Path | Contents |
 | --- | --- |
-| `src/` | Rust service, protocol, world state, and coordination logic |
-| `web/` | Browser dashboard |
-| `scenarios/` | Scenario configuration |
-| `examples/` | Bridge message examples |
-| `AI-Wiki/` | Requirements, architecture, team workflow, and implementation evidence |
-| `.agents/skills/uriel/` | Shared project guidance for AI assistants |
+| `src/` | Rust service, protocol, coordination, conflict evaluation, and ML client |
+| `web/` | Browser dashboard and synthetic demos |
+| `scripts/` | BeamNG experiment runners, data audit/training, and ML worker |
+| `scenarios/` | Scenario configurations and saved route exports |
+| `examples/` | Protocol and API examples |
+| `assets/` | Uriel angel-wings SVG and supplied BeamNG.drive logo |
+| `AI-Wiki/Projects/IBM/wiki/` | Requirements, architecture, evidence, operations, and team workflow |
+| `runs/` | Local experiment evidence and model artifacts (ignored by Git) |
 
-## Validation and limitations
+## Limits
 
-Earlier work reported successful compilation and basic dashboard checks. These do not establish physical coordination correctness.
+- BeamNG results cover specific scripted scenarios and controller settings; they do not establish general collision prevention.
+- West Coast USA geometry and arrival/clearance labels remain provisional.
+- ML evaluation is grouped regression evaluation, not end-to-end safety evaluation.
+- Some runtime observations lack model features such as history, object height, and nearest-vehicle measurements.
+- The remote service is deployed and inference was verified, but tunnel latency exceeds the bridge’s control deadline for live remote BeamNG driving.
+- Recommendations are advisory. Physical braking envelopes, route conflict geometry, uncertainty handling, and fault behavior need broader validation.
 
-The following remain unvalidated or incomplete:
+## Project documentation
 
-- BeamNG bridge integration and controller calibration.
-- Physical acceptance, fault trials, and load measurements.
-- Arrival-time ML training, inference integration, and evaluation.
-- LinuxONE deployment and performance.
-
-Speed recommendations are advisory. Collision prevention has not been demonstrated, and stop/hold behaviour for a zero speed cap depends on the installed BeamNG AI controller.
-
-Behavioural testing is deferred to hackathon day unless separately authorized.
-
-## Project documentation and collaboration
-
-Start with the [project wiki](AI-Wiki/Projects/IBM/wiki/index.md).
+Start with the [project wiki](AI-Wiki/Projects/IBM/wiki/index.md):
 
 - [Latest requirements](AI-Wiki/Projects/IBM/wiki/latest-prd-context.md)
 - [Implementation status and evidence](AI-Wiki/Projects/IBM/wiki/implementation-status.md)
-- [Team ownership and workflow](AI-Wiki/Projects/IBM/wiki/team-workflow.md)
-- [Local operations and deployment context](AI-Wiki/Projects/IBM/wiki/operations.md)
+- [ML data and evaluation](AI-Wiki/Projects/IBM/wiki/ml-arrival-prediction.md)
+- [BeamNG operations](AI-Wiki/Projects/IBM/wiki/operations.md)
+- [Team workflow](AI-Wiki/Projects/IBM/wiki/team-workflow.md)
 
-Open `AI-Wiki/` as an Obsidian vault for linked navigation.
-
-AI assistants should read `AGENTS.md` and the repo-local Uriel skill before working, then update relevant wiki pages and the chronological log after meaningful changes.
+Open `AI-Wiki/` as an Obsidian vault for linked navigation. AI assistants should read `AGENTS.md` and `.agents/skills/uriel/SKILL.md`, then update the wiki and chronological log after meaningful project work.
