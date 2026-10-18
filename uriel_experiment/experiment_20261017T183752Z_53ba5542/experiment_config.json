@@ -1,0 +1,23 @@
+{
+  "experiment_id": "experiment_20261017T183752Z_53ba5542",
+  "map": "smallgrid",
+  "trial_count": 3,
+  "trial_duration_seconds": 45.0,
+  "validation_duration_seconds": 3.0,
+  "random_seeds": [
+    781009,
+    781010,
+    781011
+  ],
+  "vehicle_state_target_hz": 30,
+  "lidar_target_hz": 20,
+  "ai_aggression": 0.3,
+  "background_vehicle_count": 0,
+  "safe_sequential": true,
+  "collector_sha256": "21e87b1aef314fa11a9f156852bbca5bf5c666b18f4565a374c732dd7d5e6bc2",
+  "beamngpy_version": "1.36",
+  "background_configuration_source": "/home/Baba_yaga/uriel/scenarios/smallgrid_background_configs.json",
+  "status": "failed",
+  "validation_status": "PASS_WITH_LIMITATIONS",
+  "error": "RuntimeError('fresh_003 failed validation; stopping remaining trials')"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "difficulty": 0,
+    "name": "West Coast Red ETK and Black Covet \u2014 Saved Routes",
+    "lapConfig": {},
+    "authors": "Manikanta / Uriel",
+    "forceNoCountDown": true,
+    "description": "Saved red ETK and black Covet on the preserved two graph routes; no background traffic.",
+    "vehicles": {
+      "thePlayer": {
+        "startFocus": true,
+        "playerUsable": true
+      },
+      "clone0": {
+        "playerUsable": true
+      }
+    },
+    "prefabs": [
+      "levels/west_coast_usa/scenarios/west_coast_red_covet_20261018/west_coast_red_covet_20261018.prefab.json"
+    ]
+  }
+]

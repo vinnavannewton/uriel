@@ -1,0 +1,176 @@
+# URIEL: Randomized 90-Degree Intersection with AI Traffic and LiDAR
+
+## Objective
+
+Implement and run three fresh BeamNG.tech experiments on Small Grid featuring two perpendicular ETK subject vehicles, AI-driven background traffic, and vehicle-mounted LiDAR sensors.
+
+The purpose is to collect synchronized perception and simulator-ground-truth data for URIEL's future intersection-arrival prediction and collision-avoidance research.
+
+Inspect the existing project and installed BeamNG.tech/BeamNGpy versions before changing anything. Reuse the working simulator connection and recorder where appropriate.
+
+## 1. Scenario
+
+- Map: Small Grid.
+- Subject vehicle A: red ETK.
+- Subject vehicle B: blue ETK.
+- Routes: perpendicular crossing at approximately 90 degrees.
+- Starting distance: approximately 40 metres from the crossing for each subject vehicle.
+- Background traffic: four additional AI-driven vehicles, if the map and available routes support them.
+- AI behaviour: vehicles follow valid, predefined routes and configured target speeds.
+- Trial count: three new independent runs.
+- Preserve all existing experiment data.
+
+Verify the exact vehicle IDs, starting positions, orientations, dimensions and routes after every reset. Do not invent world coordinates from the screenshots.
+
+## 2. Background Traffic
+
+Configure four background vehicles with valid starting positions and route assignments.
+
+Randomize documented, supported parameters between trials:
+- Background vehicle starting positions within valid road locations.
+- Target speeds within verified simulator bounds.
+- Start delays.
+- Route assignments where alternative routes are available.
+
+Keep the subject vehicles' perpendicular route definitions and the intersection geometry fixed.
+
+If automatic traffic spawning is unavailable in the installed environment, configure the background vehicles explicitly. Do not silently omit traffic.
+
+Record every vehicle's identity, route, initial state, target speed and AI mode. Record whether each vehicle actually moves, stops, arrives or deviates from its route.
+
+## 3. LiDAR Configuration
+
+Attach a LiDAR sensor to each subject vehicle.
+
+Use these initial settings:
+- Mode: full 360-degree.
+- Maximum detection range: 80 metres.
+- Vertical resolution: 32 channels.
+- Vertical field of view: use a documented, supported value appropriate to the installation.
+- Requested update interval: 0.05 seconds.
+- Sensor visualization: enabled during initial validation.
+- Semantic annotations: enable if supported by the installed sensor interface and required for the dataset.
+
+Verify the installed BeamNG.tech API before implementing sensor creation or polling. Do not assume every Lua sensor option has the same Python interface.
+
+For each reading, save:
+- Run ID and vehicle ID.
+- Sensor ID and sensor configuration.
+- Simulation timestamp.
+- Point-cloud coordinates in the documented coordinate frame.
+- Point-cloud metadata and annotations, when available.
+- Sensor pose and orientation.
+- Missing-reading and sensor-error indicators.
+
+Store point clouds in a suitable binary or array format rather than expanding every point into a row in the main telemetry CSV.
+
+Use the official sensor interface or shared-memory support where appropriate. Avoid blocking the vehicle-state recorder while waiting for LiDAR data.
+
+## 4. Ground-Truth Telemetry
+
+Target 30 Hz vehicle-state recording.
+
+Record:
+- Simulation time and frame ID.
+- Vehicle ID and vehicle role.
+- Position x, y, z.
+- Velocity components and speed.
+- Orientation: yaw, pitch and roll.
+- Acceleration where available.
+- Throttle, brake, steering and gear where available.
+- AI mode, route and target speed.
+- Relative distance and relative speed where valid.
+- Damage state and verified contact evidence.
+- Lane and conflict-zone state where measurable.
+
+Use simulator ground truth to establish vehicle identities and positions. LiDAR detections must be treated as sensor observations, not automatically as verified vehicle identities.
+
+## 5. Conflict-Zone Events
+
+Define the conflict zone using measured intersection geometry and vehicle footprints.
+
+Derive:
+- Front-boundary entry time.
+- Rear-boundary clearance time.
+- Stop-line crossing time where relevant.
+- Stopped-before-entry status.
+- Non-arrival within the observation horizon.
+- Completed crossing.
+- Route deviation.
+- Verified contact.
+
+Calculate event times from trajectories after recording. Preserve approximate original labels separately.
+
+If a vehicle never arrives or the recording ends before an event, do not fabricate an event timestamp.
+
+## 6. Three Fresh Trials
+
+Generate three distinct, recorded random seeds.
+
+Trial 1: Randomized baseline with all sensors enabled.
+
+Trial 2: New valid AI speeds and start delays, retaining the same geometry and recording schema.
+
+Trial 3: Another independent randomized configuration, including different background-traffic conditions when supported.
+
+Record every randomized value in each trial's metadata.
+
+Do not force the two subject vehicles to arrive simultaneously. Let their configured AI behaviour determine actual arrival times.
+
+Do not enable URIEL control commands in these baseline trials unless explicitly requested as a separate experiment.
+
+## 7. Output Structure
+
+Create a new directory for each run:
+
+uriel_lidar_experiment/
+- fresh_001/
+- fresh_002/
+- fresh_003/
+- trial_summary.csv
+- experiment_config.json
+
+Each run should contain:
+- telemetry.csv
+- events.jsonl
+- metadata.json
+- geometry.json
+- validation_report.json
+- lidar/red/ point-cloud files and timestamps
+- lidar/blue/ point-cloud files and timestamps
+
+Record sampling rates, coordinate frames, sensor settings, random seeds, simulator version and any unavailable measurements.
+
+Never overwrite previous recordings.
+
+## 8. Validation
+
+Before running all three trials, execute a short sensor-validation run.
+
+Verify:
+1. Both subject vehicles exist and follow their intended perpendicular routes.
+2. Background vehicles are present and their AI behaviour is active.
+3. Both LiDAR sensors produce non-empty readings.
+4. Point clouds contain plausible road and nearby-object returns.
+5. Sensor poses and coordinate frames are correct.
+6. Telemetry and LiDAR timestamps are recorded independently and can be aligned.
+7. Missing frames and sensor failures are detected.
+8. Output files are written correctly.
+
+If validation fails, report the specific problem before proceeding.
+
+## 9. Final Report
+
+Summarize:
+- Actual number of successful trials.
+- Vehicle count and AI behaviour.
+- Telemetry sample count and sampling quality.
+- LiDAR reading count and point-cloud quality.
+- Actual entry and rear-clearance timestamps where observed.
+- Non-arrivals, stops, route deviations and contact evidence.
+- Missing fields, synchronization errors and unresolved geometry.
+- Whether each run is suitable for future ML dataset preparation.
+
+Do not fabricate results or claim URIEL has demonstrated safe control. These runs are baseline perception and traffic-data experiments unless URIEL's controller is separately integrated and its commands are verified.
+
+Begin by inspecting the installed simulator, existing project and sensor APIs. Validate LiDAR and traffic first, then run the three fresh trials and report the actual results.

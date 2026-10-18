@@ -19,6 +19,8 @@ Uriel is the current project name in the supplied handoff. Earlier Arc Angel and
 - [[decisions]] — current choices, superseded assumptions and proposed details.
 - [[event-preparation]] — source-reported rules, prerequisite labs and submission needs.
 - [[ml-arrival-prediction]] — training data, evaluation and LinuxONE inference plan.
+- [[sensor-crossing]] — West Coast LiDAR collection, Small Grid randomized experiment and limits.
+- [[conflict-resolution]] — State-aware conflict evaluation endpoint and its current integration boundaries.
 - [[architecture]] — existing prototype and proposed ML-enabled architecture.
 - [[protocol]] — legacy crossing-v1 and implemented head-on maneuver-v2 messages; remaining interface requirements.
 - [[coordination]] — existing scheduler and intended physical constraints.

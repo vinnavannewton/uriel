@@ -1,0 +1,166 @@
+{
+  "scenario_name": "west_coast_adjacent_navgraph_20261018",
+  "human_name": "West Coast Adjacent Roads \u2014 User Navgraph",
+  "level": "west_coast_usa",
+  "captured_at_utc": "2026-10-17T19:16:51.516227+00:00",
+  "capture_method": "BeamNGpy live state sensor; no vehicle was moved and the scenario was not loaded during capture.",
+  "vehicles": {
+    "thePlayer": {
+      "role": "known_red_ego",
+      "model": "etkc",
+      "part_config": "vehicles/etkc/kc6x_310d_A.pc",
+      "paint": {
+        "baseColor": [
+          0.42,
+          0.05,
+          0.05,
+          1.2
+        ],
+        "roughness": 0.65,
+        "clearcoat": 1.0,
+        "metallic": 0.8,
+        "clearcoatRoughness": 0.05
+      },
+      "license_text": "EGO",
+      "position_m": [
+        -437.4072047739155,
+        698.2159828624008,
+        75.02035608457322
+      ],
+      "rotation_xyzw": [
+        -0.003365184646099806,
+        -3.0504023015964776e-05,
+        -0.1312263309955597,
+        0.9913468360900879
+      ],
+      "direction": [
+        0.26018133759498596,
+        -0.9655365943908691,
+        -0.00668013421818614
+      ],
+      "up": [
+        0.0011569923954084516,
+        -0.006289128214120865,
+        0.9999796152114868
+      ],
+      "velocity_mps": [
+        -5.307616083882749e-05,
+        0.00015997487935237586,
+        0.00020919341477565467
+      ]
+    },
+    "clone0": {
+      "role": "unknown_black_vehicle",
+      "model": "midsize",
+      "part_config": "vehicles/midsize/stanced.pc",
+      "paint": {
+        "baseColor": [
+          0.02,
+          0.02,
+          0.02,
+          1.2
+        ],
+        "roughness": 0.07,
+        "clearcoat": 0.0,
+        "metallic": 0.0,
+        "clearcoatRoughness": 0.0
+      },
+      "license_text": "UNKNOWN",
+      "position_m": [
+        -449.07697563726015,
+        511.7642674232493,
+        74.92752855860863
+      ],
+      "rotation_xyzw": [
+        0.026770757511258125,
+        0.0027834170032292604,
+        0.9357920289039612,
+        -0.3515237271785736
+      ],
+      "direction": [
+        0.6577571034431458,
+        0.7528466582298279,
+        -0.02403051033616066
+      ],
+      "up": [
+        0.05220017209649086,
+        -0.013619770295917988,
+        0.9985437393188477
+      ],
+      "velocity_mps": [
+        -0.00012094331759726629,
+        -0.0001379616151098162,
+        -2.2742062355973758e-05
+      ]
+    }
+  },
+  "navigation_graph": {
+    "status": "captured from live Drive Path Editor state",
+    "captured_at_utc": "2026-10-17T19:23:01.828184+00:00",
+    "session_file": "drive-path-session.json",
+    "routes": {
+      "clone0": {
+        "spline_name": "Drive Path Spline 1",
+        "spline_id": "85797206-6744-4adb-b4f1-eeed9c371db1",
+        "graph_nodes": [
+          "tunnel_city_A_58",
+          "DR323_2",
+          "junction1_wp25",
+          "DR360_2"
+        ],
+        "start_node": "tunnel_city_A_58",
+        "end_node": "DR360_2",
+        "saved_runtime_vehicle_id": 89448
+      },
+      "thePlayer": {
+        "spline_name": "Drive Path Spline 2",
+        "spline_id": "c7c569da-2dec-43b1-ad6e-94f44746ea07",
+        "graph_nodes": [
+          "DR371_4",
+          "junction1_wp25",
+          "DR360_2",
+          "tunnel_city_B_6",
+          "tunnel_city_A_58",
+          "DR323_2"
+        ],
+        "start_node": "DR371_4",
+        "end_node": "DR323_2",
+        "saved_runtime_vehicle_id": 87534
+      }
+    },
+    "node_positions_m": {
+      "DR323_2": [
+        -324.25476074219,
+        651.90789794922,
+        74.823280334473
+      ],
+      "junction1_wp25": [
+        -432.88196563721,
+        681.42943572998,
+        74.849809646606
+      ],
+      "DR371_4": [
+        -437.4065246582,
+        698.21331787109,
+        74.874313354492
+      ],
+      "tunnel_city_A_58": [
+        -449.07733154297,
+        511.73443603516,
+        74.798973083496
+      ],
+      "tunnel_city_B_6": [
+        -455.17620849609,
+        508.83706665039,
+        75.169960021973
+      ],
+      "DR360_2": [
+        -295.60292053223,
+        544.77857971191,
+        74.786958694458
+      ]
+    },
+    "restore_note": "Native editor session stores runtime vehicle IDs. Relink each spline to its matching named vehicle after respawning/reloading the scenario. Route execution has not been tested."
+  },
+  "source": "Live BeamNG.tech instance on localhost:25252"
+}

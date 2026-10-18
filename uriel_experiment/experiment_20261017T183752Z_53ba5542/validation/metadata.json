@@ -1,0 +1,433 @@
+{
+  "run_id": "validation",
+  "seed": 781008,
+  "status": "complete",
+  "map": "smallgrid",
+  "duration_target_seconds": 3.0,
+  "simulator_version": "BeamNG.tech 0.39.4.0 (local install)",
+  "beamngpy_version": "1.36",
+  "sampling": {
+    "vehicle_state_target_hz": 30,
+    "lidar_target_hz": 20,
+    "simulator_fixed_step_hz": 30
+  },
+  "vehicle_configuration": [
+    {
+      "vehicle_id": "uriel_red",
+      "role": "subject",
+      "axis": "x",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.0,
+      "target_speed": 3.438,
+      "initial_speed_requested": 0.0,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "x_lane_0",
+      "color": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "aggression": 0.3,
+      "ai_started": true,
+      "sequence_order": 1,
+      "initial_speed_measured_mps": 0.023167016381941862
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "role": "subject",
+      "axis": "y",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.0,
+      "target_speed": 3.1,
+      "initial_speed_requested": 0.0,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "y_lane_0",
+      "color": [
+        0,
+        0.15,
+        1,
+        1
+      ],
+      "aggression": 0.3,
+      "ai_started": false,
+      "sequence_order": 2,
+      "initial_speed_measured_mps": 0.023236001230130535
+    }
+  ],
+  "configuration": [
+    {
+      "vehicle_id": "uriel_red",
+      "role": "subject",
+      "axis": "x",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.0,
+      "target_speed": 3.438,
+      "initial_speed_requested": 0.0,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "x_lane_0",
+      "color": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "aggression": 0.3,
+      "ai_started": true,
+      "sequence_order": 1,
+      "initial_speed_measured_mps": 0.023167016381941862
+    },
+    {
+      "vehicle_id": "uriel_blue",
+      "role": "subject",
+      "axis": "y",
+      "lane": 0,
+      "progress": -40,
+      "start_delay": 0.0,
+      "target_speed": 3.1,
+      "initial_speed_requested": 0.0,
+      "model": "etkc",
+      "source_background_id": null,
+      "route_id": "y_lane_0",
+      "color": [
+        0,
+        0.15,
+        1,
+        1
+      ],
+      "aggression": 0.3,
+      "ai_started": false,
+      "sequence_order": 2,
+      "initial_speed_measured_mps": 0.023236001230130535
+    }
+  ],
+  "lidar_configuration": {
+    "mode": "full_360",
+    "requested_update_interval_seconds": 0.05,
+    "max_distance_m": 80.0,
+    "vertical_resolution_channels": 32,
+    "vertical_field_of_view_degrees": 26.9,
+    "frequency_hz": 20.0,
+    "density": 25,
+    "visualized": true,
+    "semantic_annotations": false,
+    "shared_memory_streaming": true,
+    "sensor_local_position_m": [
+      0.0,
+      0.0,
+      1.8
+    ],
+    "coordinate_frame": "BeamNG.tech LiDAR pointCloud output; empirically checked against world-space sensor pose during validation"
+  },
+  "validation_trial": true,
+  "controller": "sequential ground-truth safety gate; BeamNG AI route following; no Rust control",
+  "safe_sequential": true,
+  "geometry": {
+    "map": "smallgrid",
+    "zone": {
+      "x": [
+        -3,
+        3
+      ],
+      "y": [
+        -3,
+        3
+      ]
+    },
+    "intersection": "virtual origin crossing on Small Grid",
+    "zone_bounds_m": {
+      "x": [
+        -3,
+        3
+      ],
+      "y": [
+        -3,
+        3
+      ]
+    },
+    "subject_start_distance_target_m": 40.0,
+    "subject_route_angle_target_deg": 90.0,
+    "physical_road_markings": "not present; routes are predefined virtual AI paths"
+  },
+  "limitations": [
+    "Small Grid has no calibrated public-road intersection; the 90-degree crossing and lane boundaries are virtual coordinates.",
+    "Conflict events use spawn OOBB proxies, not deforming collision geometry.",
+    "BeamNG damage is recorded, but verified contact sensing is unavailable.",
+    "LiDAR data are raw observations; simulator IDs, poses and labels stay in separate ground-truth telemetry.",
+    "Semantic annotations are disabled to avoid ground-truth labels leaking into perception input.",
+    "Vehicles are released sequentially using simulator ground truth; this is not LiDAR-driven conflict control."
+  ],
+  "observed_initial_state": {
+    "uriel_red": {
+      "up": [
+        0.004865740891546011,
+        -0.0010938035557046533,
+        0.9999876022338867
+      ],
+      "vel": [
+        3.4009430408477783,
+        -0.22362110018730164,
+        0.04035789519548416
+      ],
+      "rotation": [
+        -0.002264554612338543,
+        -0.0014377388870343566,
+        -0.6790434122085571,
+        0.7340932488441467
+      ],
+      "front": [
+        -32.52231740951538,
+        -0.8204255402088165,
+        0.6864239424467087
+      ],
+      "pos": [
+        -34.66405230015516,
+        -0.9837167030200362,
+        0.13623885114793666
+      ],
+      "dir": [
+        0.9969558119773865,
+        -0.07778982073068619,
+        -0.005277362652122974
+      ],
+      "time": 82.6280039246194
+    },
+    "uriel_blue": {
+      "up": [
+        -0.00020870545995421708,
+        0.010738203302025795,
+        0.9999423623085022
+      ],
+      "vel": [
+        -0.00030228207469917834,
+        -0.00013091022265143692,
+        -5.065612640464678e-07
+      ],
+      "rotation": [
+        3.268587897764519e-05,
+        0.005488457623869181,
+        0.9999850392341614,
+        -1.6501337086083367e-05
+      ],
+      "front": [
+        -0.32998831720033195,
+        -37.87582516670227,
+        0.6873577684164047
+      ],
+      "pos": [
+        3.407745532513218e-05,
+        -40.00151815410345,
+        0.14994018175070778
+      ],
+      "dir": [
+        3.264338374719955e-05,
+        0.9999397397041321,
+        -0.01097674947232008
+      ],
+      "time": 82.6280039246194
+    }
+  },
+  "vehicle_dimensions": {
+    "uriel_red": {
+      "length_m": 4.450401306152344,
+      "width_m": 2.1200690865516663,
+      "height_m": 1.3313193321228027
+    },
+    "uriel_blue": {
+      "length_m": 4.450401306152344,
+      "width_m": 2.1200685501098633,
+      "height_m": 1.3313181400299072
+    }
+  },
+  "sensor_identity": {
+    "uriel_red": {
+      "sensor_id": "uriel_lidar_validation_aeeb9d_red",
+      "attached_vehicle_id": "uriel_red",
+      "sensor_world_position_setup_m": [
+        -40.099613189697266,
+        0.3299643099308014,
+        1.774744987487793
+      ],
+      "sensor_configuration": {
+        "mode": "full_360",
+        "requested_update_interval_seconds": 0.05,
+        "max_distance_m": 80.0,
+        "vertical_resolution_channels": 32,
+        "vertical_field_of_view_degrees": 26.9,
+        "frequency_hz": 20.0,
+        "density": 25,
+        "visualized": true,
+        "semantic_annotations": false,
+        "shared_memory_streaming": true,
+        "sensor_local_position_m": [
+          0.0,
+          0.0,
+          1.8
+        ],
+        "coordinate_frame": "BeamNG.tech LiDAR pointCloud output; empirically checked against world-space sensor pose during validation"
+      }
+    },
+    "uriel_blue": {
+      "sensor_id": "uriel_lidar_validation_aeeb9d_blue",
+      "attached_vehicle_id": "uriel_blue",
+      "sensor_world_position_setup_m": [
+        -0.3299647569656372,
+        -40.09961700439453,
+        1.774745225906372
+      ],
+      "sensor_configuration": {
+        "mode": "full_360",
+        "requested_update_interval_seconds": 0.05,
+        "max_distance_m": 80.0,
+        "vertical_resolution_channels": 32,
+        "vertical_field_of_view_degrees": 26.9,
+        "frequency_hz": 20.0,
+        "density": 25,
+        "visualized": true,
+        "semantic_annotations": false,
+        "shared_memory_streaming": true,
+        "sensor_local_position_m": [
+          0.0,
+          0.0,
+          1.8
+        ],
+        "coordinate_frame": "BeamNG.tech LiDAR pointCloud output; empirically checked against world-space sensor pose during validation"
+      }
+    }
+  },
+  "scene": "Small Grid",
+  "subject_geometry_verified": true,
+  "quality": "PASS_WITH_LIMITATIONS",
+  "telemetry_quality": {
+    "target_vehicle_state_hz": 30,
+    "measured_vehicle_state_hz": 29.99999857507653,
+    "vehicle_state_rows": 182,
+    "expected_vehicle_state_rows": 182,
+    "all_expected_vehicle_ids_present": true,
+    "sample_timestamp_gaps": 0,
+    "lidar_readings": {
+      "uriel_blue": 60,
+      "uriel_red": 60
+    },
+    "lidar_nonempty_readings": {
+      "uriel_blue": 60,
+      "uriel_red": 59
+    },
+    "lidar_mean_points": {
+      "uriel_blue": 58427.066666666666,
+      "uriel_red": 57635.85
+    },
+    "lidar_errors": [],
+    "point_cloud_files": 119,
+    "background_vehicle_count": 0,
+    "all_background_ai_commands_sent": true,
+    "safe_sequential": true,
+    "rear_clearance_and_stops_verified": false,
+    "simulator_oobb_overlap_frames": 0
+  },
+  "vehicle_observed_behaviour": {
+    "uriel_red": {
+      "ai_start_commanded": true,
+      "distance_moved_m": 5.42630636984374,
+      "moving_observed": true,
+      "route_deviation_observed": false,
+      "route_deviation_frames": 0,
+      "stopped_frames_after_scheduled_start": 7,
+      "damage_increase": 0.0,
+      "route_endpoint_reached": false,
+      "final_position_m": [
+        -34.66405230015516,
+        -0.9837167030200362,
+        0.13623885114793666
+      ],
+      "route_id": "x_lane_0",
+      "target_speed_mps": 3.438,
+      "start_delay_seconds": 0.0,
+      "outcome": {
+        "entry_seconds": null,
+        "clearance_seconds": null,
+        "arrival_censored": true,
+        "clearance_censored": true,
+        "stopped_before_entry": false,
+        "route_deviation": false,
+        "damage_increase": 0.0,
+        "verified_contact": null,
+        "contact_status": "unavailable",
+        "geometry_quality": "spawn_OOBB_proxy",
+        "max_speed": 3.408525887131345,
+        "samples": 91
+      }
+    },
+    "uriel_blue": {
+      "ai_start_commanded": false,
+      "distance_moved_m": 0.001063104564673042,
+      "moving_observed": false,
+      "route_deviation_observed": false,
+      "route_deviation_frames": 0,
+      "stopped_frames_after_scheduled_start": 91,
+      "damage_increase": 0.0,
+      "route_endpoint_reached": false,
+      "final_position_m": [
+        3.407745532513218e-05,
+        -40.00151815410345,
+        0.14994018175070778
+      ],
+      "route_id": "y_lane_0",
+      "target_speed_mps": 3.1,
+      "start_delay_seconds": 0.0,
+      "outcome": {
+        "entry_seconds": null,
+        "clearance_seconds": null,
+        "arrival_censored": true,
+        "clearance_censored": true,
+        "stopped_before_entry": true,
+        "route_deviation": false,
+        "damage_increase": 0.0,
+        "verified_contact": null,
+        "contact_status": "unavailable",
+        "geometry_quality": "spawn_OOBB_proxy",
+        "max_speed": 0.08886719117522265,
+        "samples": 91
+      }
+    }
+  },
+  "outcomes": {
+    "uriel_red": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": false,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 3.408525887131345,
+      "samples": 91
+    },
+    "uriel_blue": {
+      "entry_seconds": null,
+      "clearance_seconds": null,
+      "arrival_censored": true,
+      "clearance_censored": true,
+      "stopped_before_entry": true,
+      "route_deviation": false,
+      "damage_increase": 0.0,
+      "verified_contact": null,
+      "contact_status": "unavailable",
+      "geometry_quality": "spawn_OOBB_proxy",
+      "max_speed": 0.08886719117522265,
+      "samples": 91
+    }
+  },
+  "lidar_errors": [],
+  "sample_count": 182,
+  "source_sha256": "21e87b1aef314fa11a9f156852bbca5bf5c666b18f4565a374c732dd7d5e6bc2"
+}

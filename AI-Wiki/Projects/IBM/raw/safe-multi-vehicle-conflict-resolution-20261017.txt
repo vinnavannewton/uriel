@@ -1,0 +1,225 @@
+# URIEL — Safe Multi-Vehicle Conflict Resolution
+
+## Objective
+
+Implement a conflict-resolution controller that handles two or more vehicles approaching or occupying a shared intersection conflict zone. URIEL must assess stopping feasibility, protect vehicles already inside the conflict zone, select a safe crossing order, and verify clearance before releasing conflicting traffic.
+
+**Critical rule:** Never command every vehicle to stop unconditionally when a conflict is detected. A vehicle may already be inside the conflict zone or may be unable to stop safely within the available distance.
+
+## 1. Required Solution: State-Aware Conflict Response
+
+When a potential conflict is detected, URIEL must execute the following process:
+
+### Step 1 — Observe and validate
+
+Collect the latest available data for every relevant vehicle:
+- Vehicle ID, position, orientation and speed.
+- Velocity and acceleration.
+- Route and predicted trajectory.
+- Distance to the conflict zone.
+- Estimated time to entry and rear clearance.
+- Vehicle dimensions and occupied footprint.
+- Braking capability and estimated stopping distance.
+- Telemetry freshness and prediction uncertainty.
+- Current conflict-zone occupancy.
+- LiDAR observations, where available.
+
+Use simulator ground truth as the primary source of vehicle state during controlled BeamNG experiments. Treat LiDAR as a perception input and cross-check detections against ground truth.
+
+If critical measurements are stale, missing or inconsistent, mark the situation uncertain and prevent new conflicting reservations.
+
+### Step 2 — Classify each vehicle
+
+Assign each vehicle one of these states:
+
+- `APPROACHING`: Approaching the conflict zone.
+- `STOPPING_FEASIBLE`: Can be expected to stop before the conflict zone within the validated braking envelope.
+- `STOPPING_UNCERTAIN`: Available data does not establish whether stopping is feasible.
+- `INSIDE_CONFLICT_ZONE`: Vehicle footprint occupies the conflict zone.
+- `CLEARING_CONFLICT_ZONE`: Vehicle is moving through the zone and has not fully cleared it.
+- `STOPPED_BEFORE_ZONE`: Vehicle is confirmed stopped before entry.
+- `CLEARED`: Vehicle's rear boundary has passed beyond the relevant conflict zone.
+- `STATE_UNKNOWN`: Vehicle state cannot be verified reliably.
+
+A vehicle's state must be updated from observations, not inferred solely from the command previously sent to it.
+
+### Step 3 — Estimate stopping feasibility
+
+For each approaching vehicle, estimate whether it can stop before the conflict zone.
+
+Use measured or validated braking performance for the vehicle, road gradient, surface friction, loading, current speed and available distance.
+
+A simplified preliminary estimate is:
+
+`stopping_distance = reaction_distance + braking_distance + safety_margin`
+
+Under a simplified constant-deceleration model:
+
+`braking_distance = speed² / (2 × deceleration)`
+
+This estimate is not sufficient on its own. Include control delay, braking response, slope, uncertainty and the vehicle's occupied footprint. Use validated simulation measurements to establish the actual stopping envelope.
+
+Classify stopping as feasible only when the available distance exceeds the conservative estimated stopping distance and the assumptions are valid.
+
+If stopping feasibility is uncertain, do not issue an unverified emergency-braking command and assume the vehicle will stop safely. Apply the configured conservative response and continue evaluating the available safe options.
+
+### Step 4 — Apply state-aware actions
+
+**Case A: Vehicle is already inside the conflict zone**
+
+- Do not automatically stop it in the middle of the intersection.
+- Preserve its ability to clear the zone when continuing is verified safer than stopping.
+- Prevent incompatible vehicles from entering its occupied or predicted swept path.
+- Track its trajectory until rear clearance is verified.
+- If it is obstructed or cannot safely continue, enter `SAFE_HOLD` and apply the validated fallback policy.
+
+**Case B: Vehicle is approaching and can stop safely**
+
+- Issue a yield or stop command through the verified vehicle-control interface.
+- Confirm that the intended vehicle received the command.
+- Measure its actual speed and braking response.
+- Mark it `STOPPED_BEFORE_ZONE` only after the stopping condition is verified.
+- Keep it waiting until a valid reservation is granted.
+
+**Case C: Vehicle may be unable to stop safely**
+
+- Do not blindly apply a full stop command.
+- Evaluate its current trajectory and the available safe actions.
+- Prevent other vehicles from entering the conflicting path.
+- If the vehicle is already committed to crossing, allow clearance only when the controller verifies that doing so is the safer available option.
+- If no safe action can be established, enter `SAFE_HOLD`, block new conflicting releases and log the unresolved hazard.
+
+**Case D: Vehicle state is unknown**
+
+- Do not assume that the vehicle is stopped, absent or clear.
+- Block new reservations that could conflict with its possible occupancy.
+- Attempt to recover valid telemetry.
+- Resume coordination only after the relevant state is verified or the validated fallback procedure establishes a safe condition.
+
+### Step 5 — Determine the crossing order
+
+Once the conflict has been contained, evaluate eligible vehicles for the next crossing opportunity.
+
+Consider:
+- Whether the vehicle is already occupying the zone.
+- Whether it can stop safely.
+- Whether its route conflicts with other vehicles.
+- Predicted entry and rear-clearance times.
+- Prediction uncertainty.
+- Whether the path can be kept clear for the complete vehicle footprint.
+- Waiting time and fairness.
+- Whether its movement could create a new conflict elsewhere.
+
+Select one eligible vehicle or one explicitly validated group of non-conflicting vehicles.
+
+For the initial implementation, use **one vehicle at a time through a shared conflict zone**. Concurrent movement may be enabled later only when geometry and trajectory checks demonstrate that the vehicles' occupied paths do not conflict.
+
+Do not simply select the vehicle with the shortest predicted arrival time.
+
+### Step 6 — Reserve, release and verify
+
+Implement the following state transitions:
+
+1. `FREE`: No conflicting occupancy or reservation exists.
+2. `CONFLICT_DETECTED`: Potentially incompatible movements are identified.
+3. `ASSESSING`: Vehicle states, stopping feasibility and occupancy are evaluated.
+4. `HOLD`: Eligible approaching vehicles are instructed to yield or stop.
+5. `RESERVED`: One eligible vehicle receives a crossing reservation.
+6. `CROSSING`: The selected vehicle enters or occupies the conflict zone.
+7. `CLEARANCE_CHECK`: The controller verifies its rear clearance and checks for new conflicts.
+8. `RELEASE_NEXT`: The next eligible vehicle is evaluated.
+9. `SAFE_HOLD`: The controller cannot establish a safe release condition.
+
+Do not transition to `RELEASE_NEXT` merely because an estimated clearance time has expired. Verify actual rear clearance and account for sensor uncertainty, telemetry delay and other vehicles' current states.
+
+If a vehicle remains inside the zone, loses communication, deviates from its route or fails to clear it, retain the reservation and block incompatible movements.
+
+## 2. Independent Safety Monitor
+
+Implement a separate safety monitor that checks every proposed controller action before it is issued.
+
+The monitor must reject a release when:
+- Another vehicle occupies the same conflict zone.
+- Predicted vehicle footprints overlap in space and time.
+- Stopping feasibility or clearance cannot be established where required.
+- Critical telemetry is stale or invalid.
+- The reservation state is inconsistent.
+- The intended vehicle identity cannot be verified.
+
+The monitor must also avoid assuming that stopping is always the safest action. Evaluate the vehicle's current motion, stopping envelope and zone occupancy before accepting a stop command.
+
+If the controller and safety monitor disagree, do not release a new conflicting vehicle. Preserve existing safe clearance actions where justified by the validated policy and log the disagreement.
+
+## 3. LiDAR and Ground-Truth Handling
+
+For the red and blue subject vehicles:
+- Acquire LiDAR readings with simulation timestamps.
+- Detect nearby objects and potential obstacles.
+- Track sensor pose and coordinate frame.
+- Compare detections with simulator ground truth during validation.
+- Record missing or invalid sensor readings.
+- Avoid treating an unobserved object as proof that the path is clear.
+
+LiDAR detection alone does not establish a vehicle's braking capability or guarantee safe clearance. Combine perception with validated simulator state, motion estimates and uncertainty checks.
+
+## 4. Command and Response Verification
+
+For every stop, yield, resume or speed command, record:
+- Command ID and timestamp.
+- Target vehicle ID.
+- Command type and parameters.
+- Reservation and controller state at issuance.
+- Command acknowledgement, if supported.
+- Subsequent vehicle speed, position and control response.
+- Whether the expected response was observed.
+- Timeout or failure details.
+
+Never mark a vehicle stopped solely because a command was sent. Never mark a vehicle cleared solely because its reservation timer expired.
+
+If a command fails or its effect cannot be verified, prevent incompatible releases and invoke the defined fallback.
+
+## 5. Test Scenarios
+
+Run controlled simulation tests for:
+
+1. Two approaching vehicles with sufficient stopping distance.
+2. Two approaching vehicles where one has limited stopping distance.
+3. A vehicle already occupying the conflict zone.
+4. Three or more vehicles approaching different conflict paths.
+5. A vehicle stopping before entry.
+6. A vehicle that never arrives.
+7. A vehicle that stops or becomes obstructed inside the zone.
+8. Stale telemetry or a lost command acknowledgement.
+9. LiDAR temporarily failing to detect a relevant obstacle.
+10. A vehicle deviating from its assigned route.
+
+Use repeatable starting conditions and recorded random seeds. Do not force physical collisions to create test data; create controlled near-conflict conditions and measure the actual outcomes.
+
+## 6. Acceptance Criteria
+
+A trial passes the controller's basic validation only if:
+- Vehicle identities and relevant states are verified.
+- No incompatible reservation is granted.
+- Vehicles already inside the zone are handled according to the validated clearance policy.
+- Stop commands are based on stopping-feasibility assessment.
+- Actual stopping responses are measured.
+- The next vehicle is released only after the required conflict-zone clearance checks pass.
+- Uncertain states trigger the defined conservative fallback.
+- All decisions, commands, responses and outcomes are recorded.
+
+Report failures and unresolved states explicitly. Three successful trials do not establish general collision-avoidance safety.
+
+## 7. Implementation Deliverables
+
+Produce:
+- Stopping-feasibility estimator.
+- Multi-vehicle conflict detector.
+- Vehicle-state classifier.
+- Conflict-zone reservation manager.
+- Independent safety monitor.
+- Verified command/response logger.
+- LiDAR and ground-truth validation.
+- Controlled test scenarios.
+- Trial reports and failure analysis.
+
+Inspect the existing BeamNG implementation before changing code. Preserve previous data, verify API support, and never fabricate successful safety outcomes.
