@@ -558,3 +558,11 @@ The user asked to run the saved West Coast scenario after a three-trial attempt 
 ## [2026-10-18] trial | Saved routes with four traffic vehicles
 
 The user requested repeating the saved West Coast route trial with background traffic. Ran `scripts/run_saved_navgraph_trial.py --trials 3 --traffic 4` using traffic IDs `clone`, `clone1`, `clone2`, and `clone3`. Batch `runs/sensor-crossing/navgraph-batch-6e0faed50d53/` completed all three endpoint-proximity checks, with 84/83, 82/81 and 74/74 state/LiDAR frames. Minimum subject center-reference separations were 33.98, 34.37 and 31.91 m; nearest sampled traffic-to-subject center separations were 8.41, 8.24 and 60.02 m. Red damage deltas were 0; black deltas were 0.635, 0.675 and 0.638. Verified contacts are unavailable. The run collected 252,855,432 bytes (~241 MiB) under ignored `runs/`; it used native waypoint AI and red LiDAR capture, without cameras, Rust or LiDAR-derived decisions. After recording, the four traffic cars were re-enabled and left moving for the user's submission video.
+
+## [2026-10-18] documentation | Highlight Rust, GPU training, and BeamNG in README
+
+Updated the README on `main` to lead with Uriel's Rust/Axum/Tokio coordination core, BeamNG.drive simulation work, RTX 4060 XGBoost training, source-folder counts, per-target training examples, held-out metrics, and recorded test counts. The README's PR #4 status has since been corrected to merged. No tests or simulator runs were performed for this documentation update.
+
+## [2026-10-18] documentation correction | IBM server run and local BeamNG latency
+
+The user clarified that a teammate successfully ran the IBM-hosted server version. The laptop BeamNG trials were run with local coordination because the SSH-tunnel latency exceeded controller deadlines; this does not mean the IBM server was untested. Updated the README and current wiki summaries across implementation status, operations, architecture, ML, protocol, dashboard, decisions, overview, sources and open questions. Marked earlier deployment-preparation wording as point-in-time history, preserving raw snapshots and dated run records. No code, tests, simulator runs or deployments were changed/performed for this documentation correction.

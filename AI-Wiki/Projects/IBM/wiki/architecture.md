@@ -8,13 +8,13 @@ tags: [ibm, uriel]
 
 ## Current Uriel design beyond the prototype
 
-S5 adds a Python arrival-time inference worker on LinuxONE alongside Rust, and training/data collection on LinuxONE or an approved host. BeamNG and its Python bridge run on the development laptop. An optional newline-delimited JSON worker client is now integrated into crossing-v1 in observe-only mode. The worker/model artifact is not currently available or deployed, and no live inference is established. A bounded head-on bridge is implemented under `scripts/`, with tests under `tests/`. `server/`, `bridge/`, `ml/`, `dashboard/`, `load/` and `docs/` remain proposed areas, not a description of the current layout.
+The optional newline-delimited JSON worker client is integrated into crossing-v1, with observe-only as the default and an explicit hybrid mode. The trained portable model and Rust/Python worker were deployed on LinuxONE; ten remote HTTP conflict-evaluation calls returned accepted results. The user also reports that a teammate successfully ran the IBM-hosted server version. BeamNG and its Python bridge run on the development laptop; our live vehicle trial used local coordination because SSH-tunnel latency exceeded its deadlines. The worker deployment does not establish that the laptop completed live BeamNG control remotely. `server/`, `bridge/`, `ml/`, `dashboard/`, `load/` and `docs/` remain proposed areas, not a description of the current layout.
 
 The existing modules below describe the historical Arc Angel prototype. Its submission eligibility is unresolved under the newly reported event rule. See [[ml-arrival-prediction]] and [[context-reconciliation]]. Source: [[sources]] S5 sections 6, 13.
 
 ```mermaid
 flowchart LR
-  B[BeamNG + planned Python bridge] -->|JSON WebSocket| T[Axum transport]
+  B[BeamNG + Python bridge] -->|JSON WebSocket| T[Axum transport]
   T --> W[Per-world state]
   W --> C[Bounded blocking coordinator]
   C --> W
@@ -49,7 +49,7 @@ Results are discarded if their session or frame no longer matches the inspected 
 
 The proposed separate transport/prediction/metrics modules and dashboard WebSocket were not implemented as separate components.
 
-The optional crossing-v1 ML path sends Rust-derived ETA features to a same-host Python worker and appends validated estimates to the returned batch; its result does not alter the coordinator plan. Worker absence and 40 ms timeouts leave Rust-only behaviour intact. The new head-on slice follows a separate path: BeamNG → Python telemetry → Rust maneuver session → fixed paired paths and fresh leases → Python AI application. V2 does not use ML. LinuxONE worker/model deployment, version compatibility and live BeamNG observation remain unverified. See [[protocol]], [[ml-arrival-prediction]] and [[operations]].
+The optional crossing-v1 ML path sends Rust-derived ETA features to a same-host Python worker and appends validated estimates to the returned batch; its result can affect conflict timing only when hybrid mode is enabled. Worker absence and 40 ms timeouts leave Rust-only behaviour intact. The new head-on slice follows a separate path: BeamNG → Python telemetry → Rust maneuver session → fixed paired paths and fresh leases → Python AI application. V2 does not use ML. The IBM hybrid deployment and HTTP inference were verified, while live laptop-to-BeamNG operation over the SSH tunnel exceeded controller deadlines; the head-on slice used local coordination. See [[protocol]], [[ml-arrival-prediction]] and [[operations]].
 
 ## Sources
 

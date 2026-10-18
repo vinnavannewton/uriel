@@ -6,6 +6,10 @@ tags: [ibm, uriel]
 
 # Running and deployment
 
+## Current IBM server and laptop BeamNG status
+
+The hybrid Rust service and portable ML worker were deployed and exercised on IBM LinuxONE. Ten HTTP conflict-evaluation calls returned accepted results, `/health` returned `ok`, and both services were active. The user reports that a teammate also ran the IBM-hosted server version successfully. Our laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded controller deadlines. Earlier failed tunneled BeamNG attempts document that network limitation; they do not mean IBM was untested. They also do not claim that the laptop completed a live BeamNG vehicle trial through the tunnel.
+
 ## Saved user-placed West Coast crossing
 
 [Two-car placement snapshot](../../../../scenarios/west-coast-user-crossing-two-car.json) stores the live `clone12` and `clone13` Vivaces on `west_coast_usa`, including measured origin positions, forward/up vectors, orientation quaternions and full vehicle configurations/paints. The user identifies these curved approaches as meeting at a 90-degree intersection; current headings alone do not establish the junction angle. The distant `thePlayer` and walking avatar `clone11` are excluded. Traffic-disabled state is user-reported. Capture was read-only, JSON readback confirmed both cars/configurations, and no reset, route calibration or driving trial was performed. This is a placement snapshot, not a Rust `Scenario` configuration.
@@ -42,11 +46,11 @@ The user authorized live trials. `scripts/collect_west_coast_arrival_trials.py` 
 
 The user clarified that both cars should continue straight through. Inspection of the clean pilot's headings showed `clone12` turned substantially across the candidate zone even though its road-AI route reached the node. A coordinate-line experiment attempted to force a straight path, but `clone12` immediately took 4,059.64 damage units and rose to z≈91 m; collection stopped at 4 simulated seconds. Both cars were then teleported to their saved positions and verified at zero damage, with physics paused. Evidence: `runs/west-coast-arrival-28480d61e2/`. The coordinate-line controller was removed from the reusable collector. More trials are paused until a road-following straight exit through the user's intended junction is identified; the junction remains a provisional 54-degree graph candidate and labels remain training-ineligible.
 
-## Deployment target update
+## Earlier deployment planning (superseded by verified deployment below)
 
-S5 reports user-confirmed **Ubuntu 24.04 / IBM LinuxONE / s390x**; Fedora 44 KDE/x86_64 remains development context. Earlier work recorded a successful remote setup and Rust service check below. In the latest ML integration attempt, the provided `uriel.pem` was not available at the project-root path and the existing ed25519 identity was rejected, so current SSH reachability and remote worker deployment are unverified.
+S5 reports user-confirmed **Ubuntu 24.04 / IBM LinuxONE / s390x**; Fedora 44 KDE/x86_64 remains development context. The SSH-key failure described in this earlier ML integration attempt was later resolved; the subsequent deployment and remote worker checks below succeeded. This older failure should not be read as current IBM server status.
 
-Plan native locked release builds on the target during the permitted event window and validate Python native packages in the supplied s390x environment. Transfer source, JSON/CSV and configuration, not Fedora executables, `target/`, Python virtual environments or undocumented native memory dumps. Model transfer needs compatible versions and numerical verification. The proposed Python inference worker runs on the same LinuxONE instance; laptop inference merely displayed remotely is not platform inference.
+The project subsequently built the Rust service natively and deployed a portable Python model worker on the same LinuxONE instance. The SSH-tunnel latency issue applies to laptop BeamNG control; it does not invalidate the server-side deployment or inference checks documented below.
 
 S5's account/lab steps and build/test commands are preparation guidance, not instructions executed during this wiki update. Source: [[sources]] S5 sections 14–15. Related: [[ml-arrival-prediction]], [[event-preparation]].
 
@@ -155,18 +159,18 @@ Current final evidence: **`runs/avoidance-e8d6280410/`**, with 127 simulator sam
 
 Checks passed: 9 Rust unit tests, 21 Python unit tests, offline build, Rust formatting, Python syntax and diff whitespace. `tests/check_headon_wire.py` against the local server (no simulator calls) records `runs/protocol-check-fed323c18e/`: v2 prepare/accept/execute, frozen-telemetry pause, active ownership, new reset epoch, legacy crossing-v1 handshake/plan and dashboard world counts. Independent review identified and then confirmed fixes for old-lease renewal and frozen sensor timestamps. The earlier integrated run `avoidance-2af29f8528` predates those fixes and is historical evidence, not the final implementation snapshot.
 
-Only the basic open-map, two-car algorithm/integration slice is demonstrated. No obstacle spawning/testing, ML worker, model training, varied-scenario acceptance, load campaign, LinuxONE deployment, commit or push occurred.
-## README documentation handoff
+At the time this earlier status note was written, it reported only the basic open-map, two-car algorithm/integration slice. Its statement that there had been no ML worker or LinuxONE deployment is superseded by the later model integration and successful IBM deployment recorded below. Obstacle, varied-scenario and load acceptance remain open.
+## Historical README documentation handoff
 
-The README overview and local setup now use Uriel naming while identifying the existing Arc Angel prototype and retaining its configuration names. Current defaults, routes, and dashboard demo behaviour were inspected in source. The remaining README sections, starting at `Bridge protocol`, are reserved for a teammate to replace with the second-half Markdown supplied in chat. This is documentation work; no server, simulator, deployment, or behavioural checks were run.
+At that point the README overview and local setup used Uriel naming while the remaining sections were reserved for teammate-supplied content. This handoff note is historical; the README has since been updated with the Rust, GPU-trained ML, BeamNG and IBM LinuxONE server-run information.
 
 ## Sources
 
-## LinuxONE setup — source staged, native build pending
+## [Historical setup stage] LinuxONE source staging — later completed
 
 The user explicitly authorized remote setup over SSH. Live inspection confirmed Ubuntu 24.04.5 on s390x, approximately 8 GB RAM and 34 GB available disk. User-local Rust/Cargo are installed under `~/.cargo/bin` but were absent from the noninteractive PATH; no replacement toolchain was installed. Existing `~/uriel-server-tools` and its Python environment were preserved.
 
-Copied a working-source snapshot, including uncommitted head-on changes, into `/home/linux1/uriel`. Excluded private keys, Git internals, local virtual environments, build artifacts and runtime recordings. All 69 transferred source hashes matched `deployment-manifest.json`; 21 Python unit tests passed on LinuxONE. This is source staging, not a Git push or proof of a working Rust deployment.
+At this staging point, a working-source snapshot, including uncommitted head-on changes, was copied into `/home/linux1/uriel`. Excluded private keys, Git internals, local virtual environments, build artifacts and runtime recordings. All 69 transferred source hashes matched `deployment-manifest.json`; 21 Python unit tests passed on LinuxONE. This is a historical milestone; later native deployment and inference checks are summarized at the top of this page.
 
 Installed `~/.config/systemd/user/uriel.service` from `deploy/uriel.service`, binding the service to remote localhost:3000 and recording under `~/.local/state/uriel/runs`. Enabled user lingering for persistence after logout. The unit is deliberately not enabled/started until the native build completes. `systemd-analyze --user verify` reported the expected missing release executable; service runtime validation is pending.
 
@@ -178,7 +182,7 @@ bash ~/uriel/deploy/linuxone-build-start.sh
 
 It runs locked Rust tests, builds natively with two jobs, enables/starts the user service and checks `/health`. Build log: `~/.local/state/uriel/build.log`. Service logs: `journalctl --user -u uriel.service`. The helper is syntax checked; Rust compilation and health remain pending.
 
-A laptop SSH tunnel forwards localhost:3300 to LinuxONE localhost:3000. The remote service is now running; use `http://127.0.0.1:3300` for its dashboard and `--server-url ws://127.0.0.1:3300/ws/headon` for the local BeamNG bridge. The original local Rust server on port 3000 was preserved. No firewall or public HTTP port was opened and no ML worker was deployed. Private key material was not copied or stored in the project. The later live-controller attempt is recorded below.
+A laptop SSH tunnel forwards localhost:3300 to LinuxONE localhost:3000. The remote Rust service was subsequently run; the laptop-to-server tunnel proved too slow for the BeamNG controller deadlines. At this staging milestone the ML worker had not yet been deployed, which was superseded by the later hybrid deployment recorded below. No firewall or public HTTP port was opened and private key material was not copied or stored in the project.
 
 ## [2026-10-17] Head-on dashboard update and remote latency check
 
@@ -219,13 +223,13 @@ Use the project's `.venv/bin/python` (or activate `.venv`) so BeamNGpy is availa
 
 Added optional crossing-v1 observe-only predictions. Rust derives the training feature vector, calls a same-host Python worker over loopback JSON lines, enforces a 40 ms timeout and includes validated predictions in `recommendation_batch.ml_predictions`. The worker is defined by `scripts/ml_worker.py`; its user service is `deploy/uriel-ml-worker.service`. Install the complete model run directory as `~/.local/share/uriel/ml/current`, then install the ML Python requirements before starting that unit. The existing Rust service reads `ARC_ML_ADDR=127.0.0.1:3100`. Missing/slow predictions do not affect the Rust plan.
 
-No model artifacts were available in this checkout. A fresh offline training attempt (`runs/ml-arrival/pilot-20261017T145311Z-c9d35d9e/`) accepted only two trials in one scenario group and returned `insufficient_data`. The worker was therefore not started and no model was served. Attempted SSH to `linux1@148.100.77.240` with the host's existing `~/.ssh/id_ed25519` failed with `Permission denied (publickey)`; the requested `uriel.pem` file is not in the project root. No remote file or service was changed. The earlier recorded LinuxONE service and 325 ms tunnel RTT are historical evidence; no new remote BeamNG run occurred. After a complete model artifact and authorized SSH key are available, verify worker health locally on LinuxONE, then run a crossing-v1 BeamNG observe-only check through the established dashboard/bridge tunnel. This must not be confused with head-on maneuver-v2, which is still not connected to ML.
+At that time, no model artifacts were available in this checkout. The local pilot accepted only two trials in one scenario group and returned `insufficient_data`; that result applied to this dataset and training invocation. The SSH attempt using the then-available key failed before any remote change. The user later located the authorized key, and subsequent deployment and server inference succeeded as recorded below. The laptop BeamNG controller still used local coordination because of tunnel latency; the head-on maneuver-v2 controller remains separate from the ML path.
 
 - [[protocol]], [[ml-arrival-prediction]], [[implementation-status]].
 
 ## [2026-10-17] verification | LinuxONE key and current ML readiness
 
-The user located `uriel.pem` in Documents. Its filesystem mode is `600`; SSH now succeeds. Read-only checks report Linux s390x, `uriel.service` active, and `/health` returning `ok`. No `entry.joblib` or `clearance.joblib` was found in the remote home; `uriel-ml-worker.service` is inactive. The system Python has NumPy 1.26.4, scikit-learn 1.4.1.post1 and joblib 1.3.2, which do not match the pinned ML runtime. No remote files or services were modified. Current training code needs at least eight independent labeled scenario groups per target for the existing 60/20/20 grouping method; this dataset had one. See [[ml-arrival-prediction]].
+At that check, the Rust service was active, but the joblib-format pilot models were absent and the then-configured worker was inactive. The later combined XGBoost models were exported to a portable format and deployed through a different worker setup; see the successful LinuxONE hybrid deployment below. The local pilot's one-group limitation remains specific to that training run.
 
 
 A one-trial run on the refreshed graph routes (`runs/west-coast-arrival-00e9ea6f19/`) stopped on the 5 s no-motion watchdog after 12 simulated seconds; clone13 had not moved 0.5 m. No junction entries or damage increase were recorded. A subsequent requested relaunch could not connect because the BeamNG API was offline on port 25252; no vehicle commands were sent in that attempt.
@@ -282,7 +286,7 @@ On 2026-10-18, branch `vinn` fast-forwarded to `origin/main` commit `f36d049`, t
 
 A saved West Coast route export is `scenarios/extended-90-degree-data-collection/rust-crossing.json`. `scripts/run_arrival_hybrid.py` starts a worker and Rust process on unoccupied local ports, and stops its children on Ctrl+C. Commands, artifact contract and limitations are in `scripts/ARRIVAL_HYBRID.md`. It starts services, not simulator driving.
 
-Validation: 38 Rust tests and four Python worker tests passed. An isolated socket integration loaded the actual combined models, obtained ten model-bearing Rust crossing responses (maximum local round trip 2.20 ms), exercised the HTTP conflict evaluator with accepted monitor verdicts, and verified that stopping the worker preserved Rust recommendations. Evidence is under `runs/ml-arrival/combined-gpu-cf2bc118ec/integration/`. Test services were stopped after verification. No live BeamNG hybrid trial or remote deployment was executed. The two-second allowance is not a calibrated prediction interval, West Coast labels remain provisional, and missing-feature behavior/geometry reference alignment require physical validation before acceptance.
+Validation at this stage: 38 Rust tests and four Python worker tests passed. An isolated socket integration loaded the actual combined models and obtained ten model-bearing Rust crossing responses (maximum local round trip 2.20 ms); it also exercised the HTTP conflict evaluator and worker-unavailable fallback. No live BeamNG hybrid trial or remote deployment had yet been executed at that point; the subsequent LinuxONE deployment and local hybrid BeamNG trial are recorded below. The two-second allowance is not a calibrated prediction interval, West Coast labels remain provisional, and missing-feature behavior/geometry reference alignment require physical validation before acceptance.
 
 
 ## LinuxONE hybrid deployment and network blocker

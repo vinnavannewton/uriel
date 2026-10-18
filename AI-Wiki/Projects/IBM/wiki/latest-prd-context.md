@@ -30,7 +30,7 @@ Uriel's requested product scope is cooperative vehicle conflict and road-hazard 
 | U-S12 | Blockages, unstable surfaces and rerouting |
 | U-S13 | Capability-gated suspension/obstacle-jump experiment |
 
-Backend: Rust/Axum/Tokio plus a persistent Python ML worker on LinuxONE. BeamNG/bridges and scan preprocessing run on Fedora laptops. The PRD reports one shared Ubuntu 24.04/s390x VM with 3 vCPUs, 8 GB RAM and 50 GB disk, individual SSH keys, and an `ibm-ml-labs` container. These were not independently verified in this skill task. Training/inference should begin in that Python environment with bounded threads and requests.
+Backend: Rust/Axum/Tokio plus a Python ML worker on LinuxONE. BeamNG/bridges and scan preprocessing run on Fedora laptops. The PRD reports one shared Ubuntu 24.04/s390x VM with 3 vCPUs, 8 GB RAM and 50 GB disk, individual SSH keys, and an `ibm-ml-labs` container; the VM and Rust service access were subsequently verified, and the user reports a teammate successfully ran the IBM-hosted server version. Laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded the control deadlines. This does not mean the IBM server was untested. Detailed hardware/resource claims beyond the verified host remain sourced to the PRD.
 
 The first required ML task covers arrival and, where useful, rear clearance time. A small gradient-boosted regressor is proposed, with a simpler physical/regression baseline. Collect varied commands/configurations; split by complete runs; handle censored arrivals and avoid future-data or hidden-ground-truth leakage. Measure offline timing and actual downstream outcomes.
 

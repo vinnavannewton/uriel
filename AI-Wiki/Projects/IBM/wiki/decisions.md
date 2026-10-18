@@ -13,9 +13,9 @@ tags: [ibm, uriel]
 | Backend | Rust/Axum/Tokio, Serde and tracing retained |
 | Simulation bridges | Python + BeamNGpy on Fedora laptops |
 | Development hosts | Fedora 44 KDE / x86_64, reported in S5 |
-| Deployment target | Ubuntu 24.04 / IBM LinuxONE / s390x, reported as user-confirmed in S5; access not demonstrated |
-| ML | Training accepted in newer context; first proposed task is arrival-time prediction |
-| Model and worker | Model family/framework/persistence undecided; small Python inference worker on LinuxONE recommended |
+| Deployment target | Ubuntu 24.04 / IBM LinuxONE / s390x; SSH, native service and health endpoint were verified; user reports a teammate successfully ran the IBM-hosted server version |
+| ML | GPU-trained arrival/clearance models and hybrid Rust/Python integration are documented; the separate local pilot details are in [[ml-arrival-prediction]] |
+| Model and worker | The README documents the combined GPU-trained XGBoost models and tested worker integration; retain current model/version/runtime details with that integration evidence |
 | First scenario inputs | Positions, velocities and intended routes; user scope choice, not organizer mandate |
 | Map | West Coast USA remains earlier intended choice; S5 asks for map/car selection, so confirm final scenario |
 | UI | Compact browser dashboard; existing plain template is historical implementation |

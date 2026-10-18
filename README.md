@@ -9,7 +9,7 @@
   <img src="assets/beamng-drive-logo-mark.png" width="360" alt="BeamNG.drive logo, the simulation platform used for Uriel trials" />
 </p>
 
-Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive experiment tooling, and an exploratory arrival-time ML path. This repository includes the current implementation and evidence from the project’s recorded tests and simulator runs. The angel-wings mark is an original Uriel asset; the BeamNG.drive mark above is the user-provided logo.
+Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive experiment tooling, and an arrival-time ML path. The hybrid service was deployed and exercised on IBM LinuxONE; a teammate also reports a successful run using the IBM-hosted server. Our laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded the controller deadlines. The angel-wings mark is an original Uriel asset; the BeamNG.drive mark above is the user-provided logo.
 
 ## At a glance
 
@@ -20,7 +20,7 @@ Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive ex
 | Machine learning | GPU-trained XGBoost entry and clearance models; a Python worker, Rust integration, portable LinuxONE inference, and recorded grouped evaluation |
 | Dashboard | Browser dashboard for live telemetry plus selectable synthetic head-on and 90-degree demos |
 | Tests recorded | 38 Rust tests and 4 ML-worker Python tests passed for the hybrid integration; additional focused checks and BeamNG runs are listed below |
-| Deployment | LinuxONE hybrid service deployment and HTTP inference were verified; remote BeamNG control remains blocked by network latency |
+| Deployment | LinuxONE hybrid service and HTTP inference were verified, with a successful teammate-reported IBM-hosted run; laptop-to-server latency prevented the BeamNG controller from running its trial remotely |
 
 ## BeamNG.drive results
 
@@ -53,7 +53,7 @@ These are grouped held-out regression metrics, not collision-avoidance scores. T
 - An isolated local integration loaded the trained models and received ten model-bearing Rust crossing responses; maximum measured local round trip was 2.20 ms.
 - Ten remote HTTP conflict-evaluation calls through the deployed LinuxONE service returned accepted monitor results; maximum measured remote-local elapsed time was 4.97 ms. The LinuxONE health endpoint returned `ok` and both user services were active.
 - A portable inference export matched XGBoost on 500 finite and missing-value inputs.
-- Three laptop HTTP health checks through the SSH tunnel took 1.95–2.81 seconds. That exceeds the bridge’s 350 ms request and 500 ms plan-lease limits, so remote live BeamNG control has not been demonstrated.
+- Three laptop HTTP health checks through the SSH tunnel took 1.95–2.81 seconds. That exceeds the bridge’s 350 ms request and 500 ms plan-lease limits, so the laptop BeamNG controller used local coordination. This network limitation does not mean the IBM server was untested: the deployed LinuxONE hybrid service passed HTTP inference checks, and a teammate reports a successful IBM-hosted run.
 
 Counts above describe the named verification runs in the project record; they are not a claim that every test in the repository was run in one suite. The dashboard’s two selectable demos are synthetic previews, separate from BeamNG measurements.
 

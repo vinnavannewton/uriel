@@ -7,7 +7,7 @@ tags: [ibm, uriel]
 
 # Arrival-time ML plan
 
-Status: **offline trainer, localhost inference worker and optional Rust observe-only client are implemented**. The Rust client does not alter recommendations. Current checkout does not contain a sufficiently varied trained model or a live inference result, so the worker is not running and LinuxONE/BeamNG integration remains unverified. Labels use spawn OOBB proxy occupancy, not calibrated deforming-body geometry.
+Status: **combined GPU-trained XGBoost models and hybrid Rust/Python inference are implemented and deployed on IBM LinuxONE**. Ten remote HTTP conflict-evaluation calls returned accepted results; a teammate also reports a successful run using the IBM-hosted server. The laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded controller deadlines. This network constraint limited remote live vehicle control; it does not mean IBM inference/server testing was skipped. The separate scikit-learn offline pilot described below is a different model/run. Labels use spawn OOBB proxy occupancy, not calibrated deforming-body geometry.
 
 ## Reproduce the local pilot
 
@@ -63,7 +63,7 @@ Rust derives route-relative distance/speed, speed history, dimensions, and neare
 
 The first repeatable offline pilot is now available, but broader recordings still need varied gaps, speeds, traffic and driver response. Keep features restricted to information available at prediction time. Stopped and non-arriving cars need explicit handling; do not invent arrival labels. Continue splitting complete grouped runs rather than neighboring frames, then evaluate downstream waiting, completed crossings and contact/proximity outcomes after integration is authorized.
 
-The worker and Rust consumer are now implemented behind the optional loopback address. Remaining work is to produce/recover a complete trained artifact, install compatible Python packages and model files on LinuxONE, check the 40 ms call bound there, then connect the local BeamNG bridge through the existing SSH tunnel for an observe-only crossing run. Prediction validity is not calibrated, and learned estimates remain outside vehicle control.
+The worker and Rust consumer are implemented behind an optional loopback address. The combined XGBoost artifact has since been converted to a portable format, installed on LinuxONE and exercised through the deployed Rust service. Ten remote HTTP checks and a teammate-reported server run succeeded. The separate laptop BeamNG controller still used localhost because SSH latency exceeded its response window. Prediction validity and physical safety are not calibrated; the server inference checks do not by themselves establish a remote physical BeamNG trial.
 
 ## Proposed LiDAR/camera crossing experiment
 
@@ -86,7 +86,7 @@ On 2026-10-18, the user supplied extracted Downloads data and authorized immedia
 
 Training used 8,073 entry examples across 22 groups and 7,568 clearance examples across 18 groups. Held-out tests used five independent groups per target: entry 2,256 rows / 23 trials, MAE 0.369 s / p95 1.442 s; clearance 2,200 rows / 18 trials, MAE 0.438 s / p95 1.954 s. Source-specific metrics and comparisons against distance/speed are retained in the evaluation report. Both serialized models were loaded again and CPU predictions matched the GPU model predictions within 1e-5. The final data audit, fit, model selection and evaluation took 10.65 seconds after dependency setup; XGBoost 3.4.1 was installed in the existing BeamNG Python environment. No simulator collection was launched during training.
 
-These are explicitly exploratory models: West Coast radius/spawn-OOBB labels remain provisional and Small Grid uses different virtual-square geometry. Calibration and cross-scenario acceptance are still outstanding. The extracted `Downloads/runs/sensor-crossing` sensor format was not silently converted into ETA records; incompatible LiDAR experiment telemetry is excluded in the audit. No point clouds were used. Existing `ml_worker.py` expects sklearn joblib artifacts, so these XGBoost UBJ files require an explicit loader adapter before serving. No deployment or live control integration was performed.
+These are explicitly exploratory models: West Coast radius/spawn-OOBB labels remain provisional and Small Grid uses different virtual-square geometry. Calibration and cross-scenario acceptance are still outstanding. The extracted `Downloads/runs/sensor-crossing` sensor format was not silently converted into ETA records; incompatible LiDAR experiment telemetry is excluded in the audit. No point clouds were used. The XGBoost models were integrated through the portable worker adapter and deployed on LinuxONE as described below; this does not imply that the local scikit-learn pilot was deployed or that every model target was freshly validated in that pilot.
 
 
 ## Local XGBoost and Rust hybrid integration
