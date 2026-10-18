@@ -7,6 +7,8 @@ tags: [ibm, uriel]
 
 # Implementation status and evidence
 
+Product vision: a shared AI supervisor connecting autonomous vehicles' onboard AI for cooperative road safety. The two-car 90-degree BeamNG crossing is a representative demonstration, not the project's entire scope. Real-vehicle onboard integration and the broader road-network capabilities remain proposed; see [[overview]].
+
 Current status (2026-10-18): **local Rust/BeamNG head-on and 90-degree demonstrations, GPU-trained XGBoost arrival models, and hybrid Rust/Python inference are implemented; the hybrid worker was deployed and HTTP-verified on IBM LinuxONE, and a teammate reports a successful IBM-hosted run**. Our laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded the controller deadline. This is a limitation of the laptop-to-simulator control path, not evidence that the IBM server was untested. West Coast labels and geometry, braking envelopes, fault handling and broader safety acceptance remain uncalibrated or incomplete. See [[ml-arrival-prediction]], [[operations]] and [[recording]].
 
 The table inventories current code and the bounded head-on addition; it does not certify event eligibility. Historical checks and new simulator evidence are distinguished below.

@@ -566,3 +566,7 @@ Updated the README on `main` to lead with Uriel's Rust/Axum/Tokio coordination c
 ## [2026-10-18] documentation correction | IBM server run and local BeamNG latency
 
 The user clarified that a teammate successfully ran the IBM-hosted server version. The laptop BeamNG trials were run with local coordination because the SSH-tunnel latency exceeded controller deadlines; this does not mean the IBM server was untested. Updated the README and current wiki summaries across implementation status, operations, architecture, ML, protocol, dashboard, decisions, overview, sources and open questions. Marked earlier deployment-preparation wording as point-in-time history, preserving raw snapshots and dated run records. No code, tests, simulator runs or deployments were changed/performed for this documentation correction.
+
+## [2026-10-18] product framing | Shared AI supervisor for connected vehicles
+
+The lead clarified that Uriel's wider vision connects autonomous vehicles' local AI through a shared supervisor for cooperative road safety. Reframed the README and overview around that vision, explained LinuxONE's intended role in timely shared coordination/inference, and identified the 90-degree BeamNG crossing as a small representative demonstration. Kept real-vehicle deployment and broader capabilities distinct from implemented simulator/server evidence. Updated implementation-status context. Documentation only; no application or simulator behavior changed.

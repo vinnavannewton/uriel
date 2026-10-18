@@ -3,13 +3,25 @@
 </p>
 
 <h1 align="center">Uriel</h1>
-<p align="center"><strong>Local-first vehicle conflict coordination, demonstrated in BeamNG.drive.</strong></p>
+<p align="center"><strong>A shared AI supervisor connecting autonomous vehicles for cooperative road safety.</strong></p>
 
 <p align="center">
   <img src="assets/beamng-drive-logo-mark.png" width="360" alt="BeamNG.drive logo, the simulation platform used for Uriel trials" />
 </p>
 
-Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive experiment tooling, and an arrival-time ML path. The hybrid service was deployed and exercised on IBM LinuxONE; a teammate also reports a successful run using the IBM-hosted server. Our laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded the controller deadlines. The angel-wings mark is an original Uriel asset; the BeamNG.drive mark above is the user-provided logo.
+**Uriel is a shared AI supervisor for connected autonomous vehicles.** Each vehicle has its own onboard AI for understanding its surroundings and controlling its movement. Uriel's vision is to connect those otherwise independent systems so vehicles can share their state, intentions and road hazards, anticipate conflicts together, and coordinate safer responses.
+
+An onboard Uriel client would connect each vehicle to the shared supervisor. The supervisor combines information from participating vehicles, predicts how their movements may interact, and sends coordinated guidance back to their local AI. The vehicle retains immediate control and local fallback. The wider idea covers crossing conflicts, oncoming encounters, rear-end threats, shared hazards and coordinated responses across a road network.
+
+**The 90-degree crossing is a small demonstration of this broader idea.** We used two vehicles in BeamNG.drive to make one cooperative decision visible: when their paths conflict, one vehicle slows so the other can pass. This prototype represents one part of the proposed supervisory system; deployment on real autonomous vehicles and the wider road-safety capabilities remain future work.
+
+## Why IBM LinuxONE
+
+Road-safety coordination is time critical: a useful prediction must arrive while vehicles still have time to respond. IBM LinuxONE hosts Uriel's shared Rust coordination service and ML inference worker, bringing prediction and coordination together on the server. The intended role is to handle shared information and timely decisions across connected vehicles while their onboard AI handles immediate driving. Rust provides the coordination runtime; the trained models estimate arrival and clearance timing.
+
+The hybrid service was deployed and exercised on IBM LinuxONE; a teammate also reports a successful run using the IBM-hosted server. Our laptop-controlled BeamNG trials used local coordination because SSH-tunnel latency exceeded the controller deadlines. The recorded server inference checks and network measurements below show why both computation time and communication delay matter for this architecture.
+
+The angel-wings mark is an original Uriel asset; the BeamNG.drive mark above is the user-provided logo.
 
 ## At a glance
 
@@ -22,9 +34,9 @@ Uriel combines a Rust coordination service, a browser dashboard, BeamNG.drive ex
 | Tests recorded | 38 Rust tests and 4 ML-worker Python tests passed for the hybrid integration; additional focused checks and BeamNG runs are listed below |
 | Deployment | LinuxONE hybrid service and HTTP inference were verified, with a successful teammate-reported IBM-hosted run; laptop-to-server latency prevented the BeamNG controller from running its trial remotely |
 
-## BeamNG.drive results
+## Small demonstration in BeamNG.drive
 
-BeamNG.drive is the simulator used for the vehicle experiments in this project. The latest paired 90-degree demonstration used two matching Vivace cars on perpendicular routes in Small Grid:
+BeamNG.drive lets us demonstrate the shared-supervisor concept with controlled, repeatable vehicle encounters. For this demo, we selected a 90-degree crossing with two matching Vivace cars on perpendicular routes in Small Grid. The experiment asks whether shared prediction and coordination can make one vehicle yield when both would otherwise enter the same space:
 
 | Trial | Setup | Recorded outcome |
 | --- | --- | --- |
