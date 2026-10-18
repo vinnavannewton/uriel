@@ -89,6 +89,10 @@ The user ran the three-trial command and the first attempt failed before collect
 
 After the user asked to run the scenario, loaded the installed saved scenario through BeamNG, then used `scripts/run_saved_navgraph_trial.py --trials 3 --traffic 0`. Batch `runs/sensor-crossing/navgraph-batch-6b833c216195/` finished all attempts: trial state/LiDAR counts were 130/65, 152/64 and 125/63; all six endpoint-proximity flags were true. Observed minimum center-reference separations were 14.21 m, 31.95 m and 30.15 m. Red damage deltas were 0; black deltas were 0.642, 0.644 and 0.676, below the 1.0 stop threshold but nonzero. Verified contact data is unavailable, so these are completed-route-proximity runs, not verified collision-free results. The batch contains 201,238,938 bytes of local telemetry and sensor data. No background traffic, Rust, camera or LiDAR-driven braking was used; route control was native BeamNG waypoint AI.
 
+## [2026-10-18] trial | Three saved-route runs with four traffic vehicles
+
+The user requested the same saved-route run with background traffic. Reused four BeamNG traffic vehicles (`clone`, `clone1`, `clone2`, `clone3`) and ran `scripts/run_saved_navgraph_trial.py --trials 3 --traffic 4`. Batch `runs/sensor-crossing/navgraph-batch-6e0faed50d53/` recorded 84/83, 82/81 and 74/74 state/LiDAR frames. Both subjects reached endpoint proximity in all three trials. Minimum subject center-reference separations were 33.98 m, 34.37 m and 31.91 m. Nearest sampled traffic-to-subject center separations were 8.41 m, 8.24 m and 60.02 m. Red damage deltas were 0; black deltas were 0.635, 0.675 and 0.638. Verified contact data is unavailable, so collision-free behavior is not established. The batch contains 252,855,432 bytes (~241 MiB) of local data. It uses native waypoint AI, red-only LiDAR capture, no camera/Rust/LiDAR-derived control. Four background traffic vehicles were re-enabled and left moving after collection for the user's video.
+
 
 ## [2026-10-18] trial | Reload saved scene and run with traffic
 
