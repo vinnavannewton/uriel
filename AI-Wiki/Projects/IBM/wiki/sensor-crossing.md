@@ -85,6 +85,10 @@ Added `--traffic` and `--reset-start` to `scripts/run_saved_navgraph_trial.py`, 
 
 The user ran the three-trial command and the first attempt failed before collecting frames with `KeyError('clone0')`: the current BeamNG vehicle list did not contain that saved ID. The runner now resolves red/black IDs from saved roles, accepts `--red-id` and `--black-id` overrides, and reports the loaded IDs plus setup guidance before trial control if a participant is missing. Metadata records the actual live IDs. Four offline unit tests cover defaults, overrides, missing-car diagnostics and duplicate-ID rejection; Python compilation, help output and whitespace checks passed. This fix has not been tested against the live simulator; load the saved two-car scenario or provide its current IDs before retrying.
 
+## [2026-10-18] trial | Three saved-route runs after participant reload
+
+After the user asked to run the scenario, loaded the installed saved scenario through BeamNG, then used `scripts/run_saved_navgraph_trial.py --trials 3 --traffic 0`. Batch `runs/sensor-crossing/navgraph-batch-6b833c216195/` finished all attempts: trial state/LiDAR counts were 130/65, 152/64 and 125/63; all six endpoint-proximity flags were true. Observed minimum center-reference separations were 14.21 m, 31.95 m and 30.15 m. Red damage deltas were 0; black deltas were 0.642, 0.644 and 0.676, below the 1.0 stop threshold but nonzero. Verified contact data is unavailable, so these are completed-route-proximity runs, not verified collision-free results. The batch contains 201,238,938 bytes of local telemetry and sensor data. No background traffic, Rust, camera or LiDAR-driven braking was used; route control was native BeamNG waypoint AI.
+
 
 ## [2026-10-18] trial | Reload saved scene and run with traffic
 
