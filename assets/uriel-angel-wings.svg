@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256" role="img" aria-labelledby="title desc">
+  <title id="title">Uriel angel wings</title>
+  <desc id="desc">A lavender halo above a pair of stylized angel wings surrounding the Uriel mark.</desc>
+  <defs>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eee8ff"/>
+      <stop offset="1" stop-color="#a58be8"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="256" cy="43" rx="26" ry="10" fill="none" stroke="#c8b6ff" stroke-width="7"/>
+  <g fill="url(#wing)" stroke="#8d78ca" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M246 101C193 64 117 56 45 79c39 14 70 37 96 69-42-18-81-22-121-15 50 19 92 46 124 82 23-9 46-18 70-28 13-6 24-17 32-32z"/>
+    <path d="M266 101c53-37 129-45 201-22-39 14-70 37-96 69 42-18 81-22 121-15-50 19-92 46-124 82-23-9-46-18-70-28-13-6-24-17-32-32z"/>
+  </g>
+  <path d="M256 91v91m-26-59c8 10 17 16 26 18 9-2 18-8 26-18M230 182c6 19 15 30 26 35 11-5 20-16 26-35" fill="none" stroke="#65539c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M108 111c27 9 50 23 69 42m-112 3c34 5 65 17 92 36m247-81c-27 9-50 23-69 42m112 3c-34 5-65 17-92 36" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="5" stroke-linecap="round"/>
+</svg>

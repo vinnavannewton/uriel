@@ -8,7 +8,7 @@ tags: [ibm, uriel]
 
 ## Remaining Uriel contract additions
 
-The crossing prototype remains version 1. A bounded head-on maneuver contract is now implemented as version 2 on a separate endpoint, documented below. The ML-worker batch interface, prediction validity/model version, history/advice features and arrival-label records remain planned; v2 does not implement the complete Uriel PRD.
+The crossing prototype remains version 1. A bounded head-on maneuver contract is implemented as version 2 on a separate endpoint, documented below. An optional observe-only arrival prediction field is now available on crossing-v1 recommendation batches; the prediction validity/calibration, history/advice features and arrival-label records remain incomplete. V2 does not use ML and neither protocol implements the complete Uriel PRD.
 
 The hard-coded prototype 0.5-second advice horizon is provisional, not a calibrated approved control limit. Server/laptop monotonic times must remain separate; pauses cannot retain stale permission. Source: [[sources]] S5 sections 6–10. Related: [[ml-arrival-prediction]], [[context-reconciliation]].
 
@@ -28,6 +28,12 @@ Units: metres, metres/second, radians, simulation seconds. World IDs isolate phy
 Current validation rejects unsupported version/scenario, duplicate IDs, unknown routes, invalid finite/bounded numerical fields, more than 100 vehicles per batch, non-increasing frame sequence and decreasing simulator time. Equal simulator timestamps are allowed. Only some rejections increment per-world counters.
 
 No initial registered vehicle list or expected-vehicle completeness check exists. The bridge's full-snapshot contract is not comprehensively enforced. Unknown JSON fields are not explicitly rejected. No handshake timeout, total-world limit or accepted-update-rate limiter is configured.
+
+## Optional crossing-v1 arrival predictions
+
+Rust may be configured with `ARC_ML_ADDR=127.0.0.1:3100`. For each crossing-v1 frame it sends current causal features to the same-host Python worker over one newline-delimited JSON request per TCP connection. The worker accepts `predict_batch`, with up to 100 rows of `{vehicle_id, values}`; `values` must use all 13 names in the training `feature_schema.json`, with unavailable values as `null`. It returns `status`, `model_version`, and ordered per-vehicle entry/rear-clearance ETA seconds. Worker default bind is loopback only; use no public listener.
+
+Rust requires a successful status, matching row count and vehicle IDs, finite nonnegative estimates, and a response within 40 ms. It attaches the result to `recommendation_batch.ml_predictions`; it never feeds that field back into scheduling or vehicle commands. A missing worker, timeout or malformed reply leaves the existing Rust recommendation unchanged. This contract is not wired into `/ws/headon` or the collision-observer endpoint. Actual trained-artifact inference and LinuxONE deployment remain unverified. See [recommendation batch example](../../../../examples/recommendation_batch-ml.json).
 
 ## Head-on maneuver v2 — implemented local slice
 
@@ -65,3 +71,14 @@ Examples: [headon-hello.json](../../../../examples/headon-hello.json), [headon-s
 - [protocol.rs](../../../../src/protocol.rs), [hello sample](../../../../examples/hello.json), [state sample](../../../../examples/state_batch.json).
 - Related: [[architecture]], [[implementation-status]].
 - [[sources]] S9: current v2 source and correlated local run evidence.
+
+
+## Local XGBoost and Rust hybrid integration
+
+On 2026-10-18, branch `vinn` fast-forwarded to `origin/main` commit `f36d049`, then its prior staged/unstaged/untracked work was restored. Four wiki conflicts were resolved by preserving both upstream and local content. The recovery stash `codex-preserve-vinn-before-main-ml-integration` is retained; no commit or push was performed.
+
+`scripts/ml_worker.py` now loads the trained combined XGBoost UBJ models, validates schema/evaluation/version/model hashes, selects two-thread CPU inference and warms both predictors. Rust still has the 40 ms worker bound and five-second failure cooldown. `ARC_ML_MODE=hybrid` opts into learned timing in both `/ws/bridge` reservations and `/api/conflicts/evaluate`; default crossing behavior remains observe-only. Valid model estimates can widen the physical/input occupancy window (earlier entry, later clearance), with an experimental two-second allowance. Invalid or reversed timing and unavailable inference fall back to physics/input timing. Occupancy, braking feasibility and measured rear-clearance logic are retained. The new HTTP response includes additive `ml_predictions` and `ml_mode` fields. HTTP observations lack history, height and nearest-vehicle measurements; those model features remain missing. Rust nearest-relative-speed now uses radial velocity, matching the recorder feature convention.
+
+A saved West Coast route export is `scenarios/extended-90-degree-data-collection/rust-crossing.json`. `scripts/run_arrival_hybrid.py` starts a worker and Rust process on unoccupied local ports, and stops its children on Ctrl+C. Commands, artifact contract and limitations are in `scripts/ARRIVAL_HYBRID.md`. It starts services, not simulator driving.
+
+Validation: 38 Rust tests and four Python worker tests passed. An isolated socket integration loaded the actual combined models, obtained ten model-bearing Rust crossing responses (maximum local round trip 2.20 ms), exercised the HTTP conflict evaluator with accepted monitor verdicts, and verified that stopping the worker preserved Rust recommendations. Evidence is under `runs/ml-arrival/combined-gpu-cf2bc118ec/integration/`. Test services were stopped after verification. No live BeamNG hybrid trial or remote deployment was executed. The two-second allowance is not a calibrated prediction interval, West Coast labels remain provisional, and missing-feature behavior/geometry reference alignment require physical validation before acceptance.

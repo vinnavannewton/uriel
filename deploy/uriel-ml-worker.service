@@ -1,0 +1,16 @@
+[Unit]
+Description=Uriel arrival prediction worker
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/uriel
+ExecStart=%h/uriel/.venv-ml/bin/python scripts/ml_worker.py --models %h/.local/share/uriel/ml/current
+Environment=URIEL_ML_BIND=127.0.0.1:3100
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+UMask=0077
+
+[Install]
+WantedBy=default.target

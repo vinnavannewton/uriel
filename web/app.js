@@ -2,6 +2,7 @@ const byId = id => document.getElementById(id);
 const set = (id, value) => { byId(id).textContent = value; };
 const svgNS = 'http://www.w3.org/2000/svg';
 let demo = false;
+let demoMode = 'headon';
 let selectedWorld = '';
 let activeScenario = null;
 const demoScenario = {
@@ -24,13 +25,62 @@ const demoWorld = {
     {vehicle_id:'uriel_blue',speed_cap_mps:30/3.6,action:'follow_path',reason:'coordinated_left',path_xy_m:[]}
   ]}
 };
+const crossingDemoScenario={id:'demo-90-degree-crossing',label:'Synthetic 90-degree crossing',zone_half_extent_m:5,routes:[
+  {id:'Car A · west to east',zone_center_s_m:50,points_xy_m:[[-50,0],[50,0]]},
+  {id:'Car B · north to south',zone_center_s_m:50,points_xy_m:[[0,50],[0,-50]]}
+]};
+const crossingDemoWorld={world_id:'preview-90-degree-crossing',world_epoch:'preview-only',bridge_id:'dashboard-preview',protocol_version:1,scenario_config_id:crossingDemoScenario.id,preview_mode:'crossing90',frame_seq:0,sim_time_s:0,wall_age_ms:0,status:'connected',rejected:0,coalesced:0,reservations:[],vehicles:[
+  {vehicle_id:'demo_red',route_id:'west-east',position_xy_m:[-50,0],velocity_xy_mps:[7,0],heading_rad:0,length_m:4.7,width_m:1.9,braking:false},
+  {vehicle_id:'demo_blue',route_id:'north-south',position_xy_m:[0,50],velocity_xy_mps:[0,-10],heading_rad:-Math.PI/2,length_m:4.7,width_m:1.9,braking:false}
+],last_plan:{type:'recommendation_batch',plan_seq:0,based_on_frame_seq:0,status:'approach',reason:'synthetic_demo',recommendations:[
+  {vehicle_id:'demo_red',speed_cap_mps:7,action:'proceed',reason:'crossing_priority',path_xy_m:[[-50,0],[50,0]]},
+  {vehicle_id:'demo_blue',speed_cap_mps:0,action:'yield',reason:'braking_for_crossing',path_xy_m:[[0,50],[0,-50]]}
+]}};
 let demoProgress=0;
 let demoCompleteTicks=0;
 let mapMotionWorld='';
 let mapMotion=new Map();
 let mapFrameAt=0;
 let mapAnimation=0;
+const presetIds=['preset-mode','preset-traffic','preset-traffic-speed','preset-subject-speed','preset-car-a','preset-car-b','preset-randomize'];
+function readPreset(){
+  const number=(id,min,max)=>Math.max(min,Math.min(max,Number(byId(id).value)||min));
+  return {schema:'uriel.next-trial-preset.v1',controller_mode:byId('preset-mode').value,background_traffic:{count:number('preset-traffic',0,8),speed_cap_kmh:number('preset-traffic-speed',5,160)},subjects:[{slot:'A',model:byId('preset-car-a').value.trim()||'vivace',speed_cap_kmh:number('preset-subject-speed',5,160)},{slot:'B',model:byId('preset-car-b').value.trim()||'vivace',speed_cap_kmh:number('preset-subject-speed',5,160)}],randomize_between_trials:byId('preset-randomize').checked,apply_scope:'next_trial_only',live_beamng_control:false};
+}
+function renderPreset(){byId('preset-output').textContent=JSON.stringify(readPreset(),null,2);}
+function loadPreset(){
+  try{const saved=JSON.parse(localStorage.getItem('uriel-next-trial-preset-v1')||'null');if(saved){byId('preset-mode').value=saved.controller_mode||'baseline';byId('preset-traffic').value=String(saved.background_traffic?.count??0);byId('preset-traffic-speed').value=saved.background_traffic?.speed_cap_kmh??40;byId('preset-subject-speed').value=saved.subjects?.[0]?.speed_cap_kmh??30;byId('preset-car-a').value=saved.subjects?.[0]?.model||'vivace';byId('preset-car-b').value=saved.subjects?.[1]?.model||'vivace';byId('preset-randomize').checked=saved.randomize_between_trials!==false;}}catch(_error){}
+  renderPreset();
+}
+for(const id of presetIds)byId(id).addEventListener('input',renderPreset);
+byId('save-preset').addEventListener('click',()=>{localStorage.setItem('uriel-next-trial-preset-v1',JSON.stringify(readPreset()));byId('preset-status').textContent='Preset saved in this browser · start a new trial to use it';});
+byId('copy-preset').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(byId('preset-output').textContent);byId('preset-status').textContent='Preset JSON copied · configure your next trial with these values';}catch(_error){byId('preset-status').textContent='Clipboard unavailable · select and copy the JSON below';}});
 function updateDemo(){
+  if(demoMode==='crossing90'){
+    const blue=crossingDemoWorld.vehicles[1],red=crossingDemoWorld.vehicles[0];
+    if(demoProgress>=19){demoProgress=0;crossingDemoWorld.sim_time_s=0;red.position_xy_m=[-50,0];red.velocity_xy_mps=[0,0];blue.position_xy_m=[0,50];blue.velocity_xy_mps=[0,0];blue.braking=false;}
+    demoProgress+=.5;
+    const t=demoProgress;
+    const previousRedX=red.position_xy_m[0],previousBlueY=blue.position_xy_m[1];
+    const redX=-50+9*Math.min(t,100/9);
+    let blueY,phase;
+    if(t<3.5){blueY=50-8*t;phase='approach';}
+    else if(t<6){const brakeTime=t-3.5;blueY=22-8*brakeTime+1.6*brakeTime*brakeTime;phase='braking';}
+    else if(t<7.4){blueY=12;phase='yielding';}
+    else{const movingTime=t-7.4;blueY=movingTime<4?12-movingTime*movingTime:-4-8*(movingTime-4);blueY=Math.max(-50,blueY);phase='proceeding';}
+    if(blueY<=-50)phase='complete';
+    const braking=phase==='braking'||phase==='yielding';
+    red.position_xy_m=[redX,0];red.velocity_xy_mps=[(redX-previousRedX)/.5,0];
+    blue.position_xy_m=[0,blueY];blue.braking=braking;blue.velocity_xy_mps=[0,(blueY-previousBlueY)/.5];
+    crossingDemoWorld.frame_seq++;crossingDemoWorld.sim_time_s+=.5;
+    const redCleared=t>=7.4;
+    crossingDemoWorld.last_plan={type:'recommendation_batch',plan_seq:crossingDemoWorld.frame_seq,based_on_frame_seq:crossingDemoWorld.frame_seq,status:phase,reason:braking?'braking_for_crossing':phase==='proceeding'?'crossing_cleared':'approaching_intersection',recommendations:[
+      {vehicle_id:'demo_red',speed_cap_mps:8,action:'proceed',reason:'crossing_priority',path_xy_m:crossingDemoScenario.routes[0].points_xy_m},
+      {vehicle_id:'demo_blue',speed_cap_mps:braking?0:Math.min(8,Math.abs(blue.velocity_xy_mps[1])),action:braking?'yield':'proceed',reason:braking?'braking_for_crossing':redCleared?'crossing_cleared':'approaching_intersection',path_xy_m:crossingDemoScenario.routes[1].points_xy_m}
+    ]};
+    crossingDemoWorld.reservations=redCleared?[{vehicle_id:'demo_blue',entry_sim_s:crossingDemoWorld.sim_time_s+1,exit_sim_s:crossingDemoWorld.sim_time_s+3,committed:false}]:[{vehicle_id:'demo_red',entry_sim_s:crossingDemoWorld.sim_time_s+1,exit_sim_s:crossingDemoWorld.sim_time_s+2,committed:false}];
+    return;
+  }
   if(demoProgress>=130){
     demoCompleteTicks++;
     if(demoCompleteTicks>6){demoProgress=0;demoCompleteTicks=0;demoWorld.sim_time_s=0;}
@@ -78,6 +128,7 @@ function mapView(world, scenario) {
   if (!scenario?.routes) return;
   const plan=world.last_plan, recommendations=plan?.recommendations||[];
   const isHeadon=world.protocol_version===2 || world.scenario_config_id==='headon-grid-v2';
+  const animateVehicles=isHeadon||world.preview_mode==='crossing90';
   const routePoints=world.map_bounds_xy_m||scenario.routes.flatMap(route => route.points_xy_m);
   const all = [...routePoints,
     ...recommendations.flatMap(item=>item.path_xy_m||[]),
@@ -96,7 +147,7 @@ function mapView(world, scenario) {
   const scaleY=isHeadon?gridScale:scaleX;
   const px = x => 360+(x-centerX)*scaleX;
   const py = y => 245-(y-centerY)*scaleY;
-  if(isHeadon){
+  if(animateVehicles){
     const identity=world.world_id||'headon';
     if(mapMotionWorld!==identity){mapMotionWorld=identity;mapMotion.clear();mapFrameAt=0;}
     const now=performance.now(),frame=world.frame_seq??plan?.based_on_frame_seq??0;
@@ -160,26 +211,30 @@ function mapView(world, scenario) {
   }
   for (const vehicle of world.vehicles) {
     const [x,y]=vehicle.position_xy_m, cx=px(x),cy=py(y);
-    const color=vehicle.vehicle_id==='thePlayer'?'#ff827b':vehicle.vehicle_id==='uriel_blue'?'#73baff':'#71e7ed';
-    const car=svgElement('g',{'data-car-id':vehicle.vehicle_id,transform:`translate(${cx} ${cy}) rotate(${-vehicle.heading_rad*180/Math.PI})`},svg);
+    const color=vehicle.vehicle_id==='thePlayer'||vehicle.vehicle_id==='uriel_red'||vehicle.vehicle_id==='demo_red'?'#ff827b':vehicle.vehicle_id==='uriel_blue'||vehicle.vehicle_id==='demo_blue'?'#73baff':'#71e7ed';
+    const car=svgElement('g',{'data-car-id':vehicle.vehicle_id,class:vehicle.braking?'braking-car':'',transform:`translate(${cx} ${cy}) rotate(${-vehicle.heading_rad*180/Math.PI})`},svg);
     for(const x of [-8,7])for(const y of [-8,6])
       svgElement('rect',{x:x-2,y,width:5,height:3,rx:1,fill:'#07111d'},car);
-    // Local +X is the nose; the group rotates it to the measured heading.
-    svgElement('path',{d:'M -13 -7 L 5 -7 Q 10 -7 13 -3 L 16 0 L 13 3 Q 10 7 5 7 L -13 7 Z',fill:color,stroke:'#eaf7ff','stroke-width':1},car);
-    svgElement('path',{d:'M -5 -4 L 3 -4 L 7 0 L 3 4 L -5 4 Z',fill:'#102235',opacity:'.85'},car);
+    // Local +X is the nose. The broad body, separate windows and four wheels
+    // read as a top-down car at dashboard scale instead of a pointed marker.
+    svgElement('path',{d:'M -14 -6 Q -12 -9 -7 -9 L 7 -9 Q 13 -9 16 -5 L 18 0 L 16 5 Q 13 9 7 9 L -7 9 Q -12 9 -14 6 Z',fill:color,stroke:'#eaf7ff','stroke-width':1},car);
+    svgElement('path',{d:'M 3 -6 L 9 -6 Q 12 -5 14 -2 L 14 2 Q 12 5 9 6 L 3 6 Z',fill:'#102235',stroke:'#86a3b8','stroke-width':'.6',opacity:'.96'},car);
+    svgElement('path',{d:'M -9 -6 L -2 -6 L 0 -4 L 0 4 L -2 6 L -9 6 Q -11 0 -9 -6 Z',fill:'#102235',stroke:'#86a3b8','stroke-width':'.6',opacity:'.88'},car);
     for(const y of [-5,3]){
-      svgElement('rect',{x:10,y,width:3,height:2,rx:.5,fill:'#fff5c2'},car);
-      svgElement('rect',{x:-13,y,width:2,height:2,rx:.5,fill:'#ff354f'},car);
+      svgElement('rect',{x:15,y,width:2,height:2,rx:.5,fill:'#fff5c2'},car);
+      svgElement('rect',{x:-13,y,width:2,height:2,rx:.5,fill:'#a52e4a',class:'brake-light'},car);
     }
     const title=svgElement('title',{},car);title.textContent=vehicle.vehicle_id;
   }
-  if(isHeadon&&world.status==='connected'&&performance.now()-mapFrameAt<1000&&!mapAnimation)mapAnimation=requestAnimationFrame(animateMapCars);
+  if(animateVehicles&&world.status==='connected'&&performance.now()-mapFrameAt<1000&&!mapAnimation)mapAnimation=requestAnimationFrame(animateMapCars);
 }
 function fillSelect(worlds) {
   const select=byId('world');
   const selected=worlds.find(world=>world.world_id===selectedWorld);
+  const liveObserver=worlds.find(world=>world.observation_only&&world.observation_mode==='crossing'&&world.status==='connected');
   const liveHeadon=worlds.find(world=>world.protocol_version===2&&world.status==='connected');
-  if(liveHeadon&&(!selected||(selected.protocol_version===2&&selected.status!=='connected')))
+  if(liveObserver&&(!selected||selected.status!=='connected'))selectedWorld=liveObserver.world_id;
+  else if(liveHeadon&&(!selected||(selected.protocol_version===2&&selected.status!=='connected')))
     selectedWorld=liveHeadon.world_id;
   else if(!selected)selectedWorld=worlds[0]?.world_id||'';
   select.replaceChildren();
@@ -190,16 +245,18 @@ function fillSelect(worlds) {
 function renderWorld(world, scenario) {
   const plan=world.last_plan, advice=new Map((plan?.recommendations||[]).map(item=>[item.vehicle_id,item]));
   const isHeadon=world.protocol_version===2 || world.scenario_config_id==='headon-grid-v2';
-  set('page-title',world.observation_only?(world.observation_mode==='dodge'?'Head-on dodge':'Head-on collision baseline'):isHeadon?'Head-on avoidance':'Intersection overview');
-  set('page-subtitle',world.observation_only?(world.observation_mode==='dodge'?'Cooperative dodge · measured BeamNG positions':'Measured BeamNG positions · intentional collision · observation only'):isHeadon?'Two-car Grid Plane pass · live positions, server paths, and maneuver state.':'Vehicle positions, crossing order, and server guidance in one place.');
-  set('map-title',world.observation_only?'Live two-car dots':isHeadon?'Live two-car maneuver':'Live crossing map');
+  const crossingObserver=world.observation_only&&world.observation_mode==='crossing';
+  const crossingPreview=world.preview_mode==='crossing90';
+  set('page-title',crossingPreview?'90° crossing · preview':crossingObserver?'90-degree crossing · live observation':world.observation_only?(world.observation_mode==='dodge'?'Head-on dodge':'Head-on collision baseline'):isHeadon?'Head-on avoidance':'Intersection overview');
+  set('page-subtitle',crossingPreview?'Synthetic preview · blue car brakes and yields, then proceeds after red clears.':crossingObserver?`Measured positions · ${world.vehicles.length} crossing cars · display only`:world.observation_only?(world.observation_mode==='dodge'?'Cooperative dodge · measured BeamNG positions':'Measured BeamNG positions · intentional collision · observation only'):isHeadon?'Two-car Grid Plane pass · live positions, server paths, and maneuver state.':'Vehicle positions, crossing order, and server guidance in one place.');
+  set('map-title',crossingPreview?'90-degree crossing · yielding car blinks when braking':crossingObserver?`Live 90-degree crossing · ${world.vehicles.length} cars`:world.observation_only?'Live two-car observation':isHeadon?'Live two-car maneuver':'Live crossing map');
   set('map-label',isHeadon?'GRID MAP · LIVE XY · 10 M GRID':'SCHEMATIC · METRES');
   set('coordination-title',isHeadon?'Maneuver status':'Crossing order');
   byId('maneuver-summary').hidden=!isHeadon||world.observation_only;
   set('count',world.vehicles.length); set('plan-status',world.observation_only?'Observe only':plan?.status||'—');set('plan-sub',world.observation_only?'Observation only · no planner commands':plan?`Plan #${plan.plan_seq} · Frame ${plan.based_on_frame_seq}`:'Awaiting telemetry');
   set('frame',world.frame_seq??'—');set('age',`${world.wall_age_ms} ms since telemetry`);set('detail-world',world.world_id);set('bridge',world.bridge_id);set('epoch',world.world_epoch);
   set('sim-time',`${world.sim_time_s.toFixed(2)} s`);set('rejected',world.rejected);set('coalesced',world.coalesced);set('vehicle-count',`${world.vehicles.length} tracked`);
-  set('side-scenario',scenario?.id||world.scenario_config_id);set('map-live',world.status==='connected'?'Live telemetry':'Telemetry stale');
+  set('side-scenario',crossingPreview?'90° crossing · synthetic preview':crossingObserver?'Small Grid · perpendicular approaches':scenario?.id||world.scenario_config_id);set('map-live',world.preview_mode?'Synthetic demo':world.status==='connected'?'Live telemetry':'Telemetry stale');
   if(isHeadon&&!world.observation_only){
     const summary=byId('maneuver-summary');summary.replaceChildren();
     const phase=document.createElement('strong');phase.className=`maneuver-phase ${plan?.status||'waiting'}`;phase.textContent=(plan?.status||'waiting for plan').replaceAll('_',' ');summary.appendChild(phase);
@@ -254,13 +311,14 @@ function resetView(){
 }
 async function refresh(){
   set('clock',new Date().toLocaleTimeString());
-  if(demo){updateDemo();byId('demo-banner').hidden=false;byId('connection-pill').className='pill demo';set('connection-pill','●  Preview mode');set('uptime','Preview');set('server-version','Animated example · not BeamNG data');fillSelect([demoWorld]);renderWorld(demoWorld,demoScenario);return;}
+  if(demo){updateDemo();const preview=demoMode==='crossing90'?crossingDemoWorld:demoWorld,scenario=demoMode==='crossing90'?crossingDemoScenario:demoScenario;byId('demo-banner').hidden=false;byId('demo-banner').textContent=demoMode==='crossing90'?'Synthetic 90° crossing · blue brakes/yields before the junction; red passes first. Brake lamps blink while stopped. Not BeamNG telemetry.':'Synthetic head-on preview · animated example cars and maneuver path. Not BeamNG telemetry.';byId('connection-pill').className='pill demo';set('connection-pill','●  Preview mode');set('uptime','Preview');set('server-version','Synthetic animation · not BeamNG data');fillSelect([preview]);renderWorld(preview,scenario);byId('demo-toggle').textContent='Stop demo';return;}
+  byId('demo-toggle').textContent='Start demo';
   byId('demo-banner').hidden=true;
   try{
     const [statusResponse,worldResponse]=await Promise.all([fetch('/api/status'),fetch('/api/worlds')]);
     if(!statusResponse.ok||!worldResponse.ok)throw new Error('API unavailable');
     const status=await statusResponse.json(),worlds=await worldResponse.json();
-    byId('connection-pill').className='pill online';set('connection-pill','●  Server online');set('uptime',`${Math.floor(status.uptime_s/60)}m ${status.uptime_s%60}s`);set('server-version',`Arc Angel v${status.version}`);
+    byId('connection-pill').className='pill online';set('connection-pill','●  Server online');set('uptime',`${Math.floor(status.uptime_s/60)}m ${status.uptime_s%60}s`);set('server-version',`Uriel v${status.version}`);
     fillSelect(worlds);const world=worlds.find(item=>item.world_id===selectedWorld);
     if(!world){resetView();return;}
     if(!activeScenario||activeScenario.id!==world.scenario_config_id){const response=await fetch(`/api/scenarios/${encodeURIComponent(world.scenario_config_id)}`);activeScenario=response.ok?await response.json():null;}
@@ -268,5 +326,6 @@ async function refresh(){
   }catch(error){byId('connection-pill').className='pill';set('connection-pill','●  Server offline');set('uptime','—');set('server-version','Start the Rust server');fillSelect([]);resetView();}
 }
 byId('world').addEventListener('change',event=>{selectedWorld=event.target.value;activeScenario=null;refresh();});
-byId('demo-toggle').addEventListener('click',()=>{demo=!demo;demoProgress=0;demoCompleteTicks=0;demoWorld.frame_seq=0;demoWorld.last_plan.status='execute';selectedWorld='';activeScenario=null;byId('demo-toggle').setAttribute('aria-pressed',String(demo));refresh();});
-refresh();setInterval(refresh,500);
+byId('demo-toggle').addEventListener('click',()=>{demo=!demo;demoProgress=0;demoCompleteTicks=0;demoWorld.frame_seq=0;demoWorld.last_plan.status='execute';crossingDemoWorld.frame_seq=0;crossingDemoWorld.sim_time_s=0;selectedWorld='';activeScenario=null;byId('demo-toggle').setAttribute('aria-pressed',String(demo));refresh();});
+byId('demo-mode').addEventListener('change',event=>{demoMode=event.target.value;demoProgress=0;demoCompleteTicks=0;crossingDemoWorld.frame_seq=0;crossingDemoWorld.sim_time_s=0;if(demo)refresh();});
+loadPreset();refresh();setInterval(refresh,500);

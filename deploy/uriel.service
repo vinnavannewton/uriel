@@ -9,6 +9,7 @@ ExecStart=%h/uriel/target/release/arc-angel
 Environment=ARC_BIND=127.0.0.1:3000
 Environment=ARC_RUN_DIR=%h/.local/state/uriel/runs
 Environment=ARC_SCENARIO=scenarios/crossing-v1.json
+Environment=ARC_ML_ADDR=127.0.0.1:3100
 Environment=RUST_LOG=arc_angel=info
 Restart=on-failure
 RestartSec=3

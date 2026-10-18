@@ -4,7 +4,16 @@ use crate::{
     scenario::Scenario,
 };
 use serde::Serialize;
-use std::{collections::HashMap, time::Instant};
+use std::{
+    collections::{HashMap, VecDeque},
+    time::Instant,
+};
+
+#[derive(Clone, Copy)]
+pub struct SpeedSample {
+    pub sim_time_s: f64,
+    pub forward_speed_mps: f64,
+}
 
 pub struct World {
     pub world_id: String,
@@ -26,6 +35,7 @@ pub struct World {
     pub pending: Option<(u64, f64, Vec<Vehicle>)>,
     pub rejected: u64,
     pub coalesced: u64,
+    pub speed_history: HashMap<String, VecDeque<SpeedSample>>,
 }
 
 #[derive(Serialize)]
@@ -75,6 +85,7 @@ impl World {
             pending: None,
             rejected: 0,
             coalesced: 0,
+            speed_history: HashMap::new(),
         }
     }
     pub fn snapshot(&self) -> WorldSnapshot {

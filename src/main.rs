@@ -4,6 +4,7 @@ mod coordinator;
 mod headon;
 mod headon_bridge;
 mod headon_protocol;
+mod ml;
 mod protocol;
 mod scenario;
 mod world;
@@ -27,7 +28,7 @@ use std::{
     net::SocketAddr,
     path::PathBuf,
     sync::Arc,
-    time::Instant,
+    time::{Duration, Instant},
 };
 use tokio::{
     fs::OpenOptions,
@@ -48,6 +49,9 @@ struct App {
     started: Instant,
     headon: headon_bridge::Hub,
     collision: collision_observer::Hub,
+    ml_addr: Option<SocketAddr>,
+    ml_hybrid: bool,
+    ml_retry_after: Arc<Mutex<Instant>>,
 }
 
 #[tokio::main]
@@ -67,6 +71,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tokio::fs::write(run_dir.join("metadata.json"), serde_json::to_vec_pretty(&json!({"scenario":scenario,"protocol_version":VERSION,"build_version":env!("CARGO_PKG_VERSION")}))?).await?;
     let (tx, rx) = mpsc::channel(4096);
     tokio::spawn(record_writer(run_dir.join("events.jsonl"), rx));
+    let ml_addr = std::env::var("ARC_ML_ADDR")
+        .ok()
+        .map(|address| address.parse::<SocketAddr>())
+        .transpose()?;
     let app = App {
         worlds: Arc::new(Mutex::new(HashMap::new())),
         scenario,
@@ -76,6 +84,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         started: Instant::now(),
         headon: headon_bridge::Hub::default(),
         collision: collision_observer::Hub::default(),
+        ml_addr,
+        ml_hybrid: std::env::var("ARC_ML_MODE").is_ok_and(|mode| mode == "hybrid"),
+        ml_retry_after: Arc::new(Mutex::new(Instant::now())),
     };
     let router = Router::new()
         .route(
@@ -461,6 +472,7 @@ async fn handle_message(
             w.last_received = Instant::now();
             w.last_frame_seq = Some(frame_seq);
             w.sim_time_s = sim_time_s;
+            ml::observe_speeds(&mut w.speed_history, sim_time_s, &vehicles, &app.scenario);
             for v in &vehicles {
                 w.first_seen
                     .entry(v.vehicle_id.clone())
@@ -638,9 +650,10 @@ async fn compute_plan(
         .acquire_owned()
         .await
         .map_err(|e| ("compute_unavailable", e.to_string()))?;
-    let (input, world_id, epoch, session) = {
+    let (mut input, world_id, epoch, session, ml_features) = {
         let mut w = world.lock().await;
         w.plan_seq += 1;
+        let ml_features = ml::feature_rows(&vehicles, &app.scenario, &w.speed_history, sim_time_s);
         (
             coordinator::PlanInput {
                 vehicles,
@@ -649,14 +662,43 @@ async fn compute_plan(
                 sim_time_s,
                 plan_seq: w.plan_seq,
                 scenario: app.scenario.clone(),
+                ml_predictions: HashMap::new(),
             },
             w.world_id.clone(),
             w.epoch.clone(),
             w.session_id.clone(),
+            ml_features,
         )
     };
     let plan_seq = input.plan_seq;
     let started = Instant::now();
+    let ml_predictions = if let Some(address) = app.ml_addr.filter(|_| {
+        app.ml_retry_after
+            .try_lock()
+            .is_ok_and(|retry_after| Instant::now() >= *retry_after)
+    }) {
+        match ml::predict(address, ml_features).await {
+            Ok(predictions) => Some(predictions),
+            Err(error) => {
+                *app.ml_retry_after.lock().await = Instant::now() + Duration::from_secs(5);
+                warn!(%error, "arrival ML unavailable; keeping the Rust-only plan");
+                record(
+                    &app,
+                    "ml_unavailable",
+                    json!({"world_id":world_id,"frame_seq":frame_seq,"detail":error}),
+                );
+                None
+            }
+        }
+    } else {
+        None
+    };
+    if app.ml_hybrid {
+        if let Some(batch) = &ml_predictions {
+            input.ml_predictions = batch.predictions.iter().cloned()
+                .map(|p| (p.vehicle_id.clone(), p)).collect();
+        }
+    }
     let plan = tokio::task::spawn_blocking(move || {
         let _permit = permit;
         coordinator::plan(input)
@@ -687,6 +729,7 @@ async fn compute_plan(
         }
         .into(),
         recommendations: plan.recommendations,
+        ml_predictions,
     };
     w.last_plan = Some(out.clone());
     record(
@@ -723,13 +766,57 @@ async fn collision_telemetry(
 async fn conflict_evaluate(
     State(app): State<App>,
     headers: HeaderMap,
-    Json(request): Json<conflict_resolution::EvaluateRequest>,
-) -> Result<Json<conflict_resolution::EvaluateResponse>, StatusCode> {
+    Json(mut request): Json<conflict_resolution::EvaluateRequest>,
+) -> Result<Json<Value>, StatusCode> {
     if !authorized(&headers, app.token.as_deref()) {
         return Err(StatusCode::UNAUTHORIZED);
     }
+    // Validate the unchanged observations before any learned timing is used.
+    let baseline = conflict_resolution::evaluate(request.clone())
+        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    let mut predictions = None;
+    if app.ml_hybrid && !baseline.safe_hold {
+        if let Some(address) = app.ml_addr.filter(|_| {
+            app.ml_retry_after.try_lock().is_ok_and(|retry| Instant::now() >= *retry)
+        }) {
+            let features = request.observations.iter().map(|o| {
+                let mut values = serde_json::Map::new();
+                for key in ml::FEATURES { values.insert(key.into(), Value::Null); }
+                for (key, value) in [
+                    ("distance_to_entry_m", Some(o.distance_to_entry_m)),
+                    ("distance_to_rear_clearance_m", Some(o.distance_to_rear_clearance_m)),
+                    ("forward_speed_mps", Some(o.speed_mps)),
+                    ("forward_acceleration_mps2", o.acceleration_mps2),
+                    ("vehicle_length_m", Some(o.length_m)),
+                    ("vehicle_width_m", Some(o.width_m)),
+                ] { values.insert(key.into(), value.map_or(Value::Null, |v| json!(v))); }
+                json!({"vehicle_id":o.vehicle_id,"values":values})
+            }).collect();
+            match ml::predict(address, features).await {
+                Ok(batch) => {
+                    for (o,p) in request.observations.iter_mut().zip(&batch.predictions) {
+                        if o.occupies_zone || o.rear_clear || p.status != "predicted" { continue; }
+                        if let (Some(entry),Some(exit)) = (p.entry_eta_s,p.rear_clearance_eta_s) {
+                            if entry >= 0.0 && exit >= entry && exit <= 60.0 {
+                                o.time_to_entry_s = o.time_to_entry_s.map(|v| v.min((entry-2.0).max(0.0)));
+                                o.time_to_rear_clearance_s = o.time_to_rear_clearance_s.map(|v| v.max(exit+2.0));
+                            }
+                        }
+                    }
+                    predictions = Some(batch);
+                }
+                Err(error) => {
+                    *app.ml_retry_after.lock().await = Instant::now() + Duration::from_secs(5);
+                    warn!(%error, "conflict evaluator ML unavailable; retaining input timing");
+                }
+            }
+        }
+    }
     let response = conflict_resolution::evaluate(request).map_err(|_| StatusCode::BAD_REQUEST)?;
-    record(&app, "conflict_evaluation", json!(response));
+    let mut response = json!(response);
+    response["ml_predictions"] = json!(predictions);
+    response["ml_mode"] = json!(if app.ml_hybrid { "hybrid" } else { "observe" });
+    record(&app, "conflict_evaluation", response.clone());
     Ok(Json(response))
 }
 

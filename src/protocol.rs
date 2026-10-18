@@ -49,6 +49,9 @@ pub struct Vehicle {
     pub route_id: String,
     pub position_xy_m: [f64; 2],
     pub velocity_xy_mps: [f64; 2],
+    /// Optional for existing crossing-v1 producers; acceleration is SI world XY.
+    #[serde(default)]
+    pub acceleration_xy_mps2: [f64; 2],
     pub heading_rad: f64,
     pub length_m: f64,
     pub width_m: f64,
@@ -87,6 +90,8 @@ pub enum Outgoing {
         valid_until_sim_time_s: f64,
         status: String,
         recommendations: Vec<Recommendation>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        ml_predictions: Option<crate::ml::PredictionBatch>,
     },
     Error {
         code: String,
@@ -110,10 +115,34 @@ pub fn valid_vehicle(v: &Vehicle, max_speed: f64) -> bool {
         && v.velocity_xy_mps
             .iter()
             .all(|x| x.is_finite() && x.abs() <= max_speed * 2.0)
+        && v.acceleration_xy_mps2
+            .iter()
+            .all(|x| x.is_finite() && x.abs() <= 50.0)
         && v.heading_rad.is_finite()
         && v.heading_rad.abs() <= 100.0
         && v.length_m.is_finite()
         && (1.0..=30.0).contains(&v.length_m)
         && v.width_m.is_finite()
         && (0.5..=10.0).contains(&v.width_m)
+}
+
+#[cfg(test)]
+mod crossing_tests {
+    use super::*;
+    #[test]
+    fn legacy_velocity_only_telemetry_defaults_acceleration_and_rejects_bad_acceleration() {
+        let mut frame: serde_json::Value =
+            serde_json::from_str(include_str!("../examples/state_batch.json")).unwrap();
+        frame["vehicles"][0]
+            .as_object_mut()
+            .unwrap()
+            .remove("acceleration_xy_mps2");
+        let mut v: Vehicle = serde_json::from_value(frame["vehicles"][0].clone()).unwrap();
+        assert_eq!(v.acceleration_xy_mps2, [0.0, 0.0]);
+        assert!(valid_vehicle(&v, 12.0));
+        v.acceleration_xy_mps2 = [f64::NAN, 0.0];
+        assert!(!valid_vehicle(&v, 12.0));
+        v.acceleration_xy_mps2 = [51.0, 0.0];
+        assert!(!valid_vehicle(&v, 12.0));
+    }
 }
