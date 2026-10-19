@@ -141,14 +141,15 @@ def load_unknown_vehicle(
     )
 
 
-def attach_sensors(bng: BeamNGpy, ego: Any, sample_hz: int = SAMPLE_HZ) -> dict[str, Any]:
+def attach_sensors(bng: BeamNGpy, ego: Any, sample_hz: int = SAMPLE_HZ,
+                   visualise_lidar: bool = False) -> dict[str, Any]:
     ego.sensors.attach("sensor_crossing_electrics", Electrics())
     lidar = Lidar(
         "sensor_crossing_lidar", bng, vehicle=ego,
         requested_update_time=1 / sample_hz, pos=(0.0, 0.0, 1.8),
         vertical_resolution=32, vertical_angle=26.9, max_distance=100.0,
         density=25, is_360_mode=True, is_rotate_mode=False,
-        is_using_shared_memory=True, is_visualised=False, is_annotated=False,
+        is_using_shared_memory=True, is_visualised=visualise_lidar, is_annotated=False,
     )
     imu = AdvancedIMU(
         "sensor_crossing_imu", bng, vehicle=ego,

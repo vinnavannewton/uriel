@@ -43,6 +43,40 @@ def resolve_participant_ids(manifest, red_override, black_override, loaded_ids):
     return red_key, black_key, actual_ids
 
 
+def assign_background_routes(traffic_ids, red_key, black_key):
+    """Distribute background vehicles evenly over the two saved subject lanes."""
+    route_keys = (red_key, black_key)
+    return {vehicle_id: route_keys[index % len(route_keys)]
+            for index, vehicle_id in enumerate(sorted(traffic_ids))}
+
+
+def route_following_start_states(manifest, assignments, spacing_m=25.0):
+    """Place background vehicles behind each saved start, facing its route."""
+    route_counts = {}
+    starts = {}
+    for traffic_id, route_id in assignments.items():
+        slot = route_counts.get(route_id, 0)
+        route_counts[route_id] = slot + 1
+        subject = manifest['vehicles'][route_id]
+        direction = subject.get('direction')
+        if not direction or len(direction) < 2:
+            raise RuntimeError(f'Saved direction missing for route vehicle {route_id}')
+        norm = math.hypot(float(direction[0]), float(direction[1]))
+        if norm < 1e-6:
+            raise RuntimeError(f'Saved direction is invalid for route vehicle {route_id}')
+        offset = spacing_m * (slot + 1)
+        position = list(subject['position_m'])
+        position[0] -= float(direction[0]) / norm * offset
+        position[1] -= float(direction[1]) / norm * offset
+        starts[traffic_id] = {
+            'position_m': position,
+            'rotation_xyzw': list(subject['rotation_xyzw']),
+            'route_id': route_id,
+            'offset_behind_start_m': offset,
+        }
+    return starts
+
+
 def run_trial(args, out):
     manifest = json.loads((args.scene / 'manifest.json').read_text())
     session = json.loads((args.scene / 'drive-path-session.json').read_text())
@@ -52,6 +86,7 @@ def run_trial(args, out):
     vehicles, sensors, baseline, background = {}, {}, {}, {}
     red_key, black_key = 'thePlayer', 'clone0'
     actual_ids = {}
+    traffic_route_assignments = {}
     summary = {'status': 'setup', 'output': str(out), 'frames': 0, 'lidar_frames': 0,
                'minimum_reference_separation_m': None, 'controller': 'native BeamNG waypoint AI',
                'guard': 'ground-truth damage/proximity monitor; not LiDAR control',
@@ -103,13 +138,35 @@ def run_trial(args, out):
             if len(background)<args.traffic:
                 raise RuntimeError('Traffic spawn did not finish; trial not started')
             background = dict(sorted(background.items())[:args.traffic])
-            # Explicitly restrict the traffic manager to background vehicles.
-            bng.traffic.start(list(background.values()))
-            bng.traffic.reset()
             for v in background.values():
                 v.connect(bng)
+            traffic_route_assignments = assign_background_routes(
+                background, red_key, black_key)
+            if args.traffic_lane_mode == 'saved-routes':
+                # Stop random traffic control and replay the same background
+                # poses and assigned saved lanes on every trial. Spawn each
+                # car behind the route start and facing the saved direction;
+                # otherwise a mid-route spawn can make native AI backtrack to
+                # the first waypoint against the subject's direction.
+                bng.traffic.stop(stop=True)
+                if args.traffic_start_states is None:
+                    args.traffic_start_states = route_following_start_states(
+                        manifest, traffic_route_assignments)
+                for traffic_id, vehicle in background.items():
+                    start = args.traffic_start_states[traffic_id]
+                    if not bng.vehicles.teleport(
+                        vehicle, start['position_m'], rot_quat=start['rotation_xyzw'],
+                        reset=True, safe_spawn=False,
+                    ):
+                        raise RuntimeError(f'Could not reset traffic vehicle {traffic_id}')
+            else:
+                # Explicitly restrict the traffic manager to background vehicles.
+                bng.traffic.start(list(background.values()))
+                bng.traffic.reset()
             print('TRAFFIC', sorted(background), flush=True)
             summary['traffic_vehicle_ids'] = sorted(background)
+            if traffic_route_assignments:
+                summary['traffic_route_assignments'] = traffic_route_assignments
         bng.control.pause()
         for vid, v in vehicles.items():
             v.ai.set_mode('stopping' if args.collision_mode and vid == red_key else 'disabled')
@@ -121,9 +178,13 @@ def run_trial(args, out):
         for vid, v in vehicles.items():
             v.sensors.poll('navgraph_trial_damage')
             baseline[vid] = v.sensors['navgraph_trial_damage'].get('damage', 0)
-        sensors = attach_sensors(bng, vehicles[red_key], sample_hz=5)
+        sensors = attach_sensors(
+            bng, vehicles[red_key], sample_hz=5,
+            visualise_lidar=args.visualize_lidar,
+        )
         meta = {'scenario': manifest, 'editor_session': session, 'duration_limit_sim_s': 45,
                 'wall_timeout_s': 180, 'sensors': 'red LiDAR + wheel speed + IMU; no cameras',
+                'lidar_visualized_in_simulator': args.visualize_lidar,
                 'control': 'BeamNG native AI; no Rust', 'baseline_damage': baseline,
                 'collision_mode': args.collision_mode,
                 'participant_vehicle_ids': actual_ids,
@@ -132,7 +193,10 @@ def run_trial(args, out):
                 'collision_launch_delay_s': (args.collision_launch_delay_s
                                              if args.collision_mode else None),
                 'traffic_requested': args.traffic,
-                'traffic_vehicles': {vid:v.model for vid,v in background.items()}}
+                'traffic_vehicles': {vid:v.model for vid,v in background.items()},
+                'traffic_lane_mode': args.traffic_lane_mode,
+                'traffic_route_assignments': traffic_route_assignments,
+                'traffic_start_states': args.traffic_start_states or {}}
         (out / 'metadata.json').write_text(json.dumps(meta, indent=2)+'\n')
         route_items = list(manifest['navigation_graph']['routes'].items())
         if args.collision_mode:
@@ -190,6 +254,20 @@ def run_trial(args, out):
         else:
             for vid, route in route_items:
                 start_route(vid, route)
+        if traffic_route_assignments:
+            for traffic_id, route_vid in traffic_route_assignments.items():
+                vehicle = background[traffic_id]
+                route = manifest['navigation_graph']['routes'][route_vid]
+                spline = next(s for s in session['splines'] if s['id'] == route['spline_id'])
+                saved_speeds = [float(speed) * 0.75 for speed in spline['vels']]
+                vehicle.ai.drive_using_waypoints(
+                    route['graph_nodes'],
+                    wp_speeds=dict(zip(route['graph_nodes'], saved_speeds)),
+                    no_of_laps=spline['numLaps'],
+                    drive_in_lane=spline['isDriveInLane'],
+                    aggression=min(0.3, float(spline['aggression'])),
+                    avoid_cars=True,
+                )
         bng.control.resume()
         summary['status'] = 'running'
         start_wall = time.monotonic()
@@ -201,17 +279,49 @@ def run_trial(args, out):
                 for vid,v in vehicles.items():
                     v.sensors.poll('state', 'navgraph_trial_damage')
                     states[vid] = dict(v.state)
-                now = float(states[red_key]['time'])
-                if start_sim is None: start_sim = now
-                elapsed = now-start_sim
-                separation = math.dist(states[red_key]['pos'], states[black_key]['pos'])
-                old = summary['minimum_reference_separation_m']
-                summary['minimum_reference_separation_m'] = separation if old is None else min(old,separation)
-                damages = {vid:max(0,v.sensors['navgraph_trial_damage'].get('damage',0)-baseline[vid]) for vid,v in vehicles.items()}
                 traffic_states = {}
                 for vid,v in background.items():
                     v.sensors.poll('state')
                     traffic_states[vid] = dict(v.state)
+                now = float(states[red_key]['time'])
+                if start_sim is None: start_sim = now
+                elapsed = now-start_sim
+                separation = math.dist(states[red_key]['pos'], states[black_key]['pos'])
+                traffic_separation = None
+                traffic_conflict = False
+                if traffic_states:
+                    pair_separations = []
+                    for subject_id in (red_key, black_key):
+                        for traffic_state in traffic_states.values():
+                            subject_state = states[subject_id]
+                            p = [traffic_state['pos'][i] - subject_state['pos'][i]
+                                 for i in range(3)]
+                            v = [traffic_state['vel'][i] - subject_state['vel'][i]
+                                 for i in range(3)]
+                            distance = math.sqrt(sum(component * component for component in p))
+                            pair_separations.append(distance)
+                            vv = sum(component * component for component in v)
+                            ttc = (-sum(a * b for a, b in zip(p, v)) / vv
+                                   if vv > 0.01 else -1.0)
+                            if ttc > 0:
+                                ttc = min(ttc, 2.5)
+                                closest = math.sqrt(sum(
+                                    (a + ttc * b) ** 2 for a, b in zip(p, v)
+                                ))
+                                # Give BeamNG native avoid-cars AI room to
+                                # react to distant traffic; retain a hard
+                                # near-field stop if separation collapses.
+                                if distance < 20 and closest < 9:
+                                    traffic_conflict = True
+                    traffic_separation = min(pair_separations)
+                    previous_traffic_min = summary.get('minimum_traffic_reference_separation_m')
+                    summary['minimum_traffic_reference_separation_m'] = (
+                        traffic_separation if previous_traffic_min is None
+                        else min(previous_traffic_min, traffic_separation)
+                    )
+                old = summary['minimum_reference_separation_m']
+                summary['minimum_reference_separation_m'] = separation if old is None else min(old,separation)
+                damages = {vid:max(0,v.sensors['navgraph_trial_damage'].get('damage',0)-baseline[vid]) for vid,v in vehicles.items()}
                 gt.write(json.dumps(jsonable({'frame':summary['frames'],'elapsed_s':elapsed,'states':states,'traffic_states':traffic_states,'damage_increase':damages}))+'\n'); gt.flush()
                 summary['frames'] += 1
                 summary['elapsed_sim_s'] = elapsed
@@ -226,6 +336,11 @@ def run_trial(args, out):
                     summary['status']='stopped_damage_guard';break
                 if not args.collision_mode and (separation<12 or (ttc>0 and separation<35 and closest<10)):
                     summary['status']='stopped_proximity_guard';break
+                if (traffic_route_assignments and not args.collision_mode
+                        and traffic_separation is not None
+                        and (traffic_separation < 7 or traffic_conflict)):
+                    summary['status'] = 'stopped_traffic_proximity_guard'
+                    break
                 if now-last_sensor >= .2:
                     data=sensor_frame(sensors,vehicles[red_key],out,summary['lidar_frames'])
                     si.write(json.dumps(jsonable({'sim_time_s':now,'elapsed_s':elapsed,**data}))+'\n');si.flush()
@@ -249,6 +364,12 @@ def run_trial(args, out):
         if args.traffic:
             try:bng.traffic.stop(stop=True)
             except Exception:pass
+        if args.traffic_lane_mode == 'saved-routes':
+            for v in background.values():
+                try:
+                    v.ai.set_mode('disabled')
+                    v.control(throttle=0,brake=1,parkingbrake=1)
+                except Exception:pass
         for v in vehicles.values():
             try:
                 v.ai.set_mode('disabled');v.control(throttle=0,brake=1,parkingbrake=1)
@@ -280,6 +401,11 @@ def main(argv=None):
                         help='number of trials (default: 1); reset cars before each trial')
     parser.add_argument('--traffic', type=int, default=0, choices=range(0, 9),
                         help='background traffic count (default: 0)')
+    parser.add_argument('--traffic-lane-mode', choices=('network', 'saved-routes'),
+                        default='network',
+                        help='network uses BeamNG traffic; saved-routes assigns traffic to the red/black saved waypoint lanes')
+    parser.add_argument('--visualize-lidar', action='store_true',
+                        help='show the red LiDAR sensor visualization in BeamNG during each trial')
     parser.add_argument('--collision-mode', action='store_true',
                         help='disable native AI avoid-cars on the two saved routes')
     parser.add_argument('--red-speed-kmh', type=float, default=None,
@@ -292,6 +418,7 @@ def main(argv=None):
     parser.add_argument('--reset-start', action=argparse.BooleanOptionalAction, default=True,
                         help='restore saved car positions (default: enabled)')
     args = parser.parse_args(argv)
+    args.traffic_start_states = None
     for name in ('red_speed_kmh', 'black_speed_kmh'):
         value = getattr(args, name)
         if value is not None and not 0 < value <= 120:

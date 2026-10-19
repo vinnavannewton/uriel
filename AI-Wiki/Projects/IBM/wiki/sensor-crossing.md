@@ -54,6 +54,12 @@ The saved start poses remain nearly collinear, so the run must be described as a
 - [[sources]] S11: West Coast local collector; [[sources]] S13: randomized Small Grid experiment and raw request.
 - Related: [[recording]], [[protocol]], [[ml-arrival-prediction]], [[implementation-status]].
 
+## [2026-10-18] Same-lane traffic with visible LiDAR
+
+Updated `scripts/run_saved_navgraph_trial.py` so `--traffic-lane-mode saved-routes` places two background cars behind each saved subject start, faces them along the saved route direction, and reuses those exact transforms and assignments across trials. This avoids the earlier mid-route spawning that caused native AI to backtrack against the subject flow. `--visualize-lidar` enables BeamNG's visualized red-car LiDAR; it is a display/capture setting, not LiDAR-based control. Command: `./.venv/bin/python scripts/run_saved_navgraph_trial.py --trials 3 --traffic 4 --traffic-lane-mode saved-routes --visualize-lidar`.
+
+The user-authorized run completed in `runs/sensor-crossing/navgraph-batch-1c822e8ab91d/`. All three trials reached both endpoint-proximity checks: 74, 72 and 71 state/LiDAR frames, respectively (217 LiDAR frames total). Four traffic cars were split evenly across red/black saved lanes and held the same assigned start poses each trial. Minimum sampled subject center separations were 27.76, 31.77 and 31.01 m; minimum subject-to-traffic center separations were 13.37, 13.89 and 13.56 m. Red damage deltas were 0; black deltas were 0.764, 0.671 and 0.676. Verified contact remains unavailable, so these measurements do not establish collision-free behavior. The run used native BeamNG AI, no cameras, no Rust controller and no LiDAR-based decision logic. Data occupies 228,375,434 bytes (~218 MiB) under ignored `runs/`. Runner cleanup paused physics and disabled/braked all AIs.
+
 
 ## [2026-10-18] Saved adjacent-road setup
 
