@@ -131,15 +131,6 @@ The dashboard polls the Rust service for world and vehicle state. Its **Preview 
 | `AI-Wiki/Projects/IBM/wiki/` | Requirements, architecture, evidence, operations, and team workflow |
 | `runs/` | Local experiment evidence and model artifacts (ignored by Git) |
 
-## Limits
-
-- BeamNG results cover specific scripted scenarios and controller settings; they do not establish general collision prevention.
-- West Coast USA geometry and arrival/clearance labels remain provisional.
-- ML evaluation is grouped regression evaluation, not end-to-end safety evaluation.
-- Some runtime observations lack model features such as history, object height, and nearest-vehicle measurements.
-- The remote service is deployed and inference was verified, but tunnel latency exceeds the bridge’s control deadline for live remote BeamNG driving.
-- Recommendations are advisory. Physical braking envelopes, route conflict geometry, uncertainty handling, and fault behavior need broader validation.
-
 ## Project documentation
 
 Start with the [project wiki](AI-Wiki/Projects/IBM/wiki/index.md):
